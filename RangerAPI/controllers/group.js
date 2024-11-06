@@ -19,30 +19,26 @@ const getIncludes = (inc) => {
 
 module.exports.getAll = async (req, res) => {
     try {
-        // const groups = await User.findAll(
-        //     { include: 
-        //         [
-        //             { model: Group, as: 'creatorOf' },
-        //             { model: Group, as: 'memberOf' }
-        //         ]
-        //     }
-        // );
-        // res.status(200).json(groups);
         const groups = await Group.findAll({ include: getIncludes(req.body.include) });
         res.status(200).json(groups);
     }
     catch(err) {
-        errHandler(res, 'Fetch failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
 module.exports.getById = async (req, res) => {
     try {
         const group = await Group.findByPk(req.params.id, { include: getIncludes(req.body.include) });
-        res.status(200).json(group);
+        if(group) {
+            res.status(200).json(group);
+        }
+        else {
+            errHandler(res, 'Group not found', 404);
+        }
     }
     catch(err) {
-        errHandler(res, 'Fetch failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
@@ -57,7 +53,7 @@ module.exports.create = async (req, res) => {
         res.status(200).json(group);
     }
     catch(err) {
-        errHandler(res, 'Creation failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
@@ -72,7 +68,7 @@ module.exports.delete = async (req, res) => {
         res.status(200).json("Deletion successful");
     }
     catch(err) {
-        errHandler(res, 'Deletion failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
@@ -95,7 +91,7 @@ module.exports.update = async (req, res) => {
         }
     }
     catch(err) {
-        errHandler(res, 'Deletion failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
@@ -109,7 +105,7 @@ module.exports.addUser = async (req, res) => {
         res.status(200).json(ug);
     }
     catch(err) {
-        errHandler(res, 'Creation failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
@@ -125,6 +121,6 @@ module.exports.deleteUser = async (req, res) => {
         res.status(200).json("Deletion successful");
     }
     catch(err) {
-        errHandler(res, 'Deletion failed...', 500);
+        errHandler(res, err, 500);
     }
 }

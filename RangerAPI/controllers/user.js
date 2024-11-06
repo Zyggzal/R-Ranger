@@ -1,5 +1,5 @@
 const Pwd = require('../utils/Password')
-const { User, Group, Event } = require('../models')
+const { User, Group, Event, Invite } = require('../models')
 const errHandler = require('../utils/ErrorHandler')
 
 const getIncludes = (inc) => {
@@ -15,6 +15,8 @@ const getIncludes = (inc) => {
                     includes.push({model: Event, as: i }); break;
                 case 'participatesIn':
                     includes.push({ model: Event, as: i }); break;
+                case 'invites':
+                    includes.push({ model: Invite, as: i }); break;
             }
         });
     }
@@ -28,7 +30,7 @@ module.exports.getUsers = async (req, res) => {
         res.status(200).json(users);
     }
     catch(err) {
-        errHandler(res, 'Fetch failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
@@ -43,7 +45,7 @@ module.exports.getUserById = async (req, res) => {
         }
     }
     catch(err) {
-        errHandler(res, 'Fetch failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
@@ -81,23 +83,27 @@ module.exports.update = async (req, res) => {
         }
     }
     catch(err) {
-        errHandler(res, 'Update failed...', 500);
+        errHandler(res, err, 500);
     }
 }
 
 module.exports.delete = async (req, res) => {
-    const user = await User.findByPk(req.params.id);
-    if(user) {
-        if(Pwd.valid(req.body.password, user.password)) {
-            user.destroy()
-            res.status(204).json('Deletion successful')
+    try{
+        const user = await User.findByPk(req.params.id);
+        if(user) {
+            if(Pwd.valid(req.body.password, user.password)) {
+                user.destroy()
+                res.status(204).json('Deletion successful')
+            }
+            else {
+                errHandler(res, 'Wrong password', 400);
+            }
         }
         else {
-            errHandler(res, 'Wrong password', 400);
+            errHandler(res, 'User not found', 404);
         }
     }
-    else {
-        errHandler(res, 'User not found', 404);
+    catch(err) {
+        errHandler(res, err, 500)
     }
-
 }

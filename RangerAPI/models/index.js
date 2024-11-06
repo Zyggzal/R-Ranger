@@ -20,6 +20,8 @@ User.belongsToMany(Event, { through: Invite, as: 'participatesIn' })
 Event.belongsTo(Group, { foreignKey: 'createdByGroup', as: 'creatorGroup' })
 Group.hasMany(Event, { foreignKey: 'createdByGroup', as: 'creatorOf' })
 
+User.hasMany(Invite, { foreignKey: 'UserId', as: 'invites' })
+
 // Event.belongsToMany(User, { through: Invite })
 // Event.belongsToMany(User, { through: Review })
 // User.hasOne(Event, { foreignKey: 'createdBy' })

@@ -4,7 +4,6 @@ const sequelize = require('../config/database')
 const Invite = sequelize.define('Invite', {
     isAccepted: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true
     }
 },
 {
