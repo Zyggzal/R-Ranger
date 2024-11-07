@@ -1,5 +1,5 @@
 const Pwd = require('../utils/Password')
-const { User, Group, Event, Invite } = require('../models')
+const { User, Group, Event, Invite, Review } = require('../models')
 const errHandler = require('../utils/ErrorHandler')
 
 const getIncludes = (inc) => {
@@ -17,6 +17,8 @@ const getIncludes = (inc) => {
                     includes.push({ model: Event, as: i }); break;
                 case 'invites':
                     includes.push({ model: Invite, as: i }); break;
+                case 'reviews': 
+                    includes.push({ model: Review, as: i }); break;
             }
         });
     }

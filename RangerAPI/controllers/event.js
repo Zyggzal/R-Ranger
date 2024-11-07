@@ -1,4 +1,4 @@
-const { Event, User, Group, Invite } = require('../models');
+const { Event, User, Group, Invite, Review } = require('../models');
 const errHandler = require('../utils/ErrorHandler');
 
 const getIncludes = (inc) => {
@@ -10,6 +10,8 @@ const getIncludes = (inc) => {
                     includes.push({ model: User , as: i }); break;
                 case 'creatorOfGroups':
                     includes.push({ model: Group, as: i }); break;
+                case 'reviews':
+                    includes.push({ model: Review, as: i }); break;
             }
         });
     }
@@ -93,9 +95,8 @@ module.exports.update = async (req, res) => {
 
 module.exports.inviteUser = async (req, res) => {
     try {
-        const { UserId, sender } = req.body;
-
-        const invite = await Invite.create({ EventId: req.params.id, UserId, sender });
+        const { UserId, senderId } = req.body;
+        const invite = await Invite.create({ EventId: req.params.id, UserId, senderId });
 
         res.status(200).json(invite); 
     }
@@ -109,6 +110,22 @@ module.exports.removeUser = async (req, res) => {
         await Invite.destroy({ where: { EventId: req.params.id, UserId: req.body.UserId }})
 
         res.status(200).json('Deletion successful'); 
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
+module.exports.getUsers = async (req, res) => {
+    try {
+        const event = await Event.findByPk(req.params.id, { include: { model: User , as: 'participants' } });
+
+        if(event) {
+            res.status(200).json(event.participants);
+        }
+        else {
+            errHandler(res, 'Event not found', 404);
+        }
     }
     catch(err) {
         errHandler(res, err, 500);

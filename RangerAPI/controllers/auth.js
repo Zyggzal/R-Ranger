@@ -44,12 +44,12 @@ module.exports.register = async (req, res) => {
             errHandler(res, 'User is already registered', 409)
         }
         else {
+            console.log("A")
             const newUser = await User.create({
                 username: req.body.username,
                 email: req.body.email,
                 password: Pwd.hash(req.body.password)
             })
-
             res.status(201).json(newUser)
         }
     }

@@ -124,3 +124,18 @@ module.exports.deleteUser = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
+
+module.exports.getUsers = async (req, res) => {
+    try {
+        const group = await Group.findByPk(req.params.id, { include: { model: User, as: 'members' } });
+        if(group) {
+            res.status(200).json(group.members);
+        }
+        else {
+            errHandler(res, 'Group not found', 404);
+        }
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}

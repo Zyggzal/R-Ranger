@@ -4,12 +4,15 @@ const authRouter = require('./routes/auth');
 const groupRouter = require('./routes/group');
 const userRouter = require('./routes/user');
 const eventRouter = require('./routes/event');
+const inviteRouter = require('./routes/invite');
+const reviewRouter = require('./routes/review');
 
 const bodyParser = require('body-parser');
 
 const morgan = require('morgan');
 
 const sequelize = require('./config/database');
+const queryInterface = sequelize.getQueryInterface();
 
 const passport = require('passport');
 
@@ -36,6 +39,10 @@ app.use('/auth', authRouter);
 app.use('/groups', groupRouter);
 app.use('/users', userRouter);
 app.use('/events', eventRouter);
+app.use('/invites', inviteRouter);
+app.use('/reviews', reviewRouter);
+
+(async () => await queryInterface.addConstraint('reviews', { fields: ['UserId', 'EventId'], type: 'unique', name: 'UQ_reviews_UserId_EventId' }))();
 
 app.get('/', (req, res) => {
     res.end("If you're seeing this... YIPPEEEEE!!")
