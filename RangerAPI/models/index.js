@@ -26,11 +26,11 @@ Invite.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
 Invite.belongsTo(User, { foreignKey: 'UserId', as: 'user' });
 Invite.belongsTo(Event, { foreignKey: 'EventId', as: 'event' });
 
-Event.hasMany(Review, { foreignKey: { name: 'EventId', unique: 'comosite' }, as: 'reviews' });
-Review.belongsTo(Event, { foreignKey: { name: 'EventId', unique: 'comosite' }, as: 'event' });
+Event.hasMany(Review, { foreignKey: { name: 'EventId', unique: 'composite' }, as: 'reviews' });
+Review.belongsTo(Event, { foreignKey: { name: 'EventId', unique: 'composite' }, as: 'event' });
 
-User.hasMany(Review, { foreignKey: { name: 'UserId', unique: 'comosite' }, as: 'reviews' });
-Review.belongsTo(User, { foreignKey: { name: 'UserId', unique: 'comosite' }, as: 'user' });
+User.hasMany(Review, { foreignKey: { name: 'UserId', unique: 'composite' }, as: 'reviews' });
+Review.belongsTo(User, { foreignKey: { name: 'UserId', unique: 'composite' }, as: 'user' });
 
 // Event.belongsToMany(User, { through: Invite })
 // Event.belongsToMany(User, { through: Review })
