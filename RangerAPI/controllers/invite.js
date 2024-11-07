@@ -17,7 +17,6 @@ const getIncludes = (inc) => {
     return includes;
 }
 
-//Не работает и я хз почему
 module.exports.getAll = async (req, res) => {
     try{
         const pk = { UserId: req.body.UserId, EventId: req.body.EventId }

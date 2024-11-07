@@ -11,14 +11,17 @@ const bodyParser = require('body-parser');
 
 const morgan = require('morgan');
 
+const cors = require('cors');
+
 const sequelize = require('./config/database');
-const queryInterface = sequelize.getQueryInterface();
 
 const passport = require('passport');
 
 const app = express();
 app.use(passport.initialize())
 require('./middleware/passport')(passport);
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -41,8 +44,6 @@ app.use('/users', userRouter);
 app.use('/events', eventRouter);
 app.use('/invites', inviteRouter);
 app.use('/reviews', reviewRouter);
-
-(async () => await queryInterface.addConstraint('reviews', { fields: ['UserId', 'EventId'], type: 'unique', name: 'UQ_reviews_UserId_EventId' }))();
 
 app.get('/', (req, res) => {
     res.end("If you're seeing this... YIPPEEEEE!!")

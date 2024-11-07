@@ -4,7 +4,7 @@ const controller = require('../controllers/invite');
 
 const router = express.Router();
 
-router.get('/', passport.authenticate('jwt', { session: false }), controller.getAll);
+//router.post('/', passport.authenticate('jwt', { session: false }), controller.getAll);
 router.patch('/', passport.authenticate('jwt', { session: false }), controller.update);
 router.delete('/', passport.authenticate('jwt', { session: false }), controller.delete);
 
