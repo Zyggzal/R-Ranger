@@ -4,7 +4,7 @@ const errHandler = require('../utils/ErrorHandler');
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'creator' } ];
     if(inc) {
-        inc.forEach(i => {
+        inc.split(',').forEach(i => {
             switch(i){
                 case 'members':
                     includes.push({ model: User, as: i }); break;
@@ -19,7 +19,7 @@ const getIncludes = (inc) => {
 
 module.exports.getAll = async (req, res) => {
     try {
-        const groups = await Group.findAll({ include: getIncludes(req.body.include) });
+        const groups = await Group.findAll({ include: getIncludes(req.query.include) });
         res.status(200).json(groups);
     }
     catch(err) {
@@ -29,7 +29,7 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
     try {
-        const group = await Group.findByPk(req.params.id, { include: getIncludes(req.body.include) });
+        const group = await Group.findByPk(req.params.id, { include: getIncludes(req.query.include) });
         if(group) {
             res.status(200).json(group);
         }

@@ -4,12 +4,10 @@ const errHandler = require('../utils/ErrorHandler');
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'creator' }, { model: Group, as: 'creatorGroup' } ];
     if(inc) {
-        inc.forEach(i => {
+        inc.split(',').forEach(i => {
             switch(i){
                 case 'participants':
                     includes.push({ model: User , as: i }); break;
-                case 'creatorOfGroups':
-                    includes.push({ model: Group, as: i }); break;
                 case 'reviews':
                     includes.push({ model: Review, as: i }); break;
             }
@@ -21,7 +19,7 @@ const getIncludes = (inc) => {
 
 module.exports.getAll = async (req, res) => {
     try{
-        const events = await Event.findAll({ include: getIncludes(req.body.include) });
+        const events = await Event.findAll({ include: getIncludes(req.query.include) });
         res.status(200).json(events);
     }
     catch(err) {
@@ -31,7 +29,7 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
     try{
-        const event = await Event.findByPk(req.params.id, { include: getIncludes(req.body.include) });
+        const event = await Event.findByPk(req.params.id, { include: getIncludes(req.query.include) });
         if(event) {
             res.status(200).json(event);
         }
@@ -68,7 +66,7 @@ module.exports.delete = async (req, res) => {
     catch(err) {
         errHandler(res, err, 500);
     }
-} 
+}
 
 module.exports.update = async (req, res) => {
     try {
@@ -82,7 +80,7 @@ module.exports.update = async (req, res) => {
 
         if(updated) {
             const updatedEvent = await Event.findByPk(req.params.id);
-            res.status(200).json(updatedEvent); 
+            res.status(200).json(updatedEvent);
         }
         else {
             errHandler(res, 'Update failed', 404);
@@ -98,7 +96,7 @@ module.exports.inviteUser = async (req, res) => {
         const { UserId, senderId } = req.body;
         const invite = await Invite.create({ EventId: req.params.id, UserId, senderId });
 
-        res.status(200).json(invite); 
+        res.status(200).json(invite);
     }
     catch(err) {
         errHandler(res, err, 500);
@@ -109,7 +107,7 @@ module.exports.removeUser = async (req, res) => {
     try {
         await Invite.destroy({ where: { EventId: req.params.id, UserId: req.body.UserId }})
 
-        res.status(200).json('Deletion successful'); 
+        res.status(200).json('Deletion successful');
     }
     catch(err) {
         errHandler(res, err, 500);

@@ -5,7 +5,7 @@ const errHandler = require('../utils/ErrorHandler');
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'sender' }, { model: User, as: 'user' }, { model: Event, as: 'event' } ];
     // if(inc) {
-    //     inc.forEach(i => {
+    //     inc.split(',').forEach(i => {
     //         switch(i){
     //             case 'members':
     //                 includes.push({ model: User, as: i }); break;
