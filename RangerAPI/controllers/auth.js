@@ -39,14 +39,18 @@ module.exports.login = async (req, res) => {
 module.exports.register = async (req, res) => {
     try {
         const existingUser = await User.findOne({ where: { email: req.body.email }})
-
+        const userByLogin = await User.findOne({ where: { login: req.body.login }})
         if(existingUser) {
-            errHandler(res, 'User is already registered', 409)
+            errHandler(res, 'An account with this email is already registered', 409)
+        }
+        else if(userByLogin) {
+            errHandler(res, 'User with this login is already registered', 409) 
         }
         else {
-            console.log("A")
             const newUser = await User.create({
-                username: req.body.username,
+                lastName: req.body.lastName,
+                firstName: req.body.firstName,
+                login: req.body.login,
                 email: req.body.email,
                 password: Pwd.hash(req.body.password)
             })

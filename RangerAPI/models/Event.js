@@ -24,9 +24,17 @@ const Event = sequelize.define('Event', {
         type: DataTypes.DATE,
         allowNull: false
     },
-    eventType: {
-        type: DataTypes.STRING,
-        defaultValue: 'public'    
+    isPublic: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true    
+    },
+    isGroupEvent: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false   
+    },
+    participantsLimit: {
+        type: DataTypes.INTEGER,
+        allowNull: true
     }
 },
 {

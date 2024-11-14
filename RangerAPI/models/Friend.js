@@ -1,14 +1,14 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../config/database')
 
-const Invite = sequelize.define('Invite', {
+const Friend = sequelize.define('Friend', {
     status: {
         type: DataTypes.STRING,
-        defaultValue: "sent"
+        defaultValue: "invited"
     }
 },
 {
-    tableName: 'invites'
+    tableName: 'friends'
 });
 
-module.exports = Invite;
+module.exports = Friend;

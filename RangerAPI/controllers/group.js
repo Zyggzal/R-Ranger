@@ -1,4 +1,4 @@
-const { Group, User, UsersGroups, Event } = require('../models');
+const { Group, User, UsersGroups, Event, Invite } = require('../models');
 const errHandler = require('../utils/ErrorHandler');
 
 const getIncludes = (inc) => {
@@ -10,6 +10,8 @@ const getIncludes = (inc) => {
                     includes.push({ model: User, as: i }); break;
                 case 'creatorOf':
                     includes.push({ model: Event, as: i }); break;
+                case 'invites':
+                    includes.push({ model: Invite, as: i }); break;
             }
         });
     }
@@ -95,11 +97,12 @@ module.exports.update = async (req, res) => {
     }
 }
 
-module.exports.addUser = async (req, res) => {
+module.exports.addMember = async (req, res) => {
     try {
         const ug = await UsersGroups.create({ 
             GroupId: req.params.id,
-            UserId: req.body.id
+            UserId: req.body.id,
+            role: req.body.role
         });
 
         res.status(200).json(ug);
@@ -109,7 +112,31 @@ module.exports.addUser = async (req, res) => {
     }
 }
 
-module.exports.deleteUser = async (req, res) => {
+module.exports.editMember = async (req, res) => {
+    try {
+        const { id, role } = req.body;
+        const [updated] = await UsersGroups.update(
+            { role },
+            { where: {
+                GroupId: req.params.id,
+                UserId : id
+            }}
+        );
+
+        if(updated) {
+            res.status(200).json("Update successful");
+        }
+        else {
+            errHandler(res, 'Update failed', 404);
+        }
+    }
+    catch (err) {
+        errHandler(res, err, 500);
+    }
+}
+
+
+module.exports.deleteMember = async (req, res) => {
     try {
         UsersGroups.destroy({ 
             where: { 
@@ -125,7 +152,7 @@ module.exports.deleteUser = async (req, res) => {
     }
 }
 
-module.exports.getUsers = async (req, res) => {
+module.exports.getMembers = async (req, res) => {
     try {
         const group = await Group.findByPk(req.params.id, { include: { model: User, as: 'members' } });
         if(group) {

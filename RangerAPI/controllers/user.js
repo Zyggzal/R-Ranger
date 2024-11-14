@@ -1,5 +1,5 @@
 const Pwd = require('../utils/Password')
-const { User, Group, Event, Invite, Review } = require('../models')
+const { User, Group, Event, Invite, Review, Friend } = require('../models')
 const errHandler = require('../utils/ErrorHandler')
 
 const getIncludes = (inc) => {
@@ -19,6 +19,8 @@ const getIncludes = (inc) => {
                     includes.push({ model: Invite, as: i }); break;
                 case 'reviews': 
                     includes.push({ model: Review, as: i }); break;
+                case 'friends': 
+                    includes.push({ model: User, as: i }); break;
             }
         });
     }
@@ -53,11 +55,11 @@ module.exports.getUserById = async (req, res) => {
 
 module.exports.update = async (req, res) => {
     try {
-        const { username, password, newPassword } = req.body;
+        const { firstName, lastName, password, newPassword } = req.body;
         const user = await User.findByPk(req.params.id);
         if(user) {     
             if(Pwd.valid(password, user.password)) {
-                const upd = { username }
+                const upd = { firstName, lastName }
                 if(newPassword){
                     upd.password = Pwd.hash(newPassword);
                 }
@@ -107,5 +109,66 @@ module.exports.delete = async (req, res) => {
     }
     catch(err) {
         errHandler(res, err, 500)
+    }
+}
+
+module.exports.getFriends = async (req, res) => {
+    try {
+        const user = await User.findByPk(req.params.id, { include: { model: User, as: 'friends' }  });
+        if(user) {
+            res.status(200).json(user.friends);
+        }
+        else {
+            errHandler(res, 'User not found', 404);
+        }
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
+module.exports.updateFriend = async (req, res) => {
+    try {
+        const { id, status } = req.body;
+        const [updated] = await Friend.update(
+            { status },
+            { where: {
+                UserId: req.params.id,
+                friendId: id
+            }}
+        );
+
+        if(updated) {
+            res.status(200).json("Update succeeded");
+        }
+        else {
+            errHandler(res, 'Update failed', 404);
+        }
+    }
+    catch (err) {
+        errHandler(res, err, 500);
+    }
+}
+
+module.exports.deleteFriend = async (req, res) => {
+    try {
+        await Friend.destroy({ where: { UserId: req.params.id, friendId: req.body.id }})
+
+        res.status(200).json('Deletion successful');
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
+module.exports.addFriend = async (req, res) => {
+    try {
+        const { id, status } = req.body;
+        const af = await Friend.create({ UserId: req.params.id, friendId: id, status });
+
+        res.status(200).json(af);
+    }
+    catch(err) {
+        errHandler(res, err, 500);
     }
 }

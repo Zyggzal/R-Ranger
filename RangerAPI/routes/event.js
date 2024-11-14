@@ -9,8 +9,9 @@ router.get('/:id', passport.authenticate('jwt', { session: false }), controller.
 router.post('/', passport.authenticate('jwt', { session: false }), controller.create);
 router.delete('/:id', passport.authenticate('jwt', { session: false }), controller.delete);
 router.patch('/:id', passport.authenticate('jwt', { session: false }), controller.update);
-router.get('/:id/participants', passport.authenticate('jwt', { session: false }), controller.getUsers);
-router.post('/:id/participants', passport.authenticate('jwt', { session: false }), controller.inviteUser);
-router.delete('/:id/participants', passport.authenticate('jwt', { session: false }), controller.removeUser);
+router.get('/:id/participants', passport.authenticate('jwt', { session: false }), controller.getParticipants);
+router.patch('/:id/participants', passport.authenticate('jwt', { session: false }), controller.updateParticipant);
+router.post('/:id/participants', passport.authenticate('jwt', { session: false }), controller.addParticipant);
+router.delete('/:id/participants', passport.authenticate('jwt', { session: false }), controller.removeParticipant);
 
 module.exports = router;
