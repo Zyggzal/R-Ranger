@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize')
 
 const sequelize = new Sequelize('RangerDB','sa', '12345', {
-    host: 'HOME-PC\\VALERASSQL',
+    host: 'STOPER54',
     dialect: 'mssql',
     dialectOptions: {
         options: {

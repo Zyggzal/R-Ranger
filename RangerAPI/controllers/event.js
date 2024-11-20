@@ -1,5 +1,7 @@
 const { Event, User, Group, Invite, Review, EventParticipants } = require('../models');
 const errHandler = require('../utils/ErrorHandler');
+const sequelize = require("../config/database");
+const {QueryTypes} = require("sequelize");
 
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'creator' }, { model: Group, as: 'creatorGroup' } ];
@@ -38,6 +40,35 @@ module.exports.getById = async (req, res) => {
         else {
             errHandler(res, 'Event not found', 404);
         }
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
+module.exports.getEventsByName = async (req, res) => {
+    try{
+        const { name } = req.params;
+        const { type } = req.body;//all/public/private
+        let condition = '';
+        switch (type) {
+            case 'public': condition = 'AND isPublic = 1'; break;
+            case 'private': condition = 'AND isPublic = 0'; break;
+         }
+
+        const foundUsers = await sequelize.query(
+            `SELECT TOP 50 *
+            FROM events
+            WHERE CONTAINS(name, :name) ${condition}
+            ORDER BY LEN(name)`,
+            {
+                type: QueryTypes.SELECT,
+                replacements: {name: `"${name}*"`}
+            }
+        )
+
+
+        res.status(200).json(foundUsers);
     }
     catch(err) {
         errHandler(res, err, 500);
