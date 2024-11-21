@@ -19,7 +19,8 @@ const getIncludes = (inc) => {
 
 module.exports.getAll = async (req, res) => {
     try{
-        const invite = await Invite.findAll({ include: getIncludes(req.query.include) });
+        const where = req.params.type ? { type: req.params.type } : null
+        const invite = await Invite.findAll({ include: getIncludes(req.query.include), where: where });
         res.status(200).json(invite); 
     }
     catch(err) {
@@ -29,7 +30,8 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getById = async (req, res) => {
     try{
-        const invite = await Invite.findByPk(req.params.id, { include: getIncludes(req.query.include) });
+        const where = req.params.type ? { type: req.params.type } : null
+        const invite = await Invite.findByPk(req.params.id, { include: getIncludes(req.query.include), where: where });
         if(invite) {
             res.status(200).json(invite); 
         }
@@ -44,8 +46,8 @@ module.exports.getById = async (req, res) => {
 
 module.exports.create = async (req, res) => {
     try{
-        const { UserId, senderId, EventId, GroupId } = req.body;
-        const invite = await Invite.create({ UserId, senderId, EventId, GroupId });
+        const { UserId, senderId, EventId, GroupId, type, role } = req.body;
+        const invite = await Invite.create({ UserId, senderId, EventId, GroupId, type, role });
         res.status(200).json(invite);
     }
     catch(err) {
@@ -55,9 +57,23 @@ module.exports.create = async (req, res) => {
 
 module.exports.update = async (req, res) => {
     try{
-        const { status, id, EventId, UserId } = req.body;
-        const [updated] = await Invite.update({ status },
-            { where: { id, EventId, UserId } }
+
+        const { role, isAccepted, id, EventId, UserId, GroupId } = req.body;
+        const where = { }
+        if(id) {
+            where.id = id
+        }
+        else {
+            where.UserId = UserId
+            if(EventId) {
+                where.EventId = EventId
+            }
+            else {
+                where.GroupId = GroupId
+            }
+        }
+        const [updated] = await Invite.update({ isAccepted, role },
+            { where: where }
         );
         if(updated) {
             //const updatedInvite = await Invite.findByPk({ EventId, UserId });
@@ -74,7 +90,20 @@ module.exports.update = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
     try{
-        await Invite.destroy({ where: { id: req.body.id, EventId: req.body.EventId, UserId: req.body.UserId, GroupId: req.body.GroupId }})
+        const where = { }
+        if(req.body.id) {
+            where.id = req.body.id
+        }
+        else {
+            where.UserId = req.body.UserId
+            if(req.body.EventId) {
+                where.EventId = req.body.EventId
+            }
+            else {
+                where.GroupId = req.body.GroupId
+            }
+        }
+        await Invite.destroy({ where: where })
 
         res.status(200).json("Delete succeeded");
     }
