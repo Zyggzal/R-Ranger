@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 RangerAPI/node_modules
+RangerFE/ranger/node_modules
+
 dist
 dist-ssr
 *.local
