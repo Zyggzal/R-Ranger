@@ -11,7 +11,7 @@ const useAPI = (token) => {
         try {
             const request = `${API.host}/auth/login`
             const response = await axios.post(request, { email, password })
-            
+
             setIsBusy(false)
             
             const data = response.data;

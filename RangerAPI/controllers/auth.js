@@ -20,7 +20,8 @@ module.exports.login = async (req, res) => {
                 })
 
                 res.status(200).json({
-                    token: `Bearer ${token}`
+                    token: `Bearer ${token}`,
+                    user
                 })
             }
             else {
