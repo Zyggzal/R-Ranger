@@ -1,19 +1,41 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import useAPI from '../Hooks/useAPI';
 
 export const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
-    const [token, setToken] = useState(null)
     const [user, setUser] = useState(null)
 
-    const api = useAPI(token)
+    const api = useAPI() 
+
+    const StoreUser = (user) => {
+        localStorage.setItem("user", JSON.stringify({
+            id: user.id, 
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            login: user.login
+        }))
+    }
+
+    const GetUserFromStore = () => {
+        const storedUser = localStorage.getItem("user")
+        setUser(JSON.parse(storedUser))
+    }
+
+    const ClearStoredUser = () => {
+        localStorage.removeItem("user")
+    }
+
+    useEffect(()=>{
+        GetUserFromStore()
+    }, [])
 
     const Login = async (email, password) => {
         const res = await api.Login(email, password)
         if(res.status === 200) {
-            setToken(res.data.token)
-            setUser(res.data.user)
+            StoreUser(res.data.user)
+            GetUserFromStore()
         }
         else {
             return res.message
@@ -21,7 +43,8 @@ export const UserProvider = ({children}) => {
     }
 
     const Logout = () => {
-        setToken(null)
+        api.Logout()
+        ClearStoredUser();
         setUser(null)
     }
 
@@ -36,16 +59,16 @@ export const UserProvider = ({children}) => {
     }
 
     const isValid = async () => {
-        if(!user || !token) {
+        if(!user) {
             return false
         }
-        const res = await api.Get('users/1')
-        
-        return !res.status === 401
+        const res = await api.Status(user.id)
+  
+        return res.data.isAuthenticated
     }
 
     return (
-        <UserContext.Provider value={{ user, api, Login, Logout, Register, isValid }}>
+        <UserContext.Provider value={{ user, Login, Logout, Register, isValid }}>
             {children}
         </UserContext.Provider>
     )

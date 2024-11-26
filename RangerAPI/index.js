@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const sequelize = require('./config/database');
 
@@ -21,7 +22,13 @@ const app = express();
 app.use(passport.initialize())
 require('./middleware/passport')(passport);
 
-app.use(cors());
+let corsOpts = {
+    origin: 'http://localhost:3000',
+    credentials: true
+}
+
+app.use(cookieParser());
+app.use(cors(corsOpts));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

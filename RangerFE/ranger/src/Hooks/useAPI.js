@@ -1,9 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import axios from 'axios'
 import API from '../Config/API'
 
-const useAPI = (token) => {
+const useAPI = () => {
     const [isBusy, setIsBusy] = useState(false);
+
+    useEffect(()=>{
+        axios.defaults.withCredentials = true;
+    }, []);
+
+    useLayoutEffect(()=>{
+        const interceptor = axios.interceptors.response.use(
+            (response) => response,
+            async (error) => {
+                //const originalRequest = error.config;
+
+                if(error.response.status === 401 && error.response.data === 'Unauthorized') {
+                    //Перекинуть на страницу логина
+                }
+
+                return Promise.reject(error);
+        });
+
+        return() => {
+            axios.interceptors.response.eject(interceptor);
+        };
+    }, []);
 
     const Login = async (email, password) => {
         setIsBusy(true)
@@ -13,7 +35,7 @@ const useAPI = (token) => {
             const response = await axios.post(request, { email, password })
 
             setIsBusy(false)
-            
+
             const data = response.data;
             const status = response.status;
 
@@ -29,6 +51,26 @@ const useAPI = (token) => {
         }
     }
 
+    const Logout = async () => {
+        setIsBusy(true)
+        try {
+            const request = `${API.host}/auth/logout`
+            const response = await axios.post(request);
+
+            const data = response.data;
+            const status = response.status;
+
+            return { status, data };
+        }
+        catch (err) {
+            setIsBusy(false)
+
+            const status = err.response.status
+            const message = err.response.data.message
+            
+            return { status, message };
+        }
+    }
     const Register = async (login, firstName, lastName, email, password) => {
         setIsBusy(true)
 
@@ -53,12 +95,34 @@ const useAPI = (token) => {
         }
     }
 
+    const Status = async (id) => {
+        try {
+            const request = `${API.host}/auth/status`
+            const response = await axios.post(request, { id })
+            
+            setIsBusy(false)
+            
+            const data = response.data;
+            const status = response.status;
+
+            return { status, data };
+        }
+        catch(err) {
+            setIsBusy(false)
+
+            const status = err.response.status
+            const message = err.response.data.message
+            
+            return { status, message };
+        }
+    }
+
     const Get = async (path, include) => {
         setIsBusy(true)
 
         try {
             const request = `${API.host}/${path}?include=${include}`
-            const response = await axios.get(request, { headers: { Authorization: token } })
+            const response = await axios.get(request)
             
             setIsBusy(false)
             
@@ -82,7 +146,7 @@ const useAPI = (token) => {
 
         try {
             const request = `${API.host}/${path}`
-            const response = await axios.post(request, params, { headers: { Authorization: token } })
+            const response = await axios.post(request, params)
             
             setIsBusy(false)
             
@@ -106,7 +170,7 @@ const useAPI = (token) => {
 
         try {
             const request = `${API.host}/${path}`
-            const response = await axios.patch(request, params, { headers: { Authorization: token } })
+            const response = await axios.patch(request, params)
             
             setIsBusy(false)
             
@@ -130,7 +194,7 @@ const useAPI = (token) => {
 
         try {
             const request = `${API.host}/${path}`
-            const response = await axios.delete(request, { headers: { Authorization: token } })
+            const response = await axios.delete(request)
             
             setIsBusy(false)
             
@@ -152,7 +216,9 @@ const useAPI = (token) => {
     return {
         isBusy,
         Login,
+        Logout,
         Register,
+        Status,
         Get,
         Post,
         Patch,

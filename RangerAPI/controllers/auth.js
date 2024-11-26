@@ -19,10 +19,23 @@ module.exports.login = async (req, res) => {
                     expiresIn: 60 * 60 * 2
                 })
 
-                res.status(200).json({
-                    token: `Bearer ${token}`,
-                    user
-                })
+                // res.status(200).json({
+                //     token: `Bearer ${token}`,
+                //     user
+                // })
+
+                res.status(200)
+                    .cookie(
+                        'jwt',
+                        token,
+                        {
+                            httpOnly: true,
+                            maxAge:  1000 * 60 * 60 * 2,
+                            domain: 'localhost',
+                            sameSite: 'Lax' 
+                        }).json({
+                            user
+                        })
             }
             else {
                 errHandler(res, 'Incorrect data', 401)
@@ -35,6 +48,32 @@ module.exports.login = async (req, res) => {
     catch(err) {
         errHandler(res, err, 500)
     }
+}
+
+module.exports.logout = async (req, res) => {
+    try {
+        res.status(200)
+            .cookie(
+                'jwt',
+                null,
+                {
+                    httpOnly: true,
+                    maxAge:  0,
+                    domain: 'localhost',
+                    sameSite: 'Lax' 
+                }).json("Logged out successfully")
+    }
+    catch(err) {
+        errHandler(res, err, 500)
+    }
+}
+
+module.exports.status = async (req, res) => {
+    if (jwt.verify(req.cookies?.token, keys.jwt).userId === req.body.id) {
+        res.send({isAuthenticated: true})
+      } else {
+        res.send({isAuthenticated: false})
+      }
 }
 
 module.exports.register = async (req, res) => {

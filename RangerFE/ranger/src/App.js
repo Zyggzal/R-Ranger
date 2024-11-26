@@ -5,7 +5,6 @@ import RegisterForm from './Components/Register/RegisterForm';
 import Navbar from './Components/Navbar/Navbar';
 
 function App() {
-
   // const handleGet = async () => {
   //   const res = await api.Get('groups', 'members')
 

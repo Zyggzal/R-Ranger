@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../Context/UserContext";
 import Loader from "../Loader/Loader";
+import useAPI from "../../Hooks/useAPI";
 
 const RegisterForm = () => {
     const [email, setEmail] = useState('');
@@ -9,7 +10,8 @@ const RegisterForm = () => {
     const [fName, setFName] = useState('');
     const [lName, setLName] = useState('');
 
-    const { api, Register } = useContext(UserContext);
+    const { Register } = useContext(UserContext);
+    const api = useAPI();
 
     const handleRegister = async () => {
         await Register(login, fName, lName, email, password);

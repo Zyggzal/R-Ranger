@@ -6,8 +6,8 @@ const Navbar = () => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-                <div>{ user ? `Hello there, ${user.login}!` : "Don't be a stranger, log in or register!" }</div>
-                <div>{ user ? <button onClick={Logout}>Logout</button> : 'Logged in' }</div>
+            <div>{ user ? `Hello there, ${user.login}!` : "Don't be a stranger, log in or register!" }</div>
+            <div>{ user ? <button onClick={Logout}>Logout</button> : 'Not logged in' }</div>
         </div>
     )
 }

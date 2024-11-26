@@ -5,7 +5,8 @@ const User = require('../models/User')
 const keys = require('../config/key')
 
 const options = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: (req) => req && req.cookies ? req.cookies['jwt'] : null,
     secretOrKey: keys.jwt
 }
 
