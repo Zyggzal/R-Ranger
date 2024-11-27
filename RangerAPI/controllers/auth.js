@@ -34,7 +34,8 @@ module.exports.login = async (req, res) => {
                             domain: 'localhost',
                             sameSite: 'Lax' 
                         }).json({
-                            user
+                            user,
+                            expires: Date.now() + (3600 * 1000 * 2)
                         })
             }
             else {
@@ -69,7 +70,8 @@ module.exports.logout = async (req, res) => {
 }
 
 module.exports.status = async (req, res) => {
-    if (jwt.verify(req.cookies?.token, keys.jwt).userId === req.body.id) {
+    console.log(req.cookies)
+    if (jwt.verify(req.cookies?.jwt, keys.jwt).userId === req.body.id) {
         res.send({isAuthenticated: true})
       } else {
         res.send({isAuthenticated: false})

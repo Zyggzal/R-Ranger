@@ -16,7 +16,11 @@ const useAPI = () => {
                 //const originalRequest = error.config;
 
                 if(error.response.status === 401 && error.response.data === 'Unauthorized') {
-                    //Перекинуть на страницу логина
+                    if(localStorage.getItem("user")) {
+                        Logout()
+                        localStorage.removeItem("user")
+                    }
+
                 }
 
                 return Promise.reject(error);
@@ -56,6 +60,8 @@ const useAPI = () => {
         try {
             const request = `${API.host}/auth/logout`
             const response = await axios.post(request);
+
+            setIsBusy(false)
 
             const data = response.data;
             const status = response.status;
@@ -109,7 +115,7 @@ const useAPI = () => {
         }
         catch(err) {
             setIsBusy(false)
-
+            
             const status = err.response.status
             const message = err.response.data.message
             

@@ -17,7 +17,6 @@ const LoginForm = () => {
         await Login(email, password);
         //alert(res ? res :  `Welcome back, ${user.login}`)
     }
-
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {api.isBusy && <Loader/>}
@@ -25,7 +24,7 @@ const LoginForm = () => {
             <input value={password} onChange={e=>setPassword(e.target.value)} placeholder='Password' />
             <button onClick={handleLogin}>Login</button>
             <button onClick={Get}>Get</button>
-            <button onClick={async ()=>console.log(await isValid())}>isValid</button>
+            <button onClick={async ()=>console.log(isValid())}>isValid</button>
         </div>
     )
 }
