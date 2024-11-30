@@ -16,7 +16,11 @@ const useAPI = () => {
                 //const originalRequest = error.config;
 
                 if(error.response.status === 401 && error.response.data === 'Unauthorized') {
-                    //Перекинуть на страницу логина
+                    if(localStorage.getItem("user")) {
+                        Logout()
+                        localStorage.removeItem("user")
+                    }
+
                 }
 
                 return Promise.reject(error);
@@ -56,6 +60,8 @@ const useAPI = () => {
         try {
             const request = `${API.host}/auth/logout`
             const response = await axios.post(request);
+
+            setIsBusy(false)
 
             const data = response.data;
             const status = response.status;
@@ -109,11 +115,11 @@ const useAPI = () => {
         }
         catch(err) {
             setIsBusy(false)
-
-            // const status = err.status
-            // const message = err.message
             
-            return { err };
+            const status = err.response.status
+            const message = err.response.data.message
+            
+            return { status, message };
         }
     }
 
@@ -142,13 +148,10 @@ const useAPI = () => {
     }
     
     const Post = async (path, params) => {
-        setIsBusy(true);
-        console.log(params)
+        setIsBusy(true)
 
         try {
-
             const request = `${API.host}/${path}`
-
             const response = await axios.post(request, params)
             
             setIsBusy(false)
@@ -160,7 +163,7 @@ const useAPI = () => {
         }
         catch(err) {
             setIsBusy(false)
-            console.log(err)
+
             const status = err.response.status
             const message = err.response.statusText
             

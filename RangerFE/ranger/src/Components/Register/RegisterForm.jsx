@@ -11,6 +11,7 @@ const RegisterForm = () => {
     const [lName, setLName] = useState('');
 
     const { Register } = useContext(UserContext);
+    
     const api = useAPI();
 
     const handleRegister = async () => {

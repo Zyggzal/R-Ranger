@@ -7,35 +7,46 @@ export const UserProvider = ({children}) => {
     const [user, setUser] = useState(null)
 
     const api = useAPI() 
-
-    const StoreUser = (user) => {
+    const StoreUser = ({ user, expires }) => {
         localStorage.setItem("user", JSON.stringify({
             id: user.id, 
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
-            login: user.login
+            login: user.login,
+            expires
         }))
     }
 
     const GetUserFromStore = () => {
         const storedUser = localStorage.getItem("user")
-        setUser(JSON.parse(storedUser))
+        return JSON.parse(storedUser)
     }
 
     const ClearStoredUser = () => {
         localStorage.removeItem("user")
     }
 
-    useEffect(()=>{
-        GetUserFromStore()
+    const isValid = () => {
+        if(!user || !user.expires) {
+            return false;
+        }
+
+        return user.expires > Date.now()
+    }
+
+    useEffect(() => {
+        const storedUser = GetUserFromStore()
+        if(storedUser) {
+            storedUser.expires <= Date.now() ? ClearStoredUser() : setUser(storedUser)
+        }
     }, [])
 
     const Login = async (email, password) => {
         const res = await api.Login(email, password)
         if(res.status === 200) {
-            StoreUser(res.data.user)
-            GetUserFromStore()
+            StoreUser(res.data)
+            setUser(GetUserFromStore())
         }
         else {
             return res.message
@@ -56,16 +67,6 @@ export const UserProvider = ({children}) => {
         else {
             return res.message
         }
-    }
-
-    const isValid = async () => {
-        if(!user) {
-            return false
-        }
-        const res = await api.Status(user.id)
-
-        if(!res.err) return res.data.isAuthenticated
-
     }
 
     return (
