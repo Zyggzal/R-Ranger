@@ -2,18 +2,18 @@ const { DataTypes } = require('sequelize')
 const sequelize = require('../config/database')
 
 const Invite = sequelize.define('Invite', {
-    isAccepted: {
+    status: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     },
-    type: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    role: {
-        type: DataTypes.STRING,
-        defaultValue: "member"
-    }
+    // type: {
+    //     type: DataTypes.STRING,
+    //     allowNull: false
+    // },
+    // role: {
+    //     type: DataTypes.STRING,
+    //     defaultValue: "member"
+    // }
 },
 {
     tableName: 'invites'

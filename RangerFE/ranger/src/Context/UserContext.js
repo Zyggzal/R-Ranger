@@ -63,8 +63,9 @@ export const UserProvider = ({children}) => {
             return false
         }
         const res = await api.Status(user.id)
-  
-        return res.data.isAuthenticated
+
+        if(!res.err) return res.data.isAuthenticated
+
     }
 
     return (

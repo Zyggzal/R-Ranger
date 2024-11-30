@@ -110,10 +110,10 @@ const useAPI = () => {
         catch(err) {
             setIsBusy(false)
 
-            const status = err.response.status
-            const message = err.response.data.message
+            // const status = err.status
+            // const message = err.message
             
-            return { status, message };
+            return { err };
         }
     }
 
@@ -142,10 +142,13 @@ const useAPI = () => {
     }
     
     const Post = async (path, params) => {
-        setIsBusy(true)
+        setIsBusy(true);
+        console.log(params)
 
         try {
+
             const request = `${API.host}/${path}`
+
             const response = await axios.post(request, params)
             
             setIsBusy(false)
@@ -157,7 +160,7 @@ const useAPI = () => {
         }
         catch(err) {
             setIsBusy(false)
-
+            console.log(err)
             const status = err.response.status
             const message = err.response.statusText
             

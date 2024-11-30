@@ -10,15 +10,26 @@ const getIncludes = (inc) => {
         inc.split(',').forEach(i => {
             switch(i){
                 case 'memberOf':
-                    includes.push({ model: Group, as: i }); break;
+                    includes.push({ model: Group, as: i, include: [
+                            {model: User, as: 'creator', attributes: ['id','login']},
+                        ] }); break;
                 case 'creatorOfGroups':
-                    includes.push({ model: Group, as: i }); break;
+                    includes.push({ model: Group, as: i,
+                        include: [
+                            {model: User, as: 'creator', attributes: ['id','login']},
+                        ]}); break;
                 case 'creatorOfEvents':
                     includes.push({model: Event, as: i }); break;
                 case 'participatesIn':
                     includes.push({ model: Event, as: i }); break;
                 case 'invites':
-                    includes.push({ model: Invite, as: i }); break;
+                    includes.push({ model: Invite, as: i, //attributes: ['id', 'status', 'event', 'senderId', 'createdAt', 'EventId'],
+                        include: [
+                            {model: Event, as: 'event', attributes: ['id', 'name']},
+                            {model: User, as: 'sender', attributes: ['id', 'login']},
+                            {model: Group, as: 'group', attributes: ['id', 'name']},
+                        ] });
+                    break;
                 case 'reviews': 
                     includes.push({ model: Review, as: i }); break;
                 case 'friends': 
@@ -32,6 +43,7 @@ const getIncludes = (inc) => {
 
 module.exports.getUsers = async (req, res) => {
     try {
+        console.log(getIncludes(req.query.include));
         const users = await User.findAll({ include: getIncludes(req.query.include) });
         res.status(200).json(users);
     }

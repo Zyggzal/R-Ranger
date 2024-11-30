@@ -44,6 +44,17 @@ module.exports.getById = async (req, res) => {
     }
 }
 
+module.exports.getPublic = async (req, res) => {
+    try{
+        const groups = await Group.findAll({ include: getIncludes(req.query.include), where: {isPublic: '1'} });
+        return res.status(200).json(groups);
+
+    }
+    catch (err){
+        errHandler(res, err, 500);
+    }
+}
+
 module.exports.create = async (req, res) => {
     try {
         const { name, isPublic, createdBy } = req.body;

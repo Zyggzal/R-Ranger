@@ -5,6 +5,7 @@ const controller = require('../controllers/event');
 const router = express.Router();
 
 router.get('/', passport.authenticate('jwt', { session: false }), controller.getAll);
+router.get('/public', passport.authenticate('jwt', { session: false }), controller.getPublic);
 router.get('/:id', passport.authenticate('jwt', { session: false }), controller.getById);
 router.get('/search/:name', passport.authenticate('jwt', { session: false }), controller.getEventsByName);
 router.post('/', passport.authenticate('jwt', { session: false }), controller.create);

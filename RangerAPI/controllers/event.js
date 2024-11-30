@@ -1,7 +1,7 @@
 const { Event, User, Group, Invite, Review, EventParticipants } = require('../models');
 const errHandler = require('../utils/ErrorHandler');
 const sequelize = require("../config/database");
-const {QueryTypes} = require("sequelize");
+const {QueryTypes, where} = require("sequelize");
 
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'creator' }, { model: Group, as: 'creatorGroup' } ];
@@ -24,6 +24,15 @@ const getIncludes = (inc) => {
 module.exports.getAll = async (req, res) => {
     try{
         const events = await Event.findAll({ include: getIncludes(req.query.include) });
+        res.status(200).json(events);
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+module.exports.getPublic = async (req, res) =>{
+    try{
+        const events = await Event.findAll({ include: getIncludes(req.query.include), where: {isPublic: '1'} });
         res.status(200).json(events);
     }
     catch(err) {
