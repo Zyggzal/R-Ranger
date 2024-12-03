@@ -1,7 +1,8 @@
 import './App.css';
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import { UserProvider } from './Context/UserContext';
-import LoginForm from './Components/Login/LoginForm'
-import RegisterForm from './Components/Register/RegisterForm';
+import LoginForm from './Components/LoginForm/LoginForm'
+import RegisterForm from './Components/RegisterForm/RegisterForm';
 import Navbar from './Components/Navbar/Navbar';
 import {EventProvider} from "./Context/Event/EventContext";
 import {ListUserEvents} from "./Components/Event/listUserEvents";
@@ -12,128 +13,51 @@ import {AddEvent} from "./Components/Event/addEvent";
 import {AddGroup} from "./Components/Group/addGroup";
 import {ListPublicGroups} from "./Components/Group/listPublicGroups";
 import {InviteProvider} from "./Context/Invite/InviteContext";
-import {ListUserAllInvites} from "./Components/Invite/listUserAllInvites";
+import ListUserAllInvites from "./Components/Invite/listUserAllInvites";
 import {ListUserSortedInvites} from "./Components/Invite/listUserSortedInvites";
 import {FriendProvider} from "./Context/Friend/FriendContext";
 import {ListUserFriends} from "./Components/Friend/listUserFriends";
 import {AddFriend} from "./Components/Friend/addFriend";
+import MainLayout from './Layouts/Main/MainLayout';
+import { Home } from './Pages/Home/Home';
+import { NotFound } from './Pages/NotFound/NotFound';
+import { UserEvents } from './Pages/User/Events/UserEvents';
+import { RequireAuth } from './Middleware/RequireAuth';
+import { Login } from './Pages/Login/Login';
 
 function App() {
-  // const handleGet = async () => {
-  //   const res = await api.Get('groups', 'members')
-
-  //   if(res.status === 200) {
-  //     console.log(res.data)
-  //   }
-  //   else {
-  //     alert(res.message)
-  //   }
-  // }
-
-  // const handlePost = async () => {
-  //   const res = await api.Post('groups', { name: "Test", createdBy: 1 })
-
-  //   if(res.status === 200) {
-  //     console.log(res.data)
-  //   }
-  //   else {
-  //     alert(res.message)
-  //   }
-  // }
-
-  // const handlePatch = async () => {
-  //   const res = await api.Patch('groups/3', { name: "Updated" })
-
-  //   if(res.status === 200) {
-  //     console.log(res.data)
-  //   }
-  //   else {
-  //     alert(res.message)
-  //   }
-  // }
-
-  // const handleDelete = async () => {
-  //   const res = await api.Delete('groups/3')
-
-  //   if(res.status === 200) {
-  //     console.log(res.data)
-  //   }
-  //   else {
-  //     alert(res.message)
-  //   }
-  // }
-
+    const router = createBrowserRouter(createRoutesFromElements(
+    
+        <Route path='/' element={<MainLayout />} >
+            <Route index element={<Home />} />
+            <Route path='login' element={ <Login/>} />
+            <Route path='events' element={ <RequireAuth><UserEvents /></RequireAuth> } />
+            <Route path='*' element={<NotFound />} />
+            {/* <Route path='students' element={<Students />} />
+            <Route path='students/:id' element={ <SingleStudent /> } />
+            <Route path='students/:id/edit' element={ <EditStudent /> } />
+    
+            <Route path='students/new' element={
+              <RequireAuth>
+                 <CreateStudent /> 
+              </RequireAuth>
+             } 
+            />
+    
+            <Route path='about/*' element={<About />}>
+                    <Route path="contacts" element={<p>Our phone: +38-099-999-99-01</p>} />
+                    <Route path="team" element={<p>Our Team: Alex, Mary, Sergiy</p>} />
+                    <Route path="maps" element={<p>Map: ----0---- </p>} />
+            </Route>
+            <Route path='login/' element={<Login /> } />
+              */}
+        </Route>
+      ));
   return (
     <UserProvider >
         <div className="App">
-            <div>
-                <Navbar></Navbar>
-                <LoginForm></LoginForm>
-                <hr/>
-                <RegisterForm></RegisterForm>
-                {/* <button onClick={handleGet}>Get Groups</button>
-        <button onClick={handlePost}>Post Groups</button>
-        <button onClick={handlePatch}>Patch Groups</button>
-        <button onClick={handleDelete}>Delete Groups</button> */}
-            </div>
-
-            <h1>Events</h1>
-            <EventProvider>
-                <div>
-                    <h2>Lists</h2>
-                    <div className="div-grid-lists">
-                        <ListUserEvents/>
-                        <ListPublicEvents/>
-                    </div>
-                    <br/>
-                    <h2>Form</h2>
-                    <div className="div-form-flex">
-                        <AddEvent/>
-                    </div>
-                </div>
-            </EventProvider>
-
-            <hr/>
-
-            <h1>Groups</h1>
-            <GroupProvider>
-                <h2>Lists</h2>
-                <div className="div-grid-lists">
-                    <ListUserGroups/>
-                    <ListPublicGroups/>
-                </div>
-                <h2>Form</h2>
-                <div className="div-form-flex">
-                    <AddGroup/>
-                </div>
-            </GroupProvider>
-
-            <hr/>
-
-            <h1>Invites</h1>
-            <InviteProvider>
-                <h2>Lists</h2>
-                <div className="div-grid-lists">
-                    <ListUserAllInvites/>
-                    <ListUserSortedInvites/>
-                </div>
-            </InviteProvider>
-
-            <hr/>
-
-            <FriendProvider>
-                <h2>List</h2>
-                <div className="div-grid-lists">
-                    <ListUserFriends/>
-                </div>
-                <h2>Form</h2>
-                <div className="div-form-flex">
-                    <AddFriend/>
-                </div>
-            </FriendProvider>
-
+            <RouterProvider router={router} />
         </div>
-
     </UserProvider>
   );
 }

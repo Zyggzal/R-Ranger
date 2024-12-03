@@ -1,10 +1,9 @@
 import {useContext} from "react";
 import {InviteContext} from "../../Context/Invite/InviteContext";
-import {UserContext} from "../../Context/UserContext";
 //ACTUAL INVITES!!!!
 export const ListUserSortedInvites = () =>{
 
-    const {user} = useContext(UserContext);
+    //const {user} = useContext(UserContext);
     const {friendInvites, eventInvites, groupInvites, isLoading} = useContext(InviteContext);
 
     // console.log(friendInvites);

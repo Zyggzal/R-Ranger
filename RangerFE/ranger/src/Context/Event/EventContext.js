@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import useAPI from "../../Hooks/useAPI";
 import {UserContext} from "../UserContext";
 
@@ -13,30 +13,30 @@ export const EventProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const sortAcceptedEvents = (events) => {
-        setUserEvents(events.filter(event => {
-            if(event.status !== 'sent' && event.EventId !== null)
-                return true;
-        }));
+        setUserEvents(events.filter(event =>(event.status !== 'sent' && event.EventId !== null)));
     }
 
-    const fetchUserEvents = async () => {
+    const fetchUserEvents = useCallback(async () => {
         if(!user) return;
-
+        console.log("A")
         setIsLoading(true);
 
         try {
-            const response = await api.Get(`users/${user.id}`, 'invites,events');
-            // setUserEvents(response.data.invites);
-            // console.log(response.data.invites);
-            sortAcceptedEvents(response.data.invites);
+            const response = await api.Get(`users/${user.id}`, 'invites,creatorOfEvents');
+            //console.log(response.data.creatorOfEvents)
+            setUserEvents(response.data);
+            console.log(userEvents)
+            //console.log(userEvents)
+            //sortAcceptedEvents(response.data.invites);
         }
         catch (error) {
             console.log(error);
         }finally {
             setIsLoading(false);
         }
-    }
-    const fetchPublicEvents = async () => {
+    }, [user, api])
+    
+    const fetchPublicEvents = useCallback(async () => {
         if(!user) return;
 
         setIsLoading(true);
@@ -51,7 +51,7 @@ export const EventProvider = ({ children }) => {
         }finally {
             setIsLoading(false);
         }
-    }
+    }, [user, api])
 
     const addEvent = async (event) => {
         if(!user) return;
@@ -76,10 +76,6 @@ export const EventProvider = ({ children }) => {
             console.log(error);
         }
     }
-
-    useEffect(() => {
-        if(user) fetchUserEvents();
-    }, [user])
 
     return (
         <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent}}>

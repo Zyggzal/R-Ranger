@@ -1,10 +1,9 @@
 import {useContext} from "react";
 import {InviteContext} from "../../Context/Invite/InviteContext";
-import {UserContext} from "../../Context/UserContext";
 
-export const ListUserAllInvites = () =>{
+const ListUserAllInvites = () =>{
 
-    const {user} = useContext(UserContext);
+    //const {user} = useContext(UserContext);
     const {allInvites, isLoading} = useContext(InviteContext);
 
     if(isLoading || !allInvites) return <div>Loading...</div>
@@ -38,3 +37,5 @@ export const ListUserAllInvites = () =>{
         </div>
     )
 }
+
+export default ListUserAllInvites;

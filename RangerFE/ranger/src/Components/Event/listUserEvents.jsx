@@ -7,6 +7,7 @@ export const ListUserEvents = () =>{
 
     useEffect(() => {
         fetchUserEvents();
+        console.log(userEvents)
     }, [])
     //console.log(userEvents)
 

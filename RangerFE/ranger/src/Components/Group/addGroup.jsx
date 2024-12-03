@@ -1,21 +1,21 @@
 import {useForm} from "react-hook-form";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {UserContext} from "../../Context/UserContext";
 import {GroupContext} from "../../Context/Group/GroupContext";
 
 export const AddGroup = () => {
-    const {register, handleSubmit, watch, formState: {errors}} = useForm();
+    const {register, handleSubmit, /*watch,*/ formState: {errors}} = useForm();
 
     const {user} = useContext(UserContext);
     const {addGroup} = useContext(GroupContext);
 
-    const [group, setGroup] = useState({});
+    //const [group, setGroup] = useState({});
 
     const onSubmit = (values) => {
 
         const newGroup = {...values, createdBy: user.id};
 
-        setGroup(newGroup);
+        //setGroup(newGroup);
         addGroup(newGroup);
     };
 

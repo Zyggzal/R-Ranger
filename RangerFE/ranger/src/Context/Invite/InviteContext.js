@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {UserContext} from "../UserContext";
 import useAPI from "../../Hooks/useAPI";
 
@@ -22,7 +22,7 @@ export const InviteProvider = ({ children }) => {
         let groups = [];
         let friends = [];
         //events & groups
-        dataEG.map((item) => {
+        dataEG.forEach((item) => {
             if(item.status === 'sent'){
                 // console.log(item);
                 if(item.EventId !== null){
@@ -36,7 +36,7 @@ export const InviteProvider = ({ children }) => {
         //friends
 
 
-        dataF.map((item) => {
+        dataF.forEach((item) => {
             if(item.Friend.status === 'invited'){
                 friends = [...friends, item];
             }
@@ -51,7 +51,7 @@ export const InviteProvider = ({ children }) => {
         // console.log(friends);
     }
 
-    const fetchUserInvites = async () => {
+    const fetchUserInvites = useCallback(async () => {
         if(!user) return;
 
         setIsLoading(true);
@@ -59,8 +59,6 @@ export const InviteProvider = ({ children }) => {
         try{
             const responseEG = await api.Get(`users/${user.id}`, 'invites');
             const responseF = await api.Get(`users/${user.id}`, 'friends');
-            // console.log(responseF.data.friends);
-            // console.log(response.data.invites);
             sortInvites(responseEG.data.invites, responseF.data.friends);
         }
         catch(err){
@@ -68,11 +66,11 @@ export const InviteProvider = ({ children }) => {
         }finally {
             setIsLoading(false);
         }
-    }
+    }, [api, user])
 
-useEffect(() => {
-    if(user) fetchUserInvites();
-}, [user]);
+    useEffect(() => {
+        if(user) fetchUserInvites();
+    }, [user]);
 
 
     return (

@@ -127,7 +127,7 @@ const useAPI = () => {
         setIsBusy(true)
 
         try {
-            const request = `${API.host}/${path}?include=${include}`
+            const request = `${API.host}/${path}?${include? `include=${include}` : '' }`
             const response = await axios.get(request)
             
             setIsBusy(false)

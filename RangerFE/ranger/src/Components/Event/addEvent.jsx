@@ -1,15 +1,15 @@
 import { useForm } from 'react-hook-form'
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import {UserContext} from "../../Context/UserContext";
 import {EventContext} from "../../Context/Event/EventContext";
 
 export const AddEvent = () => {
-    const {register, handleSubmit, watch, formState: {errors}} = useForm();
+    const {register, handleSubmit, /*watch,*/ formState: {errors}} = useForm();
 
     const {user} = useContext(UserContext);
     const {addEvent} = useContext(EventContext);
 
-    const [event, setEvent] = useState({});
+    //const [event, setEvent] = useState({});
 
     const onSubmit = (values) => {
         if(parseInt(values.participantsLimit) <= 0 || values.participantsLimit === ""){
@@ -23,7 +23,7 @@ export const AddEvent = () => {
         }
         const newEvent = {...values, ...otherFields};
 
-        setEvent(newEvent);
+        //setEvent(newEvent);
         addEvent(newEvent);
     };
 
