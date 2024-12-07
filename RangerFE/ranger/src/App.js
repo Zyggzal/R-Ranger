@@ -25,6 +25,7 @@ import { UserEvents } from './Pages/User/Events/UserEvents';
 import { RequireAuth } from './Middleware/RequireAuth';
 import { Login } from './Pages/Login/Login';
 import UserInvites from "./Pages/User/Invites/UserInvites";
+import { ToastContainer } from 'react-custom-alert';
 
 function App() {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -56,11 +57,14 @@ function App() {
         </Route>
       ));
   return (
-    <UserProvider >
+    <>
+      <UserProvider >
         <div className="App">
             <RouterProvider router={router} />
         </div>
-    </UserProvider>
+      </UserProvider>
+      <ToastContainer floatingTime={5000} />
+    </>
   );
 }
 

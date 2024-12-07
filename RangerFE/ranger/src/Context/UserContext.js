@@ -1,10 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react';
 import useAPI from '../Hooks/useAPI';
+import LoginModal from '../Components/LoginModal/LoginModal';
 
 export const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
     const [user, setUser] = useState(null)
+    const [modalVisible, setModalVisible] = useState(false);
 
     const api = useAPI() 
     const StoreUser = ({ user, expires }) => {
@@ -69,9 +71,16 @@ export const UserProvider = ({children}) => {
         }
     }
 
+    const openModal = () => {
+        setModalVisible(true)
+    }
+
     return (
-        <UserContext.Provider value={{ user, Login, Logout, Register, isValid }}>
-            {children}
+        <UserContext.Provider value={{ user, modalVisible, openModal, Login, Logout, Register, isValid }}>
+            <div style={{ position: 'relative'}}>
+                {children}
+                {modalVisible && <LoginModal onClose={()=>{setModalVisible(false); console.log("A")}}/>}
+            </div>
         </UserContext.Provider>
     )
 }

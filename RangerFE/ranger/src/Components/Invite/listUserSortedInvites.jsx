@@ -20,6 +20,7 @@ export const ListUserSortedInvites = () =>{
             case 'decline':
                 eventUpdateStatus(id, 'declined', EventId);
                 break;
+            default: break;
         }
     }
 
