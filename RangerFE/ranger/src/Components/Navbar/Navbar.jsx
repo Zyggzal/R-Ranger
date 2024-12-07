@@ -10,6 +10,7 @@ const Navbar = () => {
             <p>{ user ? `Hello there, ${user.login}!` : "Don't be a stranger, log in or register!" }</p>
             <NavLink to='/' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Home</NavLink>
             <NavLink to='/events' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Your Events</NavLink>
+            <NavLink to='/invites' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Your Invites</NavLink>
             <NavLink to='/about'>About</NavLink>
             <NavLink to='/login'>Login</NavLink>    
             <p>{ user ? <button onClick={Logout}>Logout</button> : 'Not logged in' }</p>

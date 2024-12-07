@@ -4,13 +4,25 @@ import {InviteContext} from "../../Context/Invite/InviteContext";
 export const ListUserSortedInvites = () =>{
 
     //const {user} = useContext(UserContext);
-    const {friendInvites, eventInvites, groupInvites, isLoading} = useContext(InviteContext);
+    const {friendInvites, eventInvites, groupInvites, isLoading, eventUpdateStatus} = useContext(InviteContext);
 
     // console.log(friendInvites);
-    // console.log(eventInvites);
+    console.log(eventInvites);
     // console.log(groupInvites);
 
     if(isLoading || !friendInvites || !eventInvites || !groupInvites) return <div>Loading...</div>
+
+    function eventHandler(id, EventId, action) {
+        switch(action){
+            case 'accept':
+                eventUpdateStatus(id, 'accepted', EventId);
+                break;
+            case 'decline':
+                eventUpdateStatus(id, 'declined', EventId);
+                break;
+        }
+    }
+
     return (
         <div>
             <h4>Event invites</h4>
@@ -20,6 +32,10 @@ export const ListUserSortedInvites = () =>{
                         <div>Id: {invite.EventId}</div>
                         <div>Name: {invite.event.name}</div>
                         <div>Sender: {invite.sender.login}</div>
+                        <div>
+                            <button onClick={e => eventHandler(invite.id, invite.EventId ,'accept')}>Accept</button>
+                            <button onClick={e => eventHandler(invite.id, invite.EventId ,'decline')}>Decline</button>
+                        </div>
                     </li>
                 ))}
             </ul>

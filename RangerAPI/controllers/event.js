@@ -85,12 +85,45 @@ module.exports.getEventsByName = async (req, res) => {
 }
 
 module.exports.create = async (req, res) => {
+    const transaction = await sequelize.transaction();
     try{
         const { name, publicDescription, privateDescription, startDate, endDate, signUpEndDate, isPublic, isGroupEvent, participantsLimit, createdBy, createdByGroup } = req.body;
-        const event = await Event.create({ name, publicDescription, privateDescription, startDate, endDate, signUpEndDate, isPublic, isGroupEvent, participantsLimit, createdBy, createdByGroup });
-        res.status(200).json(event);
+        const event = await Event.create(
+            { name, publicDescription, privateDescription, startDate, endDate, signUpEndDate, isPublic, isGroupEvent, participantsLimit, createdBy, createdByGroup },
+            {transaction}
+            );
+        // res.status(200).json(event);
+        //add creator as creator in event_participants
+
+        if(event) {
+            //adding creator to participants
+            const creatorParticipant = await EventParticipants.create(
+                {
+                    role: 'creator',
+                    status: 'accepted',
+                    EventId: event.id,
+                    UserId: createdBy
+                },
+                {transaction}
+            );
+
+            if(creatorParticipant) {
+                await transaction.commit();
+                res.status(200).json([event, creatorParticipant]);
+            }
+            else{
+                await transaction.rollback();
+                errHandler(res, 'adding creator failed', 500);
+            }
+        }
+        else{
+            await transaction.rollback();
+            errHandler(res, 'adding event failed', 500);
+        }
+
     }
     catch(err) {
+        await transaction.rollback();
         errHandler(res, err, 500);
     }
 }
@@ -133,15 +166,16 @@ module.exports.update = async (req, res) => {
     }
 }
 
-module.exports.addParticipant = async (req, res) => {
+module.exports.addParticipant = async (data) => {
     try {
-        const { UserId, role, status } = req.body;
-        const ep = await EventParticipants.create({ EventId: req.params.id, UserId, role, status });
+        const { UserId, role, status, EventId } = data;
+        //const ep = await EventParticipants.create({ EventId: req.params.id, UserId, role, status });
+        const ep = await EventParticipants.create({ EventId, UserId, role, status });
 
-        res.status(200).json(ep);
+        // res.status(200).json(ep);
     }
     catch(err) {
-        errHandler(res, err, 500);
+        // errHandler(res, err, 500);
     }
 }
 

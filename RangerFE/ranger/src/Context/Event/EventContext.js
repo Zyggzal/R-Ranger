@@ -18,14 +18,14 @@ export const EventProvider = ({ children }) => {
 
     const fetchUserEvents = useCallback(async () => {
         if(!user) return;
-        console.log("A")
+        //console.log("A")
         setIsLoading(true);
 
         try {
-            const response = await api.Get(`users/${user.id}`, 'invites,creatorOfEvents');
-            //console.log(response.data.creatorOfEvents)
+            const response = await api.Get(`users/${user.id}`, 'participatesIn');
+            // console.log(response.data)
             setUserEvents(response.data);
-            console.log(userEvents)
+            // console.log(userEvents)
             //console.log(userEvents)
             //sortAcceptedEvents(response.data.invites);
         }
@@ -75,6 +75,10 @@ export const EventProvider = ({ children }) => {
         catch (error) {
             console.log(error);
         }
+    }
+
+    const eventAction = async () => {
+
     }
 
     return (

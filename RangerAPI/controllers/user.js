@@ -25,9 +25,9 @@ const getIncludes = (inc) => {
                 case 'invites':
                     includes.push({ model: Invite, as: i, //attributes: ['id', 'status', 'event', 'senderId', 'createdAt', 'EventId'],
                         include: [
-                            {model: Event, as: 'event', attributes: ['id', 'name']},
+                            {model: Event, as: 'event'},
                             {model: User, as: 'sender', attributes: ['id', 'login']},
-                            {model: Group, as: 'group', attributes: ['id', 'name']},
+                            {model: Group, as: 'group'},
                         ] });
                     break;
                 case 'reviews': 

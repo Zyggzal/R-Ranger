@@ -71,10 +71,17 @@ export const InviteProvider = ({ children }) => {
     useEffect(() => {
         if(user) fetchUserInvites();
     }, [user]);
+    //
+    const eventUpdateStatus = async (id, status, EventId) =>{
+        const UserId = user.id;
+        const role = 'participant';
+        const response = await api.Patch(`invites/event`, {id, status, EventId, UserId, role});
+        return response.status;
+    }
 
 
     return (
-        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading}}>
+        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus}}>
             {children}
         </InviteContext.Provider>
     );

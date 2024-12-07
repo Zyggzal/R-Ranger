@@ -1,5 +1,8 @@
-const { User, Event, Invite, Group } = require('../models');
+const { User, Event, Invite, Group, Friend, EventParticipants} = require('../models');
 const errHandler = require('../utils/ErrorHandler');
+const sequelize = require('../config/database');
+const {where} = require("sequelize");
+const {addParticipant} = require("./event");
 
 
 const getIncludes = (inc) => {
@@ -85,6 +88,30 @@ module.exports.update = async (req, res) => {
     }
     catch(err) {
         errHandler(res, err, 500);
+    }
+}
+//accepting and declining invites
+module.exports.updateEvent = async (req, res) => {
+    try {
+        const { id, status, UserId, EventId, role } = req.body;
+
+        const updated = await Invite.update(
+            { status },
+            { where: { id } }
+        );
+
+        if (updated[0] > 0) {
+            if (status === 'accepted') {
+                const participantData = { UserId, EventId, role, status };
+                await addParticipant(participantData);
+            }
+            return res.status(200).json({ success: true, updated });
+        } else {
+            return errHandler(res, 'Updating invites error: Record not found or no changes made.', 500);
+        }
+    }
+    catch (e) {
+        errHandler(res, e, 500);
     }
 }
 
