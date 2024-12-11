@@ -26,6 +26,8 @@ import { RequireAuth } from './Middleware/RequireAuth';
 import { Login } from './Pages/Login/Login';
 import UserInvites from "./Pages/User/Invites/UserInvites";
 import { ToastContainer } from 'react-custom-alert';
+import FriendsAndGroups from "./Pages/User/FriendsAndGroups/FriendsAndGroups";
+import {SimpleEvent} from "./Pages/User/Events/SimpleEvent";
 
 function App() {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -34,7 +36,9 @@ function App() {
             <Route index element={<Home />} />
             <Route path='login' element={ <Login/>} />
             <Route path='events' element={ <RequireAuth><UserEvents /></RequireAuth> } />
+            <Route path='events/userEvent' element={ <RequireAuth><SimpleEvent /></RequireAuth> } />
             <Route path='invites' element={ <RequireAuth><UserInvites /></RequireAuth> } />
+            <Route path='groups' element={ <RequireAuth><FriendsAndGroups /></RequireAuth> } />
             <Route path='*' element={<NotFound />} />
             {/* <Route path='students' element={<Students />} />
             <Route path='students/:id' element={ <SingleStudent /> } />

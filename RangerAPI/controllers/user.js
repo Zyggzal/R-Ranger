@@ -231,3 +231,16 @@ module.exports.addFriend = async (req, res) => {
     }
 }
 //search by login (Find users)
+
+module.exports.getFriendByLogin = async (req, res) => {
+    try{
+        const { login } = req.params;
+        const friend = await User.findAll( { where: { login } });
+        res.status(200).json(friend);
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
+//router.get('/search/:login', passport.authenticate('jwt', {session:false}), controller.getUsersByLogin)

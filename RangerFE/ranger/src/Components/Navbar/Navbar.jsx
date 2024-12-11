@@ -8,11 +8,12 @@ const Navbar = () => {
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%'}}>
             <p>{ user ? `Hello there, ${user.login}!` : "Don't be a stranger, log in or register!" }</p>
-            <NavLink to='/' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Home</NavLink>
-            <NavLink to='/events' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Your Events</NavLink>
-            <NavLink to='/invites' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Your Invites</NavLink>
-            <NavLink to='/about'>About</NavLink>
-            <NavLink to='/login'>Login</NavLink>    
+            <NavLink className='btn btn-link' to='/' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Home</NavLink>
+            <NavLink className='btn btn-link' to='/events' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Your Events</NavLink>
+            <NavLink className='btn btn-link' to='/invites' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Your Invites</NavLink>
+            <NavLink className='btn btn-link' to='/groups' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Groups & Friends</NavLink>
+            <NavLink className='btn btn-link' to='/about'>About</NavLink>
+            <NavLink className='btn btn-link' to='/login'>Login</NavLink>
             <p>{ user ? <button onClick={Logout}>Logout</button> : 'Not logged in' }</p>
         </div>
     )

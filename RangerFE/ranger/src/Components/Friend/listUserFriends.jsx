@@ -9,7 +9,7 @@ export const ListUserFriends = () =>{
     if(isLoading || !userFriends) return <div>Loading...</div>;
     return(
         <div>
-            <table>
+            <table className="table">
                 <caption>User Friends(all status)</caption>
                 <thead>
                     <tr>

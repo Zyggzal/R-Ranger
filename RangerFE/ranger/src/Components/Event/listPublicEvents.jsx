@@ -17,7 +17,7 @@ export const ListPublicEvents = () =>{
     return (
 
         <div>
-            <table>
+            <table className="table">
                 <caption>Pubic events table</caption>
                 <thead>
                 <tr>

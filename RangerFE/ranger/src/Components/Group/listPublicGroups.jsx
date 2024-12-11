@@ -15,7 +15,7 @@ export const ListPublicGroups = () => {
     return (
         <div>
             <h1>Public groups</h1>
-            <ul>
+            <ul className="list-group">
                 {publicGroups.map(group => (
                     <li key={group.id}>
                         <h4>{group.name}</h4>

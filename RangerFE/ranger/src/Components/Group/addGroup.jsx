@@ -2,8 +2,9 @@ import {useForm} from "react-hook-form";
 import {useContext} from "react";
 import {UserContext} from "../../Context/UserContext";
 import {GroupContext} from "../../Context/Group/GroupContext";
+import {Modal} from "react-bootstrap";
 
-export const AddGroup = () => {
+export const AddGroup = ({showModal, onClose}) => {
     const {register, handleSubmit, /*watch,*/ formState: {errors}} = useForm();
 
     const {user} = useContext(UserContext);
@@ -17,20 +18,50 @@ export const AddGroup = () => {
 
         //setGroup(newGroup);
         addGroup(newGroup);
+        onClose();
     };
 
     return (
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="">Group Name</label>
-            <input type="text" name="name" placeholder="Group Name" {...register("name", {required: true})} />
-            {errors.name && <span className="error">Name is Required</span>}
-            <select name="isPulbic" {...register("isPublic")}>
-                <option value={1}>Public</option>
-                <option value={0}>Private</option>
-            </select>
+        <Modal show={showModal} onHide={onClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Add Groups</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="mb-3">
+                        <label htmlFor="name" className="form-label">
+                            Group Name
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="name"
+                            placeholder="Group Name"
+                            {...register("name", { required: true })}
+                        />
+                        {errors.name && <div className="text-danger">Name is required</div>}
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="isPublic" className="form-label">
+                            Group Type
+                        </label>
+                        <select
+                            className="form-select"
+                            id="isPublic"
+                            {...register("isPublic")}
+                        >
+                            <option value={1}>Public</option>
+                            <option value={0}>Private</option>
+                        </select>
+                    </div>
+                    <div className="d-flex justify-content-end">
+                        <button type="submit" className="btn btn-success">
+                            Add Group
+                        </button>
+                    </div>
+                </form>
+            </Modal.Body>
+        </Modal>
 
-            <input type="submit"/>
-
-        </form>
     )
 }

@@ -5,20 +5,18 @@ import Navbar from "../../Components/Navbar/Navbar";
 const MainLayout = () => {
     return (
         <div>
-            <div>
-                <header>
-                    <Navbar />
-                </header>
-            </div>
-            <div>
+            <header>
+                <Navbar />
+            </header>
+            <main>
                 Main
                 <hr />
                 <Outlet />
                 <hr />
-            </div>
-            <div>
+            </main>
+            <footer className="footer">
                 footer
-            </div>
+            </footer>
         </div>
     );
 }

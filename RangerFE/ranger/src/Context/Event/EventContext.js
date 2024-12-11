@@ -77,12 +77,24 @@ export const EventProvider = ({ children }) => {
         }
     }
 
+    const eventById = async (id) =>{
+        if(!user) return;
+        try{
+            const response = await api.Get(`events/${id}`);
+            // console.log(response.data);
+            return response.data;
+        }
+        catch (e){
+            console.log(e);
+        }
+    }
+
     const eventAction = async () => {
 
     }
 
     return (
-        <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent}}>
+        <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById}}>
             {children}
         </EventContext.Provider>
     )

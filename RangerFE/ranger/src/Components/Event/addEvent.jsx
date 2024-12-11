@@ -28,7 +28,7 @@ export const AddEvent = () => {
     };
 
     return (
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
+        <form action="" onSubmit={handleSubmit(onSubmit)} className="form-control">
             <div>
                 <label htmlFor="">Event Name</label>
                 <input type="text" name="name" placeholder="Event Name" {...register("name", {required: true})} />

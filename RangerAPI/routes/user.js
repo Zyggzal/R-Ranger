@@ -13,4 +13,5 @@ router.get('/friends/:id', passport.authenticate('jwt', {session:false}), contro
 router.post('/friends/:id', passport.authenticate('jwt', {session:false}), controller.addFriend)
 router.patch('/friends/:id', passport.authenticate('jwt', {session:false}), controller.updateFriend)
 router.delete('/friends/:id', passport.authenticate('jwt', {session:false}), controller.deleteFriend)
+router.get('/friends/search/:login', passport.authenticate('jwt', {session:false}), controller.getFriendByLogin)
 module.exports = router;

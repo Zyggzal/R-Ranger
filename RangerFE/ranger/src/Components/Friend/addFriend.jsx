@@ -2,8 +2,9 @@ import {useForm} from "react-hook-form";
 import {useContext, useState} from "react";
 import {UserContext} from "../../Context/UserContext";
 import {FriendContext} from "../../Context/Friend/FriendContext";
+import {Modal} from "react-bootstrap";
 
-export const AddFriend = () => {
+export const AddFriend = ({showModal, onClose}) => {
     const {register, handleSubmit, formState: {errors}} = useForm();
 
     const {user} = useContext(UserContext);
@@ -11,24 +12,48 @@ export const AddFriend = () => {
     const [userNotFoundError, setUserNotFoundError] = useState(false);
 
     const onSubmit = async (values) => {
-
-        console.log(values);
-
         const userId = await idByLogin(values.login);
-        userId === -1 ? setUserNotFoundError(true) : addFriend(userId);
+        // console.log(userId);
+        if(userId === -1){
+            setUserNotFoundError(true);
+        }
+        else{
+            setUserNotFoundError(false);
+            addFriend(userId);
+            onClose();
+        }
     };
 
     if(!user) return <div>Loading...</div>
     return (
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="">User Login</label>
-            <input type="text" name="login" placeholder="your friend's login" {...register("login", {required: true})} />
-            {errors.login && <span className="error">Login is Required</span>}
-            {userNotFoundError ? <span className="error">The Login is doesn't exist</span>: null}
-
-
-            <input type="submit"/>
-
-        </form>
+        <Modal show={showModal} onHide={onClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Add Friends</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="mb-3">
+                        <label htmlFor="login" className="form-label">
+                            User Login
+                        </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="login"
+                            placeholder="User Login"
+                            {...register("login", { required: true })}
+                            onChange={e => setUserNotFoundError(false)}
+                        />
+                        {errors.login && <div className="text-danger">Login is required</div>}
+                        {userNotFoundError ? <div className="text-danger">The Login is doesn't exist</div>: null}
+                    </div>
+                    <div className="d-flex justify-content-end">
+                        <button type="submit" className="btn btn-success">
+                            Send Friend Invite
+                        </button>
+                    </div>
+                </form>
+            </Modal.Body>
+        </Modal>
     )
 }

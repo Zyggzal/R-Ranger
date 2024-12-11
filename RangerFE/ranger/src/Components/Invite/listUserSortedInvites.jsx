@@ -27,7 +27,7 @@ export const ListUserSortedInvites = () =>{
     return (
         <div>
             <h4>Event invites</h4>
-            <ul>
+            <ul className="list-group">
                 {eventInvites.map((invite) => (
                     <li key={`${invite.id}event`}>
                         <div>Id: {invite.EventId}</div>
@@ -41,7 +41,7 @@ export const ListUserSortedInvites = () =>{
                 ))}
             </ul>
             <h4>Group invites</h4>
-            <ul>
+            <ul className="list-group">
                 {groupInvites.map((invite) => (
                     <li key={`${invite.id}group`}>
                         <div>Id: {invite.GroupId}</div>
@@ -52,7 +52,7 @@ export const ListUserSortedInvites = () =>{
 
             </ul>
             <h4>Friend invites</h4>
-            <ul>
+            <ul className="list-group">
                 {friendInvites.map((invite) => (
                     <li key={`${invite.id}friend`}>
                         <div>Friend id: {invite.id}</div>

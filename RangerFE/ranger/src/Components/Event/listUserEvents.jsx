@@ -1,5 +1,6 @@
 import {useContext, useEffect} from "react";
 import {EventContext} from "../../Context/Event/EventContext";
+import {NavLink} from "react-router-dom";
 
 export const ListUserEvents = () =>{
 
@@ -20,7 +21,7 @@ export const ListUserEvents = () =>{
     return (
 
         <div>
-            <table>
+            <table className="table">
                 <caption>User Accepted Events Table</caption>
                 <thead>
                     <tr>
@@ -30,6 +31,7 @@ export const ListUserEvents = () =>{
                         <th>Event type</th>
                         <th>Start date</th>
                         <th>Accepting date</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +43,7 @@ export const ListUserEvents = () =>{
                         <td>{event.isPublic ? "Public" : "Private"}</td>
                         <td>{event.startDate}</td>
                         <td>{event.EventParticipants.createdAt}</td>
+                        <td><NavLink className='btn btn-info' state={{eventId: event.id}} to={`userEvent`}>More</NavLink></td>
                     </tr>
                 ))}
                 </tbody>

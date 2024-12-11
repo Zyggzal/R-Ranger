@@ -1,5 +1,5 @@
 import {GroupContext} from "../../Context/Group/GroupContext";
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 
 export const ListUserGroups = () => {
 
@@ -10,7 +10,7 @@ export const ListUserGroups = () => {
     return (
         <div>
             <h1>Your groups</h1>
-            <ul>
+            <ul className="list-group">
                 <h3>You - creator</h3>
                 {userGroups[0].map((group) => (
                     <li key={group.id}>

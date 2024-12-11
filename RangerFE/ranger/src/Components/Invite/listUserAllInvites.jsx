@@ -9,7 +9,7 @@ const ListUserAllInvites = () =>{
     if(isLoading || !allInvites) return <div>Loading...</div>
     return (
         <div>
-            <table>
+            <table className="table">
                 <caption>All User Invites</caption>
                 <thead>
                     <tr>

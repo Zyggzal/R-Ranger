@@ -44,8 +44,8 @@ export const FriendProvider = ({ children }) => {
     }
 
     const idByLogin = async (login) => {
-        const response = await api.Get(`users/search/${login}`);
-        // console.log(response.data[0].id);
+        const response = await api.Get(`users/friends/search/${login}`);
+         // console.log(response);
 
         if(response.data.length !== 0) return response.data[0].id;
         return -1
