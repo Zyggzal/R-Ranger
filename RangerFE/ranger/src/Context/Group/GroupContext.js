@@ -49,6 +49,8 @@ export const GroupProvider = ({children}) => {
                 isPublic: group.isPublic,
                 createdBy: group.createdBy,
             });
+
+            fetchUserGroups();
             return response.status
         }
         catch(err){

@@ -43,7 +43,7 @@ export const ListUserEvents = () =>{
                         <td>{event.isPublic ? "Public" : "Private"}</td>
                         <td>{event.startDate}</td>
                         <td>{event.EventParticipants.createdAt}</td>
-                        <td><NavLink className='btn btn-info' state={{eventId: event.id}} to={`userEvent`}>More</NavLink></td>
+                        <td><NavLink className='btn btn-info' state={{eventId: event.id}} to={`/eventItem`}>More</NavLink></td>
                     </tr>
                 ))}
                 </tbody>

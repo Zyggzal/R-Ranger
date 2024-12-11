@@ -18,16 +18,12 @@ export const EventProvider = ({ children }) => {
 
     const fetchUserEvents = useCallback(async () => {
         if(!user) return;
-        //console.log("A")
         setIsLoading(true);
 
         try {
             const response = await api.Get(`users/${user.id}`, 'participatesIn');
-            // console.log(response.data)
             setUserEvents(response.data);
-            // console.log(userEvents)
-            //console.log(userEvents)
-            //sortAcceptedEvents(response.data.invites);
+            sortAcceptedEvents(response.data.invites);
         }
         catch (error) {
             console.log(error);
@@ -70,6 +66,7 @@ export const EventProvider = ({ children }) => {
                     createdBy: event.createdBy,
                     createdByGroup: event.createdByGroup,
                 });
+                fetchUserEvents();
             return response.status;
         }
         catch (error) {
@@ -81,7 +78,6 @@ export const EventProvider = ({ children }) => {
         if(!user) return;
         try{
             const response = await api.Get(`events/${id}`);
-            // console.log(response.data);
             return response.data;
         }
         catch (e){
@@ -89,9 +85,9 @@ export const EventProvider = ({ children }) => {
         }
     }
 
-    const eventAction = async () => {
-
-    }
+    useEffect(()=>{
+        if(user)fetchUserEvents();
+    }, [user])
 
     return (
         <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById}}>

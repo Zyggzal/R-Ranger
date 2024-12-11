@@ -1,12 +1,15 @@
 import React, { createContext, useEffect, useState } from 'react';
 import useAPI from '../Hooks/useAPI';
-import LoginModal from '../Components/LoginModal/LoginModal';
+import DismissableAlert from '../Components/DismissableAlert/DismissableAlert'
 
 export const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
-    const [user, setUser] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false);
+    const [user, setUser] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     const api = useAPI() 
     const StoreUser = ({ user, expires }) => {
@@ -49,16 +52,19 @@ export const UserProvider = ({children}) => {
         if(res.status === 200) {
             StoreUser(res.data)
             setUser(GetUserFromStore())
+            setIsLoggedIn(true);
         }
         else {
-            return res.message
+            setAlertText(res.message)
+            setShowAlert(true)
         }
     }
 
     const Logout = () => {
-        api.Logout()
+        api.Logout();
         ClearStoredUser();
-        setUser(null)
+        setUser(null);
+        setIsLoggedIn(false);
     }
 
     const Register = async (login, firstName, lastName, email, password) => {
@@ -67,19 +73,16 @@ export const UserProvider = ({children}) => {
             await Login(res.data.email, res.data.password)
         }
         else {
-            return res.message
+            setAlertText(res.message)
+            setShowAlert(true)
         }
     }
 
-    const openModal = () => {
-        setModalVisible(true)
-    }
-
     return (
-        <UserContext.Provider value={{ user, modalVisible, openModal, Login, Logout, Register, isValid }}>
+        <UserContext.Provider value={{ user, Login, Logout, Register, isValid }}>
             <div style={{ position: 'relative'}}>
                 {children}
-                {modalVisible && <LoginModal onClose={()=>{setModalVisible(false); console.log("A")}}/>}
+                { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
             </div>
         </UserContext.Provider>
     )

@@ -25,9 +25,11 @@ import { UserEvents } from './Pages/User/Events/UserEvents';
 import { RequireAuth } from './Middleware/RequireAuth';
 import { Login } from './Pages/Login/Login';
 import UserInvites from "./Pages/User/Invites/UserInvites";
-import { ToastContainer } from 'react-custom-alert';
 import FriendsAndGroups from "./Pages/User/FriendsAndGroups/FriendsAndGroups";
 import {SimpleEvent} from "./Pages/User/Events/SimpleEvent";
+import UserProfile from './Pages/User/UserProfile/UserProfile';
+import Groups from './Pages/User/Groups/Groups';
+import Friends from './Pages/User/Friends/Friends';
 
 function App() {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -35,10 +37,13 @@ function App() {
         <Route path='/' element={<MainLayout />} >
             <Route index element={<Home />} />
             <Route path='login' element={ <Login/>} />
-            <Route path='events' element={ <RequireAuth><UserEvents /></RequireAuth> } />
-            <Route path='events/userEvent' element={ <RequireAuth><SimpleEvent /></RequireAuth> } />
-            <Route path='invites' element={ <RequireAuth><UserInvites /></RequireAuth> } />
-            <Route path='groups' element={ <RequireAuth><FriendsAndGroups /></RequireAuth> } />
+            <Route path='profile' element={ <RequireAuth><UserProfile /></RequireAuth> }>
+              <Route path='events' element={ <UserEvents /> } />
+              <Route path='invites' element={ <UserInvites /> } />
+              <Route path='groups' element={ <Groups /> } />
+              <Route path='friends' element={ <Friends /> } />
+            </Route>
+            <Route path='eventItem' element={ <RequireAuth><SimpleEvent /></RequireAuth> } />
             <Route path='*' element={<NotFound />} />
             {/* <Route path='students' element={<Students />} />
             <Route path='students/:id' element={ <SingleStudent /> } />
@@ -67,7 +72,6 @@ function App() {
             <RouterProvider router={router} />
         </div>
       </UserProvider>
-      <ToastContainer floatingTime={5000} />
     </>
   );
 }

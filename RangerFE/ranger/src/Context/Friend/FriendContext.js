@@ -1,6 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {UserContext} from "../UserContext";
 import useAPI from "../../Hooks/useAPI";
+import DismissableAlert from "../../Components/DismissableAlert/DismissableAlert";
 
 export const FriendContext = createContext();
 
@@ -12,7 +13,9 @@ export const FriendProvider = ({ children }) => {
 
     const [userFriends, setUsersFriends] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    //const [friendID, setFriendID] = useState(-1);
+
+    const [showError, setShowError] = useState(false);
+    const [errorText, setErrorText] = useState('');
 
     const fetchFriends = async () => {
         if(!user) return;
@@ -21,7 +24,6 @@ export const FriendProvider = ({ children }) => {
 
         try{
             const response = await api.Get(`users/${user.id}`, 'friends');
-            // console.log(response.data.friends);
             setUsersFriends(response.data.friends)
         }
         catch(err){
@@ -35,11 +37,20 @@ export const FriendProvider = ({ children }) => {
         if(!user) return;
 
         try{
+            if(friendId === user.id) {
+                throw "Can not befriend yourself"
+            }
+            if(userFriends.some((e)=>e.id === friendId)) {
+                throw "You are already friends with this user"
+            }
             const response = await api.Post(`users/friends/${friendId}`, {id: user.id});
+            fetchFriends();
+
             return response.status;
         }
         catch (err){
-            console.log(err);
+            setErrorText(err);
+            setShowError(true);
         }
     }
 
@@ -59,6 +70,7 @@ export const FriendProvider = ({ children }) => {
     return (
         <FriendContext.Provider value={{userFriends, isLoading, addFriend, idByLogin}}>
             {children}
+            { showError && <DismissableAlert onClosed={()=>setShowError(false)} text={errorText}/> }
         </FriendContext.Provider>
     );
 }

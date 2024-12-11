@@ -19,6 +19,7 @@ const useAPI = () => {
                     if(localStorage.getItem("user")) {
                         Logout()
                         localStorage.removeItem("user")
+                        window.location.reload()
                     }
 
                 }

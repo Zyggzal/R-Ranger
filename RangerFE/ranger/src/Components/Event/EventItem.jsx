@@ -27,7 +27,7 @@ export const EventItem = ({id}) =>{
         fetchEvent();
 
     }, []);
-    if(!event || event === {}) return <div>Loading...</div>
+    if(!event) return <div>Loading...</div>
     return(
         <div>
             <h1>{event.name}</h1>
