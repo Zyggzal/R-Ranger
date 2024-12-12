@@ -1,23 +1,6 @@
 import './App.css';
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import { UserProvider } from './Context/UserContext';
-import LoginForm from './Components/LoginForm/LoginForm'
-import RegisterForm from './Components/RegisterForm/RegisterForm';
-import Navbar from './Components/Navbar/Navbar';
-import {EventProvider} from "./Context/Event/EventContext";
-import {ListUserEvents} from "./Components/Event/listUserEvents";
-import {ListPublicEvents} from "./Components/Event/listPublicEvents";
-import {GroupProvider} from "./Context/Group/GroupContext";
-import {ListUserGroups} from "./Components/Group/listUserGroups";
-import {AddEvent} from "./Components/Event/addEvent";
-import {AddGroup} from "./Components/Group/addGroup";
-import {ListPublicGroups} from "./Components/Group/listPublicGroups";
-import {InviteProvider} from "./Context/Invite/InviteContext";
-import ListUserAllInvites from "./Components/Invite/listUserAllInvites";
-import {ListUserSortedInvites} from "./Components/Invite/listUserSortedInvites";
-import {FriendProvider} from "./Context/Friend/FriendContext";
-import {ListUserFriends} from "./Components/Friend/listUserFriends";
-import {AddFriend} from "./Components/Friend/addFriend";
 import MainLayout from './Layouts/Main/MainLayout';
 import { Home } from './Pages/Home/Home';
 import { NotFound } from './Pages/NotFound/NotFound';
@@ -25,11 +8,12 @@ import { UserEvents } from './Pages/User/Events/UserEvents';
 import { RequireAuth } from './Middleware/RequireAuth';
 import { Login } from './Pages/Login/Login';
 import UserInvites from "./Pages/User/Invites/UserInvites";
-import FriendsAndGroups from "./Pages/User/FriendsAndGroups/FriendsAndGroups";
 import {SimpleEvent} from "./Pages/User/Events/SimpleEvent";
 import UserProfile from './Pages/User/UserProfile/UserProfile';
 import Groups from './Pages/User/Groups/Groups';
 import Friends from './Pages/User/Friends/Friends';
+import { AddEventPage } from './Pages/Events/AddEventPage/AddEventPage';
+
 
 function App() {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -43,6 +27,7 @@ function App() {
               <Route path='groups' element={ <Groups /> } />
               <Route path='friends' element={ <Friends /> } />
             </Route>
+            <Route path='events/add' element={ <RequireAuth><AddEventPage/></RequireAuth> } />
             <Route path='eventItem' element={ <RequireAuth><SimpleEvent /></RequireAuth> } />
             <Route path='*' element={<NotFound />} />
             {/* <Route path='students' element={<Students />} />

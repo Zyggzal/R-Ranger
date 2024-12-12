@@ -1,0 +1,25 @@
+.timeline{
+    border: 2px dashed white;
+}
+
+.time-card {
+    transition: 0.2s ease-in-out all;
+    padding: 10px;
+    border-radius: 15px 15px 0 0;
+    z-index: 0;
+}
+.time-card:hover{
+    transition: 0.2s ease-in-out all;
+    transform: scale(1.17);
+    background-color: rgba(240, 248, 255, 0.33);
+    border-bottom: 2px red dashed;
+}
+.time-card .bi-arrow-down {
+    transition: 0.2s ease-in-out all;
+}
+
+.time-card:hover .bi-arrow-down {
+    transition: 0.2s ease-in-out all;
+    color: red;
+    margin-top: 25px;
+}
