@@ -78,8 +78,16 @@ export const UserProvider = ({children}) => {
         }
     }
 
+    const idByLogin = async (login) => {
+        const response = await api.Get(`users/friends/search/${login}`);
+         // console.log(response);
+
+        if(response.data.length !== 0) return response.data[0].id;
+        return -1
+    }
+
     return (
-        <UserContext.Provider value={{ user, Login, Logout, Register, isValid }}>
+        <UserContext.Provider value={{ user, Login, Logout, Register, isValid, idByLogin }}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

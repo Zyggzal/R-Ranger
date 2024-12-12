@@ -1,10 +1,13 @@
 import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import {UserContext} from "../UserContext";
 import useAPI from "../../Hooks/useAPI";
+import DismissableAlert from "../../Components/DismissableAlert/DismissableAlert";
 
 export const InviteContext = createContext();
 
 export const InviteProvider = ({ children }) => {
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     const api = useAPI();
 
@@ -79,10 +82,40 @@ export const InviteProvider = ({ children }) => {
         return response.status;
     }
 
+    const inviteUserToEvent = async (UserId, Event, role) => {
+        //UserId, senderId, EventId, GroupId, type, role
+        const senderId = user.id
+        const type = 'event'
+        try{
+            if(UserId === user.id) {
+                throw "Can not invite yourself"
+            }
+            if(Event.participants.some((e)=>e.id === UserId)) {
+                throw "You are already friends with this user"
+            }
+            if(Event.invites.some((e)=>e.id === UserId)) {
+                throw "This user is already invited"
+            }
+            const response = await api.Post('invites', { UserId, EventId: Event.id, role, senderId, type })
+            if(response.status !== 200) {
+                throw response.message;
+            }
+
+            return response.data;
+        }
+        catch(error) {
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
 
     return (
-        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus}}>
-            {children}
+        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent}}>
+            <div style={{ position: 'relative'}}>
+                {children}
+                { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
+            </div>
         </InviteContext.Provider>
     );
 }

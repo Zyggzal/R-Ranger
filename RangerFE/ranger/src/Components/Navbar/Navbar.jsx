@@ -10,6 +10,7 @@ const Navbar = () => {
             <p>{ user ? `Hello there, ${user.login}!` : "Don't be a stranger, log in or register!" }</p>
             <NavLink className='btn btn-link' to='/' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Home</NavLink>
             <NavLink className='btn btn-link' to='/events/add'>Add Event</NavLink>
+            <NavLink className='btn btn-link' to='/eventInvite' state={{ eventId: 2028 }} >Invite to Event</NavLink>
             { 
                 user ? 
                 <div>

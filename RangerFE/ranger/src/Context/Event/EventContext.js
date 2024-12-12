@@ -1,10 +1,13 @@
 import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import useAPI from "../../Hooks/useAPI";
 import {UserContext} from "../UserContext";
+import DismissableAlert from "../../Components/DismissableAlert/DismissableAlert";
 
 export const EventContext = createContext();
 
 export const EventProvider = ({ children }) => {
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertText, setAlertText] = useState('');
 
     const api = useAPI();
     const {user} = useContext(UserContext);
@@ -13,7 +16,7 @@ export const EventProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const sortAcceptedEvents = (events) => {
-        setUserEvents(events.filter(event =>(event.status !== 'sent' && event.EventId !== null)));
+        events && setUserEvents(events.filter(event =>(event.status !== 'sent' && event.EventId !== null)));
     }
 
     const fetchUserEvents = useCallback(async () => {
@@ -22,11 +25,15 @@ export const EventProvider = ({ children }) => {
 
         try {
             const response = await api.Get(`users/${user.id}`, 'participatesIn');
+            if(response.status !== 200) {
+                throw response.message
+            }
             setUserEvents(response.data);
             sortAcceptedEvents(response.data.invites);
         }
         catch (error) {
-            console.log(error);
+            setAlertText(error)
+            setShowAlert(true)
         }finally {
             setIsLoading(false);
         }
@@ -39,10 +46,15 @@ export const EventProvider = ({ children }) => {
 
         try {
             const response = await api.Get(`events/public`);
+            if(response.status !== 200) {
+                throw response.message
+            }
+
             setPublicEvents(response.data);
         }
         catch (error) {
-            console.log(error);
+            setAlertText(error)
+            setShowAlert(true)
 
         }finally {
             setIsLoading(false);
@@ -66,22 +78,31 @@ export const EventProvider = ({ children }) => {
                     createdBy: event.createdBy,
                     createdByGroup: event.createdByGroup,
                 });
-                fetchUserEvents();
-            return response.status;
+
+                if(response.status !== 200) {
+                    throw response.message;
+                }
+                //fetchUserEvents();
+            return response;
         }
         catch (error) {
-            console.log(error);
+            setAlertText(error)
+            setShowAlert(true)
         }
     }
 
-    const eventById = async (id) =>{
+    const eventById = async (id, include) =>{
         if(!user) return;
         try{
-            const response = await api.Get(`events/${id}`);
+            const response = await api.Get(`events/${id}`, include);
+            if(response.status !== 200) {
+                throw response.message
+            }
             return response.data;
         }
-        catch (e){
-            console.log(e);
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
         }
     }
 
@@ -91,7 +112,10 @@ export const EventProvider = ({ children }) => {
 
     return (
         <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById}}>
-            {children}
+            <div style={{ position: 'relative'}}>
+                {children}
+                { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
+            </div>
         </EventContext.Provider>
     )
 }

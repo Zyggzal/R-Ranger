@@ -13,6 +13,7 @@ import UserProfile from './Pages/User/UserProfile/UserProfile';
 import Groups from './Pages/User/Groups/Groups';
 import Friends from './Pages/User/Friends/Friends';
 import { AddEventPage } from './Pages/Events/AddEventPage/AddEventPage';
+import InviteToEventPage from './Pages/Events/IniteUsersPage/InviteToEventPage';
 
 
 function App() {
@@ -29,25 +30,8 @@ function App() {
             </Route>
             <Route path='events/add' element={ <RequireAuth><AddEventPage/></RequireAuth> } />
             <Route path='eventItem' element={ <RequireAuth><SimpleEvent /></RequireAuth> } />
+            <Route path='eventInvite' element={ <RequireAuth><InviteToEventPage/></RequireAuth> } />
             <Route path='*' element={<NotFound />} />
-            {/* <Route path='students' element={<Students />} />
-            <Route path='students/:id' element={ <SingleStudent /> } />
-            <Route path='students/:id/edit' element={ <EditStudent /> } />
-    
-            <Route path='students/new' element={
-              <RequireAuth>
-                 <CreateStudent /> 
-              </RequireAuth>
-             } 
-            />
-    
-            <Route path='about/*' element={<About />}>
-                    <Route path="contacts" element={<p>Our phone: +38-099-999-99-01</p>} />
-                    <Route path="team" element={<p>Our Team: Alex, Mary, Sergiy</p>} />
-                    <Route path="maps" element={<p>Map: ----0---- </p>} />
-            </Route>
-            <Route path='login/' element={<Login /> } />
-              */}
         </Route>
       ));
   return (

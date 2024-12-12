@@ -17,25 +17,18 @@ const AddEventPage = () => {
                     step === 1 &&
                     <div className="card-body">
                         <h5 className="card-title">Event Info</h5>
-                        <a href="#step2" className="btn btn-primary" onClick={()=>setStep(2)}>Next</a>
                     </div>
                     }
                     { 
                     step === 2 && 
                     <div className="card-body">
                     <h5 className="card-title">Invite Other Users</h5>
-                    <a href="#" className="btn btn-primary" onClick={()=>setStep(1)}>Back</a>
                     </div>
                      }
                 </div>
             </div>
             <div>
-            <div id="step1"></div>
-                <AddEvent/>
-                <AddEvent/>
-                <AddEvent/>
-                <AddEvent/>
-                <div id="step2"></div>
+                <AddEvent setStep={setStep}/>
             </div>
         </EventProvider>
     )

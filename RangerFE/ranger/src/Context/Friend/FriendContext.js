@@ -54,21 +54,13 @@ export const FriendProvider = ({ children }) => {
         }
     }
 
-    const idByLogin = async (login) => {
-        const response = await api.Get(`users/friends/search/${login}`);
-         // console.log(response);
-
-        if(response.data.length !== 0) return response.data[0].id;
-        return -1
-    }
-
     useEffect(() => {
         if(user) fetchFriends();
     }, [user])
 
 
     return (
-        <FriendContext.Provider value={{userFriends, isLoading, addFriend, idByLogin}}>
+        <FriendContext.Provider value={{userFriends, isLoading, addFriend}}>
             {children}
             { showError && <DismissableAlert onClosed={()=>setShowError(false)} text={errorText}/> }
         </FriendContext.Provider>

@@ -7,7 +7,7 @@ export const ListUserSortedInvites = () =>{
     const {friendInvites, eventInvites, groupInvites, isLoading, eventUpdateStatus} = useContext(InviteContext);
 
     // console.log(friendInvites);
-    console.log(eventInvites);
+    //console.log(eventInvites);
     // console.log(groupInvites);
 
     if(isLoading || !friendInvites || !eventInvites || !groupInvites) return <div>Loading...</div>
