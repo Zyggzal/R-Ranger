@@ -4,7 +4,7 @@ import {UserContext} from "../../../Context/UserContext";
 import {Modal} from "react-bootstrap";
 import { InviteContext } from "../../../Context/Invite/InviteContext";
 
-export const InviteUserModal = ({showModal, onClose, event}) => {
+export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
     const {register, handleSubmit, formState: {errors}} = useForm();
 
     const {user, idByLogin} = useContext(UserContext);
@@ -19,15 +19,14 @@ export const InviteUserModal = ({showModal, onClose, event}) => {
         }
         else{
             setUserNotFoundError(false);
-            inviteUserToEvent(userId, event, values.role)
-            console.log(event)
-            onClose();
+            inviteUserToEvent(userId, event, eventInvites, values.role)
+            onClose(true);
         }
     };
 
     if(!user) return <div>Loading...</div>
     return (
-        <Modal show={showModal} onHide={onClose}>
+        <Modal show={showModal} onHide={()=>onClose(false)}>
             <Modal.Header closeButton>
                 <Modal.Title>Invite User</Modal.Title>
             </Modal.Header>

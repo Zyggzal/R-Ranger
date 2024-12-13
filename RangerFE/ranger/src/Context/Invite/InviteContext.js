@@ -82,7 +82,7 @@ export const InviteProvider = ({ children }) => {
         return response.status;
     }
 
-    const inviteUserToEvent = async (UserId, Event, role) => {
+    const inviteUserToEvent = async (UserId, Event, invites, role) => {
         //UserId, senderId, EventId, GroupId, type, role
         const senderId = user.id
         const type = 'event'
@@ -90,10 +90,10 @@ export const InviteProvider = ({ children }) => {
             if(UserId === user.id) {
                 throw "Can not invite yourself"
             }
-            if(Event.participants.some((e)=>e.id === UserId)) {
+            if(Event.participants && Event.participants.some((e)=>e.id === UserId)) {
                 throw "You are already friends with this user"
             }
-            if(Event.invites.some((e)=>e.id === UserId)) {
+            if(invites && invites.some((e)=>e.UserId === UserId)) {
                 throw "This user is already invited"
             }
             const response = await api.Post('invites', { UserId, EventId: Event.id, role, senderId, type })
@@ -109,9 +109,22 @@ export const InviteProvider = ({ children }) => {
         }
     }
 
+    const fetchEventInvites = async (EventId) => {
+        try{
+            const response = await api.Get(`invites/eventId/${EventId}`)
+            if(response.status !== 200) {
+                throw response.message;
+            }
+            return response.data;
+        }
+        catch(error) {
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
 
     return (
-        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent}}>
+        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent, fetchEventInvites}}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
