@@ -196,12 +196,12 @@ const useAPI = () => {
         }
     }
 
-    const Delete = async (path) => {
+    const Delete = async (path, payload) => {
         setIsBusy(true)
 
         try {
             const request = `${API.host}/${path}`
-            const response = await axios.delete(request)
+            const response = await axios.delete(request, { data: payload })
             
             setIsBusy(false)
             

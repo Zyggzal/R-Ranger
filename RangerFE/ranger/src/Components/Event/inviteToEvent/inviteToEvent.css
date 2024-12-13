@@ -3,3 +3,8 @@
     top:45%;
     left:45%;
 }
+
+.accordion-button:focus {
+    outline: none;
+    box-shadow: none;
+}

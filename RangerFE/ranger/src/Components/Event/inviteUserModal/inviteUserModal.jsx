@@ -19,7 +19,7 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
         }
         else{
             setUserNotFoundError(false);
-            inviteUserToEvent(userId, event, eventInvites, values.role)
+            await inviteUserToEvent(userId, event, eventInvites, values.role)
             onClose(true);
         }
     };

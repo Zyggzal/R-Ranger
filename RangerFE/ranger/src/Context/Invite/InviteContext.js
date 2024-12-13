@@ -123,8 +123,22 @@ export const InviteProvider = ({ children }) => {
         }
     }
 
+    const removeInvite = async (id) =>{
+        if(!user) return;
+        try{
+            const response = await api.Delete(`invites/`, { id });
+            if(response.status !== 200) {
+                throw response.message
+            }
+        }
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     return (
-        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent, fetchEventInvites}}>
+        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent, fetchEventInvites, removeInvite}}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

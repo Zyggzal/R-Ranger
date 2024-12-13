@@ -106,12 +106,26 @@ export const EventProvider = ({ children }) => {
         }
     }
 
+    const removeParticipant = async (id, UserId) =>{
+        if(!user) return;
+        try{
+            const response = await api.Delete(`events/${id}/participants`, { UserId });
+            if(response.status !== 200) {
+                throw response.message
+            }
+        }
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     useEffect(()=>{
         if(user)fetchUserEvents();
     }, [user])
 
     return (
-        <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById}}>
+        <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant}}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
