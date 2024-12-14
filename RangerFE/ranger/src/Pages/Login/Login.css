@@ -1,0 +1,106 @@
+.ribbon {
+    transform-origin: bottom center;
+    width: 800px;
+    height: 120%;
+    position: absolute;
+    z-index: -1;
+    bottom: -125px;
+}
+
+.ribbon-left {
+    left: calc(50% - 450px);
+    background-color: rgb(211, 51, 51);
+}
+
+.ribbon-right {
+    right: calc(50% - 450px);
+    background-color: rgb(188, 29, 29);
+}
+
+.ribbon-stretch-left {
+    animation-name: stretch-left;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+.ribbon-curl-left {
+    animation-name: stretch-left;
+    animation-duration: 1s;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
+}
+
+@keyframes stretch-left {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(100%) skew(.312rad);
+    }
+}
+
+.ribbon-stretch-right {
+    animation-name: stretch-right;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+}
+.ribbon-curl-right {
+    animation-name: stretch-right;
+    animation-duration: 1s;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
+}
+
+@keyframes stretch-right {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(100%) skew(-.312rad);
+    }
+}
+
+.login-body {
+    overflow: hidden;
+    position: relative;
+    height: 48em;
+    background-image: url('https://thumbs.dreamstime.com/z/calendar-27139310.jpg?ct=jpeg');
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form {
+    width: 20em;
+    transform: translateX(-80%) translateY(50%);
+    animation: 1s appear;
+}
+
+.register-form {
+    width: 20em;
+    transform: translateX(80%) translateY(20%);
+    animation: 1s appear;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100%;
+    }
+}
+
+@media (max-width:842px) {
+    .login-form {
+        width: 40%;
+        transform: translateX(-30%) translateY(50%);
+        animation: 1s appear;
+    }
+
+    .register-form {
+        width: 40%;
+        transform: translateX(30%) translateY(20%);
+        animation: 1s appear;
+    }
+}

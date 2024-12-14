@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const { Group, User, UsersGroups, Event, Invite } = require('../models');
 const errHandler = require('../utils/ErrorHandler');
 
@@ -47,6 +48,38 @@ module.exports.getById = async (req, res) => {
 module.exports.getPublic = async (req, res) => {
     try{
         const groups = await Group.findAll({ include: getIncludes(req.query.include), where: {isPublic: '1'} });
+        return res.status(200).json(groups);
+
+    }
+    catch (err){
+        errHandler(res, err, 500);
+    }
+}
+
+module.exports.getAllByUserId = async (req, res) => {
+    try{
+        const u = await User.findByPk(req.params.id, { include: [{ model: Group, as: 'memberOf' }, { model: Group, as: 'creatorOfGroups' }]});
+        if(!u) {
+            errHandler(res, 'User not found', 404);
+        }
+        if(u.memberOf.length === 0 && u.creatorOfGroups.length === 0) {
+            return res.status(200)
+        }
+        const or = []
+        if(u.memberOf.length > 0) {
+            u.memberOf.forEach((g) => {
+                or.push(g.id)
+            })
+        }
+        if(u.creatorOfGroups.length > 0) {
+            u.creatorOfGroups.forEach((g) => {
+                or.push(g.id)
+            })
+        }
+
+
+        const groups = await Group.findAll({ include: getIncludes(req.query.include), where: Sequelize.or({ id: or }) })
+
         return res.status(200).json(groups);
 
     }

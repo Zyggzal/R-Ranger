@@ -6,7 +6,6 @@ const RequireAuth = ( {children} ) => {
     const { isValid } = useContext(UserContext);
 
     if (!isValid()) {
-        console.log(window.location.pathname)
         return <Navigate to='/login'/>
     }
 

@@ -80,7 +80,7 @@ export const AddEvent = ({setStep}) => {
   
       const res = await addEvent(processedValues)
       if(res){
-        navigate('/eventInvite', { state: { eventId: res.data[0].id }})
+        navigate('/eventInvite', { state: { eventId: res.data[0].id }, replace: true })
         setStep((s)=>s+1)
       }
 
@@ -97,7 +97,7 @@ export const AddEvent = ({setStep}) => {
               type="text"
               {...register("name", { required: "Name is required" })}
             />
-            {errors.name && <span className="error">{errors.name.message}</span>}
+            {errors.name && <span className="invalid-feedback error">{errors.name.message}</span>}
           </div>
   
           <div>
@@ -135,7 +135,7 @@ export const AddEvent = ({setStep}) => {
                 {...register("participantsLimit")}
               />
               {errors.participantsLimit && (
-                <span className="error">{errors.participantsLimit.message}</span>
+                <span className="invalid-feedback error">{errors.participantsLimit.message}</span>
               )}
             </div>
           </div>
@@ -152,7 +152,7 @@ export const AddEvent = ({setStep}) => {
             placeholder="Public Description"
           />
           {errors.description && (
-            <span className="error">{errors.description.message}</span>
+            <span className="invalid-feedback error">{errors.description.message}</span>
           )}
         </div>
   
@@ -164,7 +164,7 @@ export const AddEvent = ({setStep}) => {
             {...register("link", { required: "Private description is required" })}
             placeholder="Private Description"
           />
-          {errors.link && <span className="error">{errors.link.message}</span>}
+          {errors.link && <span className="invalid-feedback error">{errors.link.message}</span>}
         </div>
         <div className="card p-5">
           <h1 className="mb-5">Event timeline</h1>
@@ -184,7 +184,7 @@ export const AddEvent = ({setStep}) => {
                 })}
               />
               {errors.signUpEndDate && (
-                <span className="error">{errors.signUpEndDate.message}</span>
+                <span className="invalid-feedback error">{errors.signUpEndDate.message}</span>
               )}
               <div className="pt-5">
                 <ClockIcon />
@@ -207,7 +207,7 @@ export const AddEvent = ({setStep}) => {
                 })}
               />
               {errors.startDate && (
-                <span className="error">{errors.startDate.message}</span>
+                <span className="invalid-feedback error">{errors.startDate.message}</span>
               )}
               <div className="pt-5">
                 <ClockIcon />
@@ -230,7 +230,7 @@ export const AddEvent = ({setStep}) => {
                 })}
               />
               {errors.endDate && (
-                <span className="error">{errors.endDate.message}</span>
+                <span className="invalid-feedback error">{errors.endDate.message}</span>
               )}
               <div className="pt-5">
                 <ClockIcon />

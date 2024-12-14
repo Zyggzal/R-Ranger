@@ -26,6 +26,26 @@ export const GroupProvider = ({children}) => {
             setIsLoading(false);
         }
     }
+
+    const fetchUserGroupsWithIncludes = async (include) => {
+        if(!user) return;
+
+        setIsLoading(true);
+
+        try{
+            const response = await api.Get(`groups/userid/${user.id}`, include);
+            if(response.status !== 200) {
+                throw response.message
+            }
+
+            return response.data
+        }catch(err){
+            console.log(err);
+        }finally {
+            setIsLoading(false);
+        }
+    }
+
     const fetchPublicGroups = async () => {
         if(!user) return;
 
@@ -44,12 +64,18 @@ export const GroupProvider = ({children}) => {
     const addGroup = async (group) => {
         if(!user) return;
         try {
+            setIsLoading(true);
             const response = await api.Post(`groups`, {
                 name: group.name,
                 isPublic: group.isPublic,
                 createdBy: group.createdBy,
             });
 
+            setIsLoading(false);
+
+            if(response.status !== 200) {
+                throw response.message
+            }
             fetchUserGroups();
             return response.status
         }
@@ -62,7 +88,7 @@ export const GroupProvider = ({children}) => {
         if(user) fetchUserGroups();
     }, [user])
 
-    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, addGroup, publicGroups, fetchPublicGroups}}>
+    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups}}>
         {children}
     </GroupContext.Provider>;
 }

@@ -1,29 +1,50 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
-import Loader from "../Loader/Loader";
-import useAPI from "../../Hooks/useAPI";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import useAPI from "../../Hooks/useAPI";
+import Loader from "../Loader/Loader";
 
 const LoginForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const {register, handleSubmit, formState: {errors}} = useForm();
 
     const { Login } = useContext(UserContext);
-    const api = useAPI();
 
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
-        await Login(email, password);
+    const api = useAPI()
+
+    const handleLogin = async (values) => {
+        await Login(values.email, values.password);
+        console.log("A")
         navigate(-2);
+        console.log("B")
     }
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {api.isBusy && <Loader/>}
-            <input value={email} onChange={e=>setEmail(e.target.value)} placeholder='Email' />
-            <input value={password} onChange={e=>setPassword(e.target.value)} placeholder='Password' />
-            <button onClick={handleLogin}>Login</button>
-        </div>
+        api.isBusy ? <Loader/> :
+        <form onSubmit={handleSubmit(handleLogin)}>
+            <div className="mb-3">
+                <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="User Email"
+                    {...register("email", { required: true })}
+                />
+                {errors.email && <div className="text-warning">Email is required</div>}
+            </div>
+            <div className="mb-3">
+                <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    placeholder="User Password"
+                    {...register("password", { required: true })}
+                />
+                {errors.password && <div className="text-warning">Password is required</div>}
+            </div>
+            <button type="submit" className="btn btn-warning">Enter</button>
+        </form>
     )
 }
 

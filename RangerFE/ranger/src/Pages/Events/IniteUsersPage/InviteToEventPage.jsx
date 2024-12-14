@@ -6,6 +6,7 @@ import { InviteProvider } from "../../../Context/Invite/InviteContext";
 export const InviteToEventPage = () => {
     const location = useLocation();
     const {eventId} = location.state || {};
+    
     return (
         <EventProvider>
             <InviteProvider>

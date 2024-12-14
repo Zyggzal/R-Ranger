@@ -1,33 +1,78 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 import Loader from "../Loader/Loader";
 import useAPI from "../../Hooks/useAPI";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [login, setLogin] = useState('');
-    const [fName, setFName] = useState('');
-    const [lName, setLName] = useState('');
+    const {register, handleSubmit, formState: {errors}} = useForm();
 
     const { Register } = useContext(UserContext);
     
     const api = useAPI();
 
-    const handleRegister = async () => {
-        await Register(login, fName, lName, email, password);
+    const navigate = useNavigate()
+
+    const handleRegister = async (value) => {
+        await Register(value.login, value.fname, value.lname, value.email, value.password);
+        navigate('/profile');
     }
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {api.isBusy && <Loader/>}
-            <input value={email} onChange={e=>setEmail(e.target.value)} placeholder='Email' />
-            <input value={password} onChange={e=>setPassword(e.target.value)} placeholder='Password' />
-            <input value={login} onChange={e=>setLogin(e.target.value)} placeholder='Login' />
-            <input value={fName} onChange={e=>setFName(e.target.value)} placeholder='First Name' />
-            <input value={lName} onChange={e=>setLName(e.target.value)} placeholder='Last Name' />
-
-            <button onClick={handleRegister}>Register</button>
-        </div>
+        api.isBusy ? <Loader /> :
+        <form onSubmit={handleSubmit(handleRegister)}>
+            <div className="mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    id="fname"
+                    placeholder="First Name"
+                    {...register("fname", { required: true })}
+                />
+                {errors.email && <div className="text-warning">First name is required</div>}
+            </div>
+            <div className="mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    id="lname"
+                    placeholder="Last Name"
+                    {...register("lname", { required: true })}
+                />
+                {errors.email && <div className="text-warning">Last name is required</div>}
+            </div>
+            <div className="mb-3">
+                <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="User Email"
+                    {...register("email", { required: true })}
+                />
+                {errors.email && <div className="text-warning">Email is required</div>}
+            </div>
+            <div className="mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    id="login"
+                    placeholder="User Login"
+                    {...register("login", { required: true })}
+                />
+                {errors.email && <div className="text-warning">Login is required</div>}
+            </div>
+            <div className="mb-3">
+                <input
+                    type="password"
+                    className="form-control"
+                    id="password"
+                    placeholder="User Password"
+                    {...register("password", { required: true })}
+                />
+                {errors.password && <div className="text-warning">Password is required</div>}
+            </div>
+            <button type="submit" className="btn btn-warning">Enter</button>
+        </form>
     )
 }
 

@@ -69,8 +69,9 @@ export const UserProvider = ({children}) => {
 
     const Register = async (login, firstName, lastName, email, password) => {
         const res = await api.Register(login, firstName, lastName, email,password);
-        if(res.status === 200) {
-            await Login(res.data.email, res.data.password)
+        console.log(res)
+        if(res.status === 201) {
+            await Login(email, password)
         }
         else {
             setAlertText(res.message)

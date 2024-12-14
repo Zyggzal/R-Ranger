@@ -5,8 +5,13 @@ import './inviteToEvent.css'
 import { InviteContext, InviteProvider } from "../../../Context/Invite/InviteContext";
 import { InviteUserModal } from "../inviteUserModal/inviteUserModal";
 import { DateToAgo } from "../../../Utils/DateTransformer";
+import { Outlet, useNavigate } from "react-router-dom";
+import ArrowDownIcon from "../../Icons/ArrowDownIcon/ArrowDownIcon";
+import ArrowLeftSquareIcon from "../../Icons/ArrowLeftSquareIcon/ArrowLeftSquareIcon";
 
 export const InviteToEvent = ({ eventId }) => {
+    const navigate = useNavigate()
+
     const [event, setEvent] = useState(null);
     const [eventInvites, setEventInvites] = useState(null);
 
@@ -54,6 +59,7 @@ export const InviteToEvent = ({ eventId }) => {
 
     return(
         <div style={{position: "relative"}}>
+            <button className="btn btn-outline-danger btn-exit" onClick={()=>navigate(-1)}><ArrowLeftSquareIcon/> Back</button>
             {
             event && eventInvites ?
             <div className="container text-center">
@@ -61,7 +67,8 @@ export const InviteToEvent = ({ eventId }) => {
                 <h4>
                     Current Participants: 
                     <span className={`badge ms-1 text-bg-${isFull ? 'danger' : 'success'}`}>{event.participants.length + eventInvites.length}{event.participantsLimit && `/${event.participantsLimit}`}</span> 
-                    <button className="btn btn-outline-success ms-3" onClick={()=>setModal(true)}><strong>+</strong></button>
+                    { !isOver && !isFull && <button className="btn btn-outline-success ms-3" onClick={()=>setModal(true)}><strong>+</strong></button>}
+                    
                 </h4>
                 <div className="accordion m-5">
                     <h2 className="accordion-header">
