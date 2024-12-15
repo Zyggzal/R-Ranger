@@ -1,16 +1,18 @@
 import {useContext, useEffect, useState} from "react";
 import {EventContext} from "../../Context/Event/EventContext";
 import {useLocation} from "react-router-dom";
+import {ListParticipants} from "./listParticipants";
 
-export const EventItem = ({id}) =>{
+export const EventItem = ({id, role}) =>{
 
-    const {eventById} = useContext(EventContext);
+    const {eventById, eventParticipants} = useContext(EventContext);
 
     const [event, setEvent] = useState({});
+    const [participants, setParticipants] = useState(null);
     const [creator, setCreator] = useState({});
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState({});
 
-    //console.log(id);
+    // console.log("Role: ", role);
 
     useEffect( () => {
         const fetchEvent = async () => {
@@ -19,8 +21,15 @@ export const EventItem = ({id}) =>{
                 // console.log(thisEvent);
                 setEvent(thisEvent);
                 setCreator(thisEvent.creator);
-                const eventDate = new Date(thisEvent.startDate);
-                setDate(eventDate.toLocaleString());
+                const eventStartDate = new Date(thisEvent.startDate).toLocaleString();
+                const eventEndDate = new Date(thisEvent.endDate).toLocaleString();
+                setDate({start: eventStartDate, end: eventEndDate});
+
+                if(role === 'admin' || role === 'creator'){
+                    const thisParticipants = await eventParticipants(id);
+
+                    setParticipants(thisParticipants);
+                }
             }
         };
 
@@ -28,15 +37,30 @@ export const EventItem = ({id}) =>{
 
     }, []);
     if(!event) return <div>Loading...</div>
-    return(
-        <div>
+    return (
+        <div className="container mt-4 p-4 border rounded bg-light shadow">
             <h1>{event.name}</h1>
-            <div>Description: </div>
-            <div>{event.publicDescription}</div>
-            { creator && (<div>Creator: {creator.firstName} {creator.lastName} ( {creator.login} )</div>)}
-            <p>Date: {date && date}</p>
-            <div>Type: {event.isPublic ? (<span>Public</span>) : (<span>Private</span>)}</div>
-            <div>Link: {event.privateDescription}</div>
+            <p className="text-muted">{event.publicDescription}</p>
+            <div className="mb-3 fw-bold">
+                {date.start} - {date.end}
+            </div>
+
+            {participants && (role === 'admin' || role === 'creator') && (
+                <div className="mt-4 p-3 bg-white border rounded">
+                    <h5 className="mb-3">
+                        Participants:
+                        <span className="text-secondary"> {participants.length} </span>
+                        {event.participantsLimit && (
+                            <span className="text-secondary">
+                        / {event.participantsLimit}
+                    </span>
+                        )}
+                    </h5>
+                    <div>
+                        <ListParticipants participants={participants} role={role}/>
+                    </div>
+                </div>
+            )}
         </div>
     )
 

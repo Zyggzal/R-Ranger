@@ -5,12 +5,12 @@ import {EventItem} from "../../../Components/Event/EventItem";
 const SimpleEvent = () => {
 
     const location = useLocation();
-    const {eventId} = location.state || {};
+    const {eventId, role} = location.state || {};
 
     return (
         <EventProvider>
             <div>
-                <EventItem id={eventId} />
+                <EventItem id={eventId} role={role} />
             </div>
         </EventProvider>
     )
