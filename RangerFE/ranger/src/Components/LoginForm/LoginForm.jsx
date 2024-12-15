@@ -22,28 +22,28 @@ const LoginForm = () => {
     }
     return (
         api.isBusy ? <Loader/> :
-        <form onSubmit={handleSubmit(handleLogin)}>
-            <div className="mb-3">
+        <form className="mb-3 form-left" onSubmit={handleSubmit(handleLogin)}>
+            <div className="mb-3 input-cont">
                 <input
                     type="email"
-                    className="form-control"
+                    className="enter form-control"
                     id="email"
                     placeholder="User Email"
                     {...register("email", { required: true })}
                 />
-                {errors.email && <div className="text-warning">Email is required</div>}
+                {errors.email && <div className="enter-error">Email is required</div>}
             </div>
-            <div className="mb-3">
+            <div className="mb-3 input-cont">
                 <input
                     type="password"
-                    className="form-control"
+                    className="enter form-control"
                     id="password"
                     placeholder="User Password"
                     {...register("password", { required: true })}
                 />
-                {errors.password && <div className="text-warning">Password is required</div>}
+                {errors.password && <div className="enter-error">Password is required</div>}
             </div>
-            <button type="submit" className="btn btn-warning">Enter</button>
+            <button type="submit" className="btn enter">Enter</button>
         </form>
     )
 }

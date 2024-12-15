@@ -13,7 +13,6 @@ export const AddFriend = ({showModal, onClose}) => {
 
     const onSubmit = async (values) => {
         const userId = await idByLogin(values.login);
-        console.log(userId);
         if(userId === -1){
             setUserNotFoundError(true);
         }

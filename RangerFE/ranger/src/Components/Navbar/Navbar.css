@@ -1,0 +1,45 @@
+.logout-button {
+    height: 40px;
+    width: 40px; 
+    padding: 1px;
+    margin-block: 10px;
+}
+
+.ranger-logo {
+    width: calc(8.5em + 10%);
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.ranger-logo img {
+    width: calc(6em + 2%);
+}
+
+.ranger-logo h1 {
+    color: #E5383B;
+}
+
+nav .btn-link {
+    text-decoration: none;
+}
+
+.login-button {
+    background-color: #A4161A;
+}
+
+.login-button.active {
+    color: white;
+    background-color: #BA181B;
+    border: none;
+}
+
+.login-button:hover {
+    color: white;
+    border-color: white;
+    background-color: #A4161A;
+}
+
+.user-name {
+    font-size: larger;
+}

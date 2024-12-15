@@ -94,7 +94,7 @@ export const EventProvider = ({ children }) => {
     const eventById = async (id, include) =>{
         if(!user) return;
         try{
-            const response = await api.Get(`events/39`, include);
+            const response = await api.Get(`events/${id}`, include);
             if(response.status !== 200) {
                 throw response.message
             }

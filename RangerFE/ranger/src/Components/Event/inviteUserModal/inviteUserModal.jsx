@@ -25,7 +25,7 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
         }
         else{
             setUserNotFoundError(false);
-            await inviteUserToEvent(userId, event, eventInvites, values.role)
+            await inviteUserToEvent(userId, event, eventInvites)
             onClose(true);
         }
     }
@@ -92,14 +92,6 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                                 <label htmlFor="role" className="form-label">
                                     User Role
                                 </label>
-                                <select
-                                    className="form-select"
-                                    {...register("role")}
-                                    defaultValue="member"
-                                >
-                                    <option value="member">Member</option>
-                                    <option value="admin">Admin</option>
-                                </select>
                             </div>
                             <div className="d-flex justify-content-end">
                                 <button type="submit" className="btn btn-success">

@@ -9,12 +9,12 @@
 
 .ribbon-left {
     left: calc(50% - 450px);
-    background-color: rgb(211, 51, 51);
+    background-color: #BA181B
 }
 
 .ribbon-right {
     right: calc(50% - 450px);
-    background-color: rgb(188, 29, 29);
+    background-color: #A4161A
 }
 
 .ribbon-stretch-left {
@@ -62,7 +62,7 @@
 .login-body {
     overflow: hidden;
     position: relative;
-    height: 48em;
+    height: 55em;
     background-image: url('https://thumbs.dreamstime.com/z/calendar-27139310.jpg?ct=jpeg');
     z-index: 0;
     display: flex;
@@ -70,13 +70,23 @@
     align-items: center;
 }
 
+.login-body input::placeholder {
+    color: white;
+}
+
+.login-body .link:hover {
+    text-decoration: 2px underline solid white;
+}
+
 .login-form {
+    color: white;
     width: 20em;
     transform: translateX(-80%) translateY(50%);
     animation: 1s appear;
 }
 
 .register-form {
+    color: white;
     width: 20em;
     transform: translateX(80%) translateY(20%);
     animation: 1s appear;
@@ -103,4 +113,52 @@
         transform: translateX(30%) translateY(20%);
         animation: 1s appear;
     }
+}
+
+.enter {
+    background-color: #161A1D;
+    color: #B1A7A6;
+    border: 2px transparent solid;
+    padding: 10px 15px;
+}
+
+.enter:hover {
+    background-color: #0B090A;
+    color: white;
+    border: 2px white solid;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border: none;
+    background-color: #161A1D;
+    color: white;
+}
+
+.enter-error {
+    background-color: #E5383B;
+    border-radius: 0 0 15px 0;
+    padding-left: 5px;
+}
+
+.btn-outline-dark {
+    border: 2px white solid;
+}
+
+.form-left {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
+
+.form-right {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    width: 100%;
+}
+
+.input-cont {
+    width: 100%;
 }

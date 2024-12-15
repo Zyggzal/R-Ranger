@@ -41,8 +41,9 @@ export const InviteToEvent = ({ eventId }) => {
 
     }, [eventId])
     
-    useEffect(()=>{
+    useEffect(()=> {
         const fetchEvent = async () => {
+            if(!eventId) return;
             const res = await eventById(eventId, 'participants')
             if(!res) {
                 return;
@@ -58,7 +59,7 @@ export const InviteToEvent = ({ eventId }) => {
     }, [eventId])
 
     return(
-        <div style={{position: "relative"}}>
+        <div className="invite-event-body" style={{position: "relative"}}>
             <button className="btn btn-outline-danger btn-exit" onClick={()=>navigate(-1)}><ArrowLeftSquareIcon/> Back</button>
             {
             event && eventInvites ?
@@ -111,7 +112,6 @@ export const InviteToEvent = ({ eventId }) => {
                                             </div>
                                             <div className="d-flex flex-column align-items-end">
                                                 <p className="text-secondary">Invited: { DateToAgo(i.createdAt) }</p>
-                                                <h6>Role: { i.role }</h6>
                                                 <button className="btn btn-outline-danger" onClick={ async ()=> {
                                                     await removeInvite(i.id)
                                                     fetchInvites()

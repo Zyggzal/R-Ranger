@@ -1,6 +1,7 @@
 import { useState } from "react";
 import LoginForm from "../../Components/LoginForm/LoginForm";
 import RegisterForm from "../../Components/RegisterForm/RegisterForm";
+import ArrowDownIcon from '../../Components/Icons/ArrowDownIcon/ArrowDownIcon'
 import './Login.css'
 
 const Login = () => {
@@ -12,13 +13,13 @@ const Login = () => {
                 <div key={`login${isLogin}`} className="login-form">
                     <h1>Login</h1>
                     <LoginForm/>
-                    <p className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover" onClick={()=>setIsLogin(false)}>First time here?</p>
+                    <p className="link" onClick={()=>setIsLogin(false)}>First time here? <ArrowDownIcon rotate={-90}/></p>
                 </div>
                 :
                 <div key={`register${isLogin}`} className="register-form">
                     <h1>Register</h1>
                     <RegisterForm/>
-                    <p className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover" onClick={()=>setIsLogin(true)}>Back to login</p>
+                    <p className="link" onClick={()=>setIsLogin(true)}><ArrowDownIcon rotate={90}/> Back to login</p>
 
                 </div>
             }

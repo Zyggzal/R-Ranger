@@ -82,7 +82,7 @@ export const InviteProvider = ({ children }) => {
         return response.status;
     }
 
-    const inviteUserToEvent = async (UserId, Event, invites, role) => {
+    const inviteUserToEvent = async (UserId, Event, invites) => {
         //UserId, senderId, EventId, GroupId, type, role
         const senderId = user.id
         const type = 'event'
@@ -96,7 +96,7 @@ export const InviteProvider = ({ children }) => {
             if(invites && invites.some((e)=>e.UserId === UserId)) {
                 throw "This user is already invited"
             }
-            const response = await api.Post('invites', { UserId, EventId: Event.id, role, senderId, type })
+            const response = await api.Post('invites', { UserId, EventId: Event.id, senderId, type })
             if(response.status !== 200) {
                 throw response.message;
             }

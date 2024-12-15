@@ -18,7 +18,7 @@ const UserProfile = () => {
                 <h1>{user.firstName + ' ' + user.lastName}</h1>
                 <p className="text-secondary">@{user.login}</p>
                 <h4>{user.email}</h4>
-                <p>Joined on: {user.createdAt}</p>
+                <p>Joined on: &nbsp; { new Date(user.createdAt).toLocaleDateString() }</p>
             </div>
             <div className="container">
                 <div>

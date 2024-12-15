@@ -1,29 +1,51 @@
 import { useContext } from "react"
 import { UserContext } from "../../Context/UserContext"
 import { NavLink } from "react-router-dom";
+import ExitIcon from "../Icons/ExitIcon/ExitIcon";
+import HumanIcon from "../Icons/HumanIcon/HumanIcon";
+import './Navbar.css'
 
 const Navbar = () => {
     const { user, Logout } = useContext(UserContext);
 
+    const linkStyle = ({ isActive }) => ({ color: isActive ? '#E5383B' : 'white' })
     return (
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%'}}>
-            <p>{ user ? `Hello there, ${user.login}!` : "Don't be a stranger, log in or register!" }</p>
-            <NavLink className='btn btn-link' to='/' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>Home</NavLink>
-            <NavLink className='btn btn-link' to='/events/add'>Add Event</NavLink>
-            <NavLink className='btn btn-link' to='/eventInvite' state={{ eventId: 2028 }} >Invite to Event</NavLink>
-            { 
+        <nav className="navbar navbar-expand-lg">
+            <div className="container-fluid">
+                <NavLink className='btn btn-link ranger-logo' to='/' style={linkStyle}>
+                    <img src="/Resources/Images/RangerLogo.PNG"/>
+                    <h1>RANGER</h1>
+                </NavLink>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li className="nav-item">
+                        <NavLink className='btn btn-link' to='/' style={linkStyle}>Home</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className='btn btn-link' to='/events/add' style={linkStyle}>Add Event</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className='btn btn-link' to='/eventInvite' state={{ eventId: 2028 }} style={linkStyle}>Invite to Event</NavLink>
+                    </li>
+                </ul>
+                { 
                 user ? 
-                <div>
-                    <NavLink className='btn btn-link' to='/profile' style={({ isActive }) => ({ color: isActive ? 'green' : '' })}>{user.login}</NavLink>
-                    <button onClick={Logout}>Logout</button>
+                    <div className="d-flex align-items-center">
+                        <NavLink className='nav-link m-3 user-name' to='/profile' style={linkStyle}><HumanIcon/>{user.login}</NavLink>
+                        <button className="btn btn-outline-danger logout-button" onClick={Logout}><ExitIcon/></button>
+                    </div>
+                    :
+                    <div>
+                        <NavLink className='btn login-button' to='/login'>Log in</NavLink>
+                    </div>
+                }
+
                 </div>
-                :
-                <div>
-                    <NavLink className='btn btn-link' to='/login'>Login</NavLink>
-                    
-                </div>
-            }
-        </div>
+            </div>
+            </nav>
     )
 }
 

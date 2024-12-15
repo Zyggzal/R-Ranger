@@ -19,6 +19,7 @@ export const UserProvider = ({children}) => {
             firstName: user.firstName,
             lastName: user.lastName,
             login: user.login,
+            createdAt: user.createdAt,
             expires
         }))
     }
