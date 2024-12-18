@@ -27,7 +27,7 @@ export const AddFriend = ({showModal, onClose}) => {
     return (
         <Modal show={showModal} onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Friends</Modal.Title>
+                <Modal.Title>Add Friend</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,7 +47,7 @@ export const AddFriend = ({showModal, onClose}) => {
                         {userNotFoundError ? <div className="text-danger">The Login is doesn't exist</div>: null}
                     </div>
                     <div className="d-flex justify-content-end">
-                        <button type="submit" className="btn btn-success">
+                        <button type="submit" className="btn btn-crimson">
                             Send Friend Invite
                         </button>
                     </div>

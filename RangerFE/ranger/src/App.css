@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fasthand&family=Lilita+One&display=swap');
 
+.App {
+  background-color: #262626;
+}
+
 *{
   margin: 0;
   padding: 0;
@@ -15,7 +19,6 @@
   background-color: #E5383B;
 }
 
-
 .dark-button {
   background-color: #0B090A;
   border-color: #0B090A;
@@ -26,8 +29,43 @@
   background-color: #D3D3D3;
 }
 
+.btn-crimson {
+  background-color: #660708;
+  color: white;
+  border: 3px solid #660708;
+}
+
+.btn-crimson:hover{
+  color: #660708;
+  background-color: #e1dcdc;
+}
+
 header {
   border-bottom: 2px #B1A7A6 solid;
   background-color: #161A1D;
   width: 100%;
+  position: relative;
+  z-index: 3;
+}
+
+footer {
+  padding: 15px;
+  background-color: #161A1D;
+  color: white;
+  text-align: center;
+  position: relative;
+  z-index: 3;
+  height: 10vh;
+}
+
+html, body {
+  height: 100%;
+}
+
+#root, #root>div, .App, .App>div {
+  min-height: 100vh;
+} 
+
+main {
+  min-height: 77.4vh;
 }

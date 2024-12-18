@@ -1,0 +1,77 @@
+.modal-content {
+    background-color: #161A1D;
+    color: white;
+}
+
+.modal-content input {
+    background-color: #D3D3D3;
+    border: none;
+}
+
+.modal-content input:focus {
+    background-color: #D3D3D3;
+    color: #161A1D;
+    border: none;
+    box-shadow: none;
+}
+
+.modal-content button:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.modal-content input:checked {
+    background-color: #A4161A;
+    color: white;
+}
+
+.modal-content .nav-link {
+    color: white;
+    user-select: none;
+}
+
+
+
+.modal-content .btn-close {
+    background-color: #D3D3D3;
+}
+
+.modal-content .list-group-item {
+    background-color: #d5d5d5;
+}
+
+.modal-content .list-group-item:hover {
+    background-color: #bbbbbb;
+}
+
+
+.modal-content .list-group-item .form-check-input:not(:checked) {
+    background-color: white;
+}
+.modal-content .accordion-button {
+    background-color: #2a2d2f;
+    color: white;
+    border-left: 12px #A4161A solid;
+}
+
+.modal-content .accordion-button:focus {
+    border-left: 10px #A4161A solid;
+}
+
+.modal-content .accordion-item {
+    border: none;
+    border-bottom: 1px solid #6c6666;
+}
+
+.modal-content .accordion-body {
+    background-color: #D3D3D3;
+}
+
+.modal-content .accordion-button::after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+}
+
+.modal-content .active {
+    background-color: #D3D3D3!important;
+    border: none;
+}

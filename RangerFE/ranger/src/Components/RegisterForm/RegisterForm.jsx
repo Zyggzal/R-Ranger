@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const {register, handleSubmit, formState: {errors}, watch} = useForm();
 
     const { Register } = useContext(UserContext);
     
@@ -70,6 +70,22 @@ const RegisterForm = () => {
                     {...register("password", { required: true })}
                 />
                 {errors.password && <div className="enter-error">Password is required</div>}
+            </div>
+            <div className="mb-3 input-cont">
+                <input
+                    type="password"
+                    className="enter form-control"
+                    id="confirm_password"
+                    placeholder="Confirm Password"
+                    {...register("confirm_password", {
+                        validate: (val) => {
+                          if (watch('password') !== val) {
+                            return "Passwords do not match";
+                          }
+                        },
+                       })}
+                    />
+                    {errors.confirm_password && <div className="enter-error">{errors.confirm_password.message}</div>}
             </div>
             <button type="submit" className="btn enter">Enter</button>
         </form>

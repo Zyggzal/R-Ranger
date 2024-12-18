@@ -1,4 +1,53 @@
 .stepContainer{
     position: sticky;
     top: 0;
+    background-color: #161A1D;
+    color: white;
+    z-index: 3;
+}
+
+.add-page-form {
+    color: white;
+    position: relative;
+    z-index: 2;
+}
+
+.add-page-input:checked {
+    background-color: #A4161A;
+    border-color: #E5383B;
+}
+
+.add-page-input:focus {
+    box-shadow: 2px 2px 2px #E5383B;
+    border: #660708;
+}
+
+.add-page-input:focus::placeholder {
+    color: white;
+}
+
+.add-page-input {
+    background-color: #e1dcdc;
+    border: none;
+}
+
+div:has(>input:disabled) {
+    opacity: 55%;
+}
+
+.background-stripe {
+    background-color: #A4161A;
+    box-shadow: 10px 10px 0 #660708;
+    width: 90%;
+    border-radius: 0 0 100% 0;
+    height: 100%;
+    position: fixed;
+    top: 0;
+}
+
+.error {
+    background-color: #660708;
+    padding: 3px;
+    padding-left: 15px;
+    border-radius: 0 0 15px 0;
 }

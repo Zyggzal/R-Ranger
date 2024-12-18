@@ -10,9 +10,9 @@ const Navbar = () => {
 
     const linkStyle = ({ isActive }) => ({ color: isActive ? '#E5383B' : 'white' })
     return (
-        <nav className="navbar navbar-expand-lg">
+        <nav className="navbar navbar-expand-lg navbar-dark">
             <div className="container-fluid">
-                <NavLink className='btn btn-link ranger-logo' to='/' style={linkStyle}>
+                <NavLink className='ranger-logo' to='/' style={linkStyle}>
                     <img src="/Resources/Images/RangerLogo.PNG"/>
                     <h1>RANGER</h1>
                 </NavLink>

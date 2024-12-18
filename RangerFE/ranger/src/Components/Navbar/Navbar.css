@@ -10,6 +10,7 @@
     margin-right: 15px;
     display: flex;
     align-items: center;
+    text-decoration: none;
 }
 
 .ranger-logo img {
@@ -22,6 +23,10 @@
 
 nav .btn-link {
     text-decoration: none;
+}
+
+nav .btn-link:hover {
+    text-decoration: 2px underline solid;
 }
 
 .login-button {

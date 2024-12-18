@@ -22,9 +22,9 @@ User.belongsToMany(Event, { through: EventParticipants, as: 'participatesIn' });
 Event.belongsTo(Group, { foreignKey: 'createdByGroup', as: 'creatorGroup' });
 Group.hasMany(Event, { foreignKey: 'createdByGroup', as: 'creatorOf' });
 
-User.hasMany(Invite, { foreignKey: { name: 'UserId', unique: 'invite_composite' }, as: 'invites' });
-Event.hasMany(Invite, { foreignKey: { name: 'EventId', unique: 'invite_composite' }, as: 'invites' });
-Group.hasMany(Invite, { foreignKey: { name: 'GroupId', unique: 'invite_composite' }, as: 'invites' });
+User.hasMany(Invite, { foreignKey: { name: 'UserId', unique: 'invite_composite' }, as: 'invites', onDelete: 'cascade' });
+Event.hasMany(Invite, { foreignKey: { name: 'EventId', unique: 'invite_composite' }, as: 'invites', onDelete: 'cascade' });
+Group.hasMany(Invite, { foreignKey: { name: 'GroupId', unique: 'invite_composite' }, as: 'invites', onDelete: 'cascade' });
 
 Invite.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
 Invite.belongsTo(User, { foreignKey: { name: 'UserId', unique: 'invite_composite' }, as: 'user' });

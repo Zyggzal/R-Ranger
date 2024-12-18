@@ -7,14 +7,11 @@
     bottom: 20px;
     right: 20px;
     font-weight: bolder;
+    z-index: 4;
 }
 
 .uppies:hover {
     color: #0B090A;
     background-color: white;
     border: 1px solid #0B090A;
-}
-
-header.visible .uppies{
-    background-color: aqua;
 }

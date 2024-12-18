@@ -14,7 +14,7 @@ const MainLayout = () => {
                 <a className="uppies" href="#header"><ArrowDownIcon rotate={180}/></a>
             </main>
             <footer className="footer">
-                footer
+                &copy; 2024 Slipokurov Valerii & Voloshyn Olexii
             </footer>  
         </div>
     );

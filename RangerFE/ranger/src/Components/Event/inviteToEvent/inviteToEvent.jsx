@@ -37,7 +37,6 @@ export const InviteToEvent = ({ eventId }) => {
         } 
         setEvent(res)
         setIsOver(new Date() - new Date(res.endDate) > 0)
-        setIsFull(res.participantsLimit ? res.participants.length >= res.participantsLimit : false)
 
     }, [eventId])
     
@@ -50,7 +49,6 @@ export const InviteToEvent = ({ eventId }) => {
             } 
             setEvent(res)
             setIsOver(new Date() - new Date(res.endDate) > 0)
-            setIsFull(res.participantsLimit ? res.participants.length >= res.participantsLimit : false)
 
             const inv = await fetchEventInvites(res.id)
             setEventInvites(inv)
@@ -58,9 +56,25 @@ export const InviteToEvent = ({ eventId }) => {
         fetchEvent()
     }, [eventId])
 
+    useEffect(() => {
+        if(event && event.participantsLimit) {
+            let cur = 0;
+            if(eventInvites) {
+                cur += eventInvites.length;
+            }
+            if(event.participants) {
+                cur += event.participants.length;
+            }
+            setIsFull(cur >= event.participantsLimit)
+        }
+        else {
+            setIsFull(false);
+        }
+    }, [event, eventInvites])
+
     return(
         <div className="invite-event-body" style={{position: "relative"}}>
-            <button className="btn btn-outline-danger btn-exit" onClick={()=>navigate(-1)}><ArrowLeftSquareIcon/> Back</button>
+            {/* <button className="btn btn-outline-danger btn-exit" onClick={()=>navigate(-1)}><ArrowLeftSquareIcon/> Back</button> */}
             {
             event && eventInvites ?
             <div className="container text-center">
@@ -73,7 +87,7 @@ export const InviteToEvent = ({ eventId }) => {
                 </h4>
                 <div className="accordion m-5">
                     <h2 className="accordion-header">
-                        <button className="accordion-button bg-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             Participants
                         </button>
                     </h2>
@@ -82,7 +96,7 @@ export const InviteToEvent = ({ eventId }) => {
                             <div className="list-group">
                                 {
                                 event.participants.map((u)=>{
-                                    return <div key={u.id} className="list-group-item list-group-item-action">
+                                    return <div key={u.id} className="list-group-item list-group-item-action invite-event-item">
                                         <div className="d-flex justify-content-between">
                                             <div className="d-flex flex-column align-items-start">
                                                 <h3>{u.firstName} {u.lastName}</h3>
@@ -103,7 +117,7 @@ export const InviteToEvent = ({ eventId }) => {
                                 }
                                 {
                                 eventInvites.map((i)=>{
-                                    return <div key={i.id} className="list-group-item list-group-item-action">
+                                    return <div key={i.id} className="list-group-item list-group-item-action invite-event-item">
                                         <div className="d-flex justify-content-between">
                                             <div className="d-flex flex-column align-items-start">
                                                 <h3>{i.user.firstName} {i.user.lastName}</h3>

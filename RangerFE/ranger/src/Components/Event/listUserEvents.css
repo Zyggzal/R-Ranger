@@ -1,0 +1,8 @@
+.user-list-container .list-group-item {
+    background-color: #161A1D;
+    color: white;
+}
+
+.user-list-container .list-group-item:hover {
+    background-color: #2a3034;
+}

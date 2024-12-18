@@ -42,7 +42,7 @@ export const InviteUsersFromFriends = ({onSubmit, event, eventInvites}) => {
                 }
             </div>
             <div className="d-flex justify-content-end">
-                <button onClick={batchSubmit} type="submit" className="btn btn-success mt-3">Invite Selected</button>
+                <button onClick={batchSubmit} type="submit" className="btn btn-crimson mt-3">Invite Selected</button>
             </div>
         </form>
     )

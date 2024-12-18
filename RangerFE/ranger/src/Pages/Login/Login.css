@@ -62,7 +62,7 @@
 .login-body {
     overflow: hidden;
     position: relative;
-    height: 55em;
+    height: 77.4vh;
     background-image: url('https://thumbs.dreamstime.com/z/calendar-27139310.jpg?ct=jpeg');
     z-index: 0;
     display: flex;

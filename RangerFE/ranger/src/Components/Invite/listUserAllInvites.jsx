@@ -1,45 +1,49 @@
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import {InviteContext} from "../../Context/Invite/InviteContext";
+import { InviteItem } from "./InviteItem/InviteItem";
+import './listUserAllInvites.css'
 
-const ListUserAllInvites = () =>{
+const ListUserAllInvites = ({type, asc}) => {
+    const {allInvites, isLoading, fetchUserInvites} = useContext(InviteContext);
+    const [invitesToShow, setInvitesToShow] = useState(null)
 
-    //const {user} = useContext(UserContext);
-    const {allInvites, isLoading} = useContext(InviteContext);
+    useEffect(() => {
+        if(!allInvites) return;
+        switch(type) {
+            case 'friends':
+                setInvitesToShow(allInvites.filter((i) => i.Friend)); break;
+            case 'events':
+                setInvitesToShow(allInvites.filter((i) => i.EventId)); break;
+            default:
+                setInvitesToShow(allInvites); break;
+        }
+    }, [allInvites, type]);
 
-    if(isLoading || !allInvites) return <div>Loading...</div>
+    useEffect(() => {
+        invitesToShow && setInvitesToShow(invitesToShow.sort((a, b) => {
+            const ad = new Date(a.createdAt).getTime()
+            const bd = new Date(b.createdAt).getTime()
+            
+            return asc ? ad - bd : bd - ad;
+        }))
+    }, [invitesToShow, asc])
+
+
+    if(isLoading || !invitesToShow) return <div>Loading...</div>
     return (
-        <div>
-            {allInvites.length <= 0 ? 
+        <>
+            {invitesToShow.length <= 0 ? 
                 <h1>Nothing to see here yet...</h1>
                 :
-                <table className="table">
-                    <caption>All User Invites</caption>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Status</th>
-                            <th>Sender</th>
-                            <th>IsGroup</th>
-                            <th>IsEvent</th>
-                            <th>IsFriend</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div className="invites-list-container">
                     {
-                    allInvites.map((invite) => (
-                        <tr key={`${invite.id}-${invite.createdAt}`}>
-                            <td>{invite.id}</td>
-                            <td>{!invite.Friend ? invite.status ? 'accepted' : 'pending' : invite.Friend.status}</td>
-                            <td>{invite.sender ? invite.sender.login : invite.login}</td>
-                            <td>{invite.GroupId ? 'Yes' : 'No'}</td>
-                            <td>{invite.EventId ? 'Yes' : 'No'}</td>
-                            <td>{invite.Friend ? 'Yes' : 'No'}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+                        invitesToShow.map((invite) => (
+                            <InviteItem onAccept={fetchUserInvites} onDecline={fetchUserInvites} key={`inviteitem${invite.id}`} invite={invite}/>
+                        ))
+                    }
+                </div>
             }
-        </div>
+        </>
     )
 }
 

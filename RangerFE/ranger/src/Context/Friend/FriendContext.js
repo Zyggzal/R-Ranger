@@ -54,13 +54,47 @@ export const FriendProvider = ({ children }) => {
         }
     }
 
+    const acceptFriendRequest = async (invite) => {
+        if(!user) return;
+
+        try{
+            const response = await api.Patch(`users/friends/${invite.Friend.UserId}`, {id: invite.Friend.friendId, status: 'accepted'});
+            if(response.status !== 200) {
+                throw response.message
+            }
+
+            fetchFriends();
+        }
+        catch (err){
+            setErrorText(err);
+            setShowError(true);
+        }
+    }
+
+    const declineFriendRequest = async (invite) => {
+        if(!user) return;
+
+        try{
+            const response = await api.Delete(`users/friends/${invite.UserId}`, {id: invite.friendId});
+            if(response.status !== 200) {
+                throw response.message
+            }
+
+            fetchFriends();
+        }
+        catch (err){
+            setErrorText(err);
+            setShowError(true);
+        }
+    }
+
     useEffect(() => {
         if(user) fetchFriends();
     }, [user])
 
 
     return (
-        <FriendContext.Provider value={{userFriends, isLoading, addFriend}}>
+        <FriendContext.Provider value={{userFriends, isLoading, addFriend, acceptFriendRequest, declineFriendRequest}}>
             {children}
             { showError && <DismissableAlert onClosed={()=>setShowError(false)} text={errorText}/> }
         </FriendContext.Provider>

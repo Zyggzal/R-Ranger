@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState } from "react"
 import { GroupContext } from "../../../Context/Group/GroupContext"
 import Loader from "../../Loader/Loader"
+import { UserContext } from "../../../Context/UserContext"
 
 export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
     const {isLoading, fetchUserGroupsWithIncludes} = useContext(GroupContext)
+
+    const {user} = useContext(UserContext);
 
     const [selected, setSelected] = useState([])
     const [groups, setGroups] = useState([])
@@ -30,7 +33,7 @@ export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
     return(
         isLoading ? <Loader/> :
         <form>
-            <div className="accordion">
+            <div className="accordion accordion-dark">
                 {
                     groups && groups.length > 0 ?
                     groups.map(g=>{
@@ -46,7 +49,7 @@ export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
                                     {
                                         g.members.map((m) => {
                                             return (
-                                                !isInvited(m) &&
+                                                !isInvited(m) && user.id !== m.id &&
                                                 <div className="list-group-item list-group-item-action d-flex justify-content-between" key={`groupmemberitem${m.id}`}>
                                                     <label className="form-check-label" htmlFor={`groupmembercheck${m.id}`}>{m.firstName} {m.lastName}</label>
                                                     <input className="form-check-input" id={`groupmembercheck${m.id}`} type="checkbox" onChange={(e) => {
@@ -69,7 +72,7 @@ export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
                 }
             </div>
             <div className="d-flex justify-content-end">
-                <button onClick={batchSubmit} type="submit" className="btn btn-success mt-3">Invite Selected</button>
+                <button onClick={batchSubmit} type="submit" className="btn btn-crimson mt-3">Invite Selected</button>
             </div>
         </form>
     )

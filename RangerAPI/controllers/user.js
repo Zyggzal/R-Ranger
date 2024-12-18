@@ -2,7 +2,7 @@ const Pwd = require('../utils/Password')
 const { User, Group, Event, Invite, Review, Friend } = require('../models')
 const errHandler = require('../utils/ErrorHandler')
 const sequelize = require("../config/database");
-const {QueryTypes} = require('sequelize');
+const {QueryTypes, Sequelize} = require('sequelize');
 
 const getIncludes = (inc) => {
     const includes = [];
@@ -150,13 +150,28 @@ module.exports.delete = async (req, res) => {
 
 module.exports.getFriends = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id, { include: { model: User, as: 'friends' }  });
+
+        // const friends = await Friend.findAll({ where: Sequelize.or(
+        //     Sequelize.and(
+        //         { friendId: req.params.id },
+        //         { status: 'invited' }
+        //     ),
+        //     Sequelize.and(
+        //         { UserId: req.params.id },
+        //         { status: 'accepted' }
+        //     )
+        // ), include: { model: User, as: 'friend' }})
+
+        const user = await User.findByPk(req.params.id, { include: { model: User, as: 'friends' } });
+
         if(user) {
             res.status(200).json(user.friends);
         }
         else {
             errHandler(res, 'User not found', 404);
         }
+
+        res.status(200).json(user.friends);
     }
     catch(err) {
         errHandler(res, err, 500);
@@ -211,6 +226,7 @@ module.exports.updateFriend = async (req, res) => {
 module.exports.deleteFriend = async (req, res) => {
     try {
         await Friend.destroy({ where: { UserId: req.params.id, friendId: req.body.id }})
+        await Friend.destroy({ where: { UserId: req.body.id, friendId: req.params.id }})
 
         res.status(200).json('Deletion successful');
     }

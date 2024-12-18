@@ -1,0 +1,54 @@
+.invites-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 80px;
+}
+
+.invite-item-container {
+    width: 23.5em;
+    display: inline-block;
+    background-color: #D3D3D3;
+    padding: 10px 15px;
+    margin: 25px 20px;
+    height: 25em;
+    color: #161A1D;
+    position: relative;
+    border-bottom-left-radius: 20%;
+}
+
+.invite-item-container h1 {
+    padding-inline: 20px;
+}
+
+.invite-item-container .arrow{
+    width: 60%;
+    margin-top: -30%;
+}
+
+.invite-item-container .bend{
+    width: 10%;
+    position: absolute;
+    bottom: 3px;
+    left: 1px;
+}
+
+.invite-item-container .time-label {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.invite-item-container .btn-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.btn-accept {
+    border: 2px solid #161A1D;
+}
+
+.btn-accept:hover {
+    background-color: #161A1D;
+    color: white;
+}

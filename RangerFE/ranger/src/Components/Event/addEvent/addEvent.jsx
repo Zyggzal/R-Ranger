@@ -8,7 +8,7 @@ import ArrowDownIcon from '../../Icons/ArrowDownIcon/ArrowDownIcon';
 import './addEvent.css'
 import { useNavigate } from 'react-router-dom';
 
-export const AddEvent = ({setStep}) => {
+export const AddEvent = () => {
     const {
       register,
       handleSubmit,
@@ -81,19 +81,18 @@ export const AddEvent = ({setStep}) => {
       const res = await addEvent(processedValues)
       if(res){
         navigate('/eventInvite', { state: { eventId: res.data[0].id }, replace: true })
-        setStep((s)=>s+1)
       }
 
     }
   
     return (
-      <form onSubmit={handleSubmit(onSubmit)} className="form p-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="form p-5 add-page-form">
         <div className="mb-3 d-flex justify-content-between">
           <div>
             <label className="form-label">Event Name</label>
             <InfoIcon content={'The name of your event'}/>
             <input
-              className={`form-control ${errors.name && 'is-invalid'}`}
+              className={`add-page-input form-control ${errors.name && 'is-invalid'}`}
               type="text"
               {...register("name", { required: "Name is required" })}
             />
@@ -104,7 +103,7 @@ export const AddEvent = ({setStep}) => {
             <label className="form-label">Type</label>
             <InfoIcon content={<p><strong>Public</strong> events will be open to anyone<br /><strong>Private</strong> events will only be accessible via invitations</p>}/>
             <select
-              className="form-select"
+              className="add-page-input form-select"
               {...register("isPublic")}
               defaultValue="1"
             >
@@ -116,7 +115,7 @@ export const AddEvent = ({setStep}) => {
           <div>
             <div className="d-flex align-items-center">
               <input
-                className="form-check-input me-2"
+                className="add-page-input form-check-input me-2"
                 type="checkbox"
                 checked={limit}
                 onChange={(e) => setLimit(e.target.checked)}
@@ -129,7 +128,7 @@ export const AddEvent = ({setStep}) => {
             <div>
               <input
                 disabled={!limit}
-                className="form-control"
+                className="add-page-input form-control"
                 type="number"
                 min="1"
                 {...register("participantsLimit")}
@@ -145,7 +144,7 @@ export const AddEvent = ({setStep}) => {
           <label className="form-label">Event Description</label>
           <InfoIcon content={<p><strong>Public</strong> description.<br/>Write the info you want everyone to see here. <br/><span className='text-secondary'>General info: type of activity, target audience, etc.</span></p>}/>
           <textarea
-            className={`form-control p-4 ${errors.description && 'is-invalid'}`}
+            className={`add-page-input form-control p-4 ${errors.description && 'is-invalid'}`}
             {...register("description", {
               required: "Public description is required",
             })}
@@ -160,20 +159,20 @@ export const AddEvent = ({setStep}) => {
           <label className="form-label">Private Description</label>
           <InfoIcon content={<p><strong>Private</strong> description.<br/>Write the info you want only the participants to see here. <br/><span className='text-secondary'>Specific info: links, locations, etc.</span></p>}/>
           <textarea
-            className={`form-control p-4 ${errors.link && 'is-invalid'}`}
+            className={`add-page-input form-control p-4 ${errors.link && 'is-invalid'}`}
             {...register("link", { required: "Private description is required" })}
             placeholder="Private Description"
           />
           {errors.link && <span className="invalid-feedback error">{errors.link.message}</span>}
         </div>
-        <div className="card p-5">
+        <div className="card p-5 time-container">
           <h1 className="mb-5">Event timeline</h1>
           <div className="d-flex justify-content-between">
             <div className="time-card">
               <label className="form-label">Sign up end date</label>
               <InfoIcon content={<p>After this date, users will be unable to sign up to the event.</p>}/>
               <input
-                className={`form-control ${errors.signUpEndDate && 'is-invalid'}`}
+                className={`add-page-input form-control ${errors.signUpEndDate && 'is-invalid'}`}
                 type="datetime-local"
                 {...register("signUpEndDate", {
                   required: "Sign up end date is required",
@@ -196,7 +195,7 @@ export const AddEvent = ({setStep}) => {
               <label className="form-label">Start date</label>
               <InfoIcon content={<p>When this event starts.</p>}/>
               <input
-                className={`form-control ${errors.startDate && 'is-invalid'}`}
+                className={`add-page-input form-control ${errors.startDate && 'is-invalid'}`}
                 type="datetime-local"
                 {...register("startDate", {
                   required: "Start date is required",
@@ -219,7 +218,7 @@ export const AddEvent = ({setStep}) => {
               <label className="form-label">End Date</label>
               <InfoIcon content={<p>When this event ends.</p>}/>
               <input
-                className={`form-control ${errors.endDate && 'is-invalid'}`}
+                className={`add-page-input form-control ${errors.endDate && 'is-invalid'}`}
                 type="datetime-local"
                 {...register("endDate", {
                   required: "End date is required",
@@ -241,7 +240,7 @@ export const AddEvent = ({setStep}) => {
           <hr className="timeline" />
         </div>
   
-        <button type="submit" className="btn btn-primary mt-3">
+        <button type="submit" className="btn mt-3 btn-crimson">
           Create Event
         </button>
       </form>

@@ -48,11 +48,16 @@ export const UserProvider = ({children}) => {
         }
     }, [])
 
+    const updateUser = (user) => {
+        ClearStoredUser();
+        StoreUser(user)
+        setUser(GetUserFromStore());
+    } 
+
     const Login = async (email, password) => {
         const res = await api.Login(email, password)
         if(res.status === 200) {
-            StoreUser(res.data)
-            setUser(GetUserFromStore())
+            updateUser(res.data);
             setIsLoggedIn(true);
         }
         else {
@@ -69,8 +74,8 @@ export const UserProvider = ({children}) => {
     }
 
     const Register = async (login, firstName, lastName, email, password) => {
-        const res = await api.Register(login, firstName, lastName, email,password);
-        console.log(res)
+        const res = await api.Register(login, firstName, lastName, email, password);
+
         if(res.status === 201) {
             await Login(email, password)
         }
@@ -88,9 +93,25 @@ export const UserProvider = ({children}) => {
         return -1
     }
 
+    const editUser = async (id, firstName, lastName, password, newPassword) => {
+        const params = { password }
+        if(firstName) params.firstName = firstName;
+        if(lastName) params.lastName = lastName;
+        if(newPassword) params.newPassword = newPassword;
+ 
+        const res = await api.Patch(`users/${id}`, params)
+        if(res.status === 200) {
+            updateUser({ user: res.data, expires: user.expires });
+        }
+        else {
+            setAlertText(res.message)
+            setShowAlert(true)
+        }
+    }
+
     return (
-        <UserContext.Provider value={{ user, Login, Logout, Register, isValid, idByLogin }}>
-            <div style={{ position: 'relative'}}>
+        <UserContext.Provider value={{ user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
+            <div style={{ position: 'relative' }}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
             </div>

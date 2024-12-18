@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAPI from "../../Hooks/useAPI";
 import Loader from "../Loader/Loader";
@@ -12,13 +12,14 @@ const LoginForm = () => {
 
     const navigate = useNavigate();
 
+    const location = useLocation();
+    const {from} = location.state || {};
+
     const api = useAPI()
 
     const handleLogin = async (values) => {
         await Login(values.email, values.password);
-        console.log("A")
-        navigate(-2);
-        console.log("B")
+        navigate(from ? from : '/profile');
     }
     return (
         api.isBusy ? <Loader/> :

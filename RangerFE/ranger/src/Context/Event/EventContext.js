@@ -136,12 +136,27 @@ export const EventProvider = ({ children }) => {
         }
     }
 
+    const getEventStatus = (event) => {
+        const now = new Date();
+        if(new Date(event.signUpEndDate) >  now) {
+            return 'Sign up'
+        }
+        if(new Date(event.startDate > now)) {
+            return 'Pending'
+        }
+        if(new Date(event.endDate) > now) {
+            return 'Ongoing'
+        }
+        
+        return 'Finished'
+    }
+
     useEffect(()=>{
         if(user)fetchUserEvents();
     }, [user])
 
     return (
-        <EventContext.Provider value={{userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants}}>
+        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus }}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

@@ -7,6 +7,7 @@ import { InviteUsersFromGroups } from "../InviteUsersFromGroups/InviteUsersFromG
 import { GroupProvider } from "../../../Context/Group/GroupContext";
 import { FriendContext, FriendProvider } from "../../../Context/Friend/FriendContext";
 import { InviteUsersFromFriends } from "../InviteUsersFromFriends/inviteUsersFromFriends";
+import './inviteUserModal.css'
 
 export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
     const {register, handleSubmit, formState: {errors}} = useForm();
@@ -45,7 +46,7 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                 return inviteUserToEvent(e, event, eventInvites, 'member')
             })).then(()=>onClose(true))
         }
-
+        console.log("A")
     }
 
     if(!user) return <div>Loading...</div>
@@ -59,10 +60,10 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                     <div>
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                                <p className= { "nav-link" + (tab === 'events' ? ' active' : '')  } onClick={()=>setTab('login')} aria-current="page" to="events">Via Login</p>
+                                <p className= { "nav-link" + (tab === 'login' ? ' active' : '')  } onClick={()=>setTab('login')} aria-current="page" to="events">Via Login</p>
                             </li>
                             <li className="nav-item">
-                                <p className= { "nav-link" + (tab === 'invites' ? ' active' : '')  } onClick={()=>setTab('groups')} aria-current="page" to="invites">From Groups</p>
+                                <p className= { "nav-link" + (tab === 'groups' ? ' active' : '')  } onClick={()=>setTab('groups')} aria-current="page" to="invites">From Groups</p>
                             </li>
                             <li className="nav-item">
                                 <p className= { "nav-link" + (tab === 'friends' ? ' active' : '')  } onClick={()=>setTab('friends')} aria-current="page" to="friends">Friends</p>
@@ -88,13 +89,8 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                                 {errors.login && <div className="text-danger">Login is required</div>}
                                 {userNotFoundError ? <div className="text-danger">The Login is doesn't exist</div>: null}
                             </div>
-                            <div className="mb-3">
-                                <label htmlFor="role" className="form-label">
-                                    User Role
-                                </label>
-                            </div>
                             <div className="d-flex justify-content-end">
-                                <button type="submit" className="btn btn-success">
+                                <button type="submit" className="btn btn-crimson">
                                     Send Invite
                                 </button>
                             </div>

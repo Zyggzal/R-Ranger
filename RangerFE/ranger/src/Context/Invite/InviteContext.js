@@ -27,7 +27,6 @@ export const InviteProvider = ({ children }) => {
         //events & groups
         dataEG.forEach((item) => {
             if(item.status === 'sent'){
-                // console.log(item);
                 if(item.EventId !== null){
                     events = [...events, item];
                 }
@@ -62,7 +61,7 @@ export const InviteProvider = ({ children }) => {
         try{
             const responseEG = await api.Get(`users/${user.id}`, 'invites');
             const responseF = await api.Get(`users/${user.id}`, 'friends');
-            sortInvites(responseEG.data.invites, responseF.data.friends);
+            sortInvites(responseEG.data.invites, responseF.data.friends.filter((i) => i.Friend.status !== 'accepted' ));
         }
         catch(err){
             console.log(err);
@@ -138,7 +137,7 @@ export const InviteProvider = ({ children }) => {
     }
 
     return (
-        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent, fetchEventInvites, removeInvite}}>
+        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent, fetchEventInvites, removeInvite, fetchUserInvites}}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
