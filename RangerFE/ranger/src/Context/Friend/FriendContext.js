@@ -58,7 +58,7 @@ export const FriendProvider = ({ children }) => {
         if(!user) return;
 
         try{
-            const response = await api.Patch(`users/friends/${invite.Friend.UserId}`, {id: invite.Friend.friendId, status: 'accepted'});
+            const response = await api.Patch(`users/friends/${invite.UserId}`, {id: invite.friendId, status: 'accepted'});
             if(response.status !== 200) {
                 throw response.message
             }

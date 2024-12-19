@@ -2,11 +2,13 @@ import { useContext, useEffect, useState } from "react"
 import ClockIcon from "../../Icons/ClockIcon/ClockIcon"
 import { DateToAgo } from "../../../Utils/DateTransformer"
 import { FriendContext } from "../../../Context/Friend/FriendContext"
+import { EventContext } from "../../../Context/Event/EventContext"
 
 export const InviteItem = ({invite, onAccept, onDecline}) => {
     const [eventType, setEventType] = useState(null)
 
     const {acceptFriendRequest, declineFriendRequest} = useContext(FriendContext)
+    const {acceptEventInvite, declineEventInvite} = useContext(EventContext)
 
     useEffect(() => {
         if(invite.Friend) {
@@ -20,9 +22,9 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
     const handleAccept = () => {
         switch(eventType) {
             case 'friend':
-                acceptFriendRequest(invite); break;
+                acceptFriendRequest(invite.Friend); break;
             case 'event':
-                break;
+                acceptEventInvite(invite); break;
         }
         onAccept(invite);
     }
@@ -32,7 +34,7 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
             case 'friend':
                 declineFriendRequest(invite.Friend); break;
             case 'event':
-                break;
+                declineEventInvite(invite); break;
         }
         onDecline(invite);
     }

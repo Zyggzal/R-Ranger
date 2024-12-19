@@ -84,11 +84,68 @@ export const GroupProvider = ({children}) => {
         }
     }
 
+    const deleteGroup = async (groupId) => {
+        if(!user) return;
+        try {
+            setIsLoading(true);
+            const response = await api.Delete(`groups/${groupId}`);
+
+            setIsLoading(false);
+
+            if(response.status !== 200) {
+                throw response.message
+            }
+            fetchUserGroups();
+            return response.status;
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
+    const deleteGroupMember = async (groupId, UserId) => {
+        if(!user) return;
+        try {
+            setIsLoading(true);
+            const response = await api.Delete(`groups/${groupId}members/`, { UserId });
+
+            setIsLoading(false);
+
+            if(response.status !== 200) {
+                throw response.message
+            }
+            fetchUserGroups();
+            return response.status;
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
+    const addGroupMember = async (groupId, UserId) => {
+        if(!user) return;
+        try {
+            setIsLoading(true);
+            const response = await api.Post(`groups/${groupId}/members`, { UserId });
+
+            setIsLoading(false);
+
+            if(response.status !== 200) {
+                throw response.message
+            }
+            fetchUserGroups();
+            return response.status;
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         if(user) fetchUserGroups();
     }, [user])
 
-    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups}}>
+    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember}}>
         {children}
     </GroupContext.Provider>;
 }

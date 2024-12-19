@@ -106,7 +106,7 @@ export const EventProvider = ({ children }) => {
         }
     }
 
-    const  eventParticipants = async (id) => {
+    const eventParticipants = async (id) => {
         if(!user) return;
         try{
             const response = await api.Get(`events/${id}`, 'participants');
@@ -138,17 +138,53 @@ export const EventProvider = ({ children }) => {
 
     const getEventStatus = (event) => {
         const now = new Date();
-        if(new Date(event.signUpEndDate) >  now) {
-            return 'Sign up'
+        
+        if(new Date(event.endDate) < now) {
+            return 'Finished'
         }
-        if(new Date(event.startDate > now)) {
-            return 'Pending'
-        }
-        if(new Date(event.endDate) > now) {
+        if(new Date(event.startDate) < now) {
             return 'Ongoing'
         }
+        if(new Date(event.signUpEndDate) < now) {
+            return 'Pending'
+        }
         
-        return 'Finished'
+        return 'Sign Up'
+    }
+
+    const acceptEventInvite = async (invite) => {
+        if(!user) return;
+        try{
+            const delResponse = await api.Delete('invites', { id: invite.id });
+
+            if(delResponse.status !== 200) {
+                throw delResponse.message;
+            }
+
+            const response = await api.Post(`events/${invite.EventId}/participants`, { UserId: invite.UserId });
+            if(response.status !== 200) {
+                throw response.message
+            }
+        }
+        catch (error){
+            console.log(error)
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
+    const declineEventInvite = async (invite) => {
+        if(!user) return;
+        try{
+            const response = await api.Delete('invites', { id: invite.id });
+            if(response.status !== 200) {
+                throw response.message;
+            }
+        }
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
     }
 
     useEffect(()=>{
@@ -156,7 +192,7 @@ export const EventProvider = ({ children }) => {
     }, [user])
 
     return (
-        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus }}>
+        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite }}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

@@ -13,7 +13,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), controll
 router.patch('/:id', passport.authenticate('jwt', { session: false }), controller.update);
 router.get('/:id/participants', passport.authenticate('jwt', { session: false }), controller.getParticipants);
 router.patch('/:id/participants', passport.authenticate('jwt', { session: false }), controller.updateParticipant);
-router.post('/:id/participants', passport.authenticate('jwt', { session: false }), controller.addParticipant);
+router.post('/:id/participants', passport.authenticate('jwt', { session: false }), controller.addParticipantToEvent);
 router.delete('/:id/participants', passport.authenticate('jwt', { session: false }), controller.removeParticipant);
 
 module.exports = router;

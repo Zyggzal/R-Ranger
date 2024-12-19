@@ -166,13 +166,25 @@ module.exports.update = async (req, res) => {
     }
 }
 
+module.exports.addParticipantToEvent = async (req, res) => {
+    try {
+        const { UserId, role, status } = req.body;
+        const ep = await EventParticipants.create({ EventId: req.params.id, UserId, role, status });
+
+        res.status(200).json(ep);
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
 module.exports.addParticipant = async (data) => {
     try {
         const { UserId, role, status, EventId } = data;
         //const ep = await EventParticipants.create({ EventId: req.params.id, UserId, role, status });
         const ep = await EventParticipants.create({ EventId, UserId, role, status });
 
-        // res.status(200).json(ep);
+        //res.status(200).json(ep);
     }
     catch(err) {
         // errHandler(res, err, 500);
@@ -181,7 +193,7 @@ module.exports.addParticipant = async (data) => {
 
 module.exports.removeParticipant = async (req, res) => {
     try {
-        await Invite.destroy({ where: { EventId: req.params.id, UserId: req.body.UserId }})
+        await EventParticipants.destroy({ where: { EventId: req.params.id, UserId: req.body.UserId }})
 
         res.status(200).json('Deletion successful');
     }

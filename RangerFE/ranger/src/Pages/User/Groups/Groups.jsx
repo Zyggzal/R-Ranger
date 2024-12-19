@@ -11,12 +11,15 @@ const Groups = () => {
         <div>
             <div>
                 <GroupProvider>
+                    <div className="d-flex align-items-center">
+                        <h1>Your groups</h1>
+                        <button className="btn btn-crimson ms-3"  onClick={() => setShowGroupModal(true)}>
+                            +
+                        </button>
+                    </div>
                     <div>
                         <ListUserGroups/>
                     </div>
-                    <button onClick={() => setShowGroupModal(true)}>
-                        Create Group
-                    </button>
                     <AddGroup showModal={showGroupModal} onClose={() => setShowGroupModal(false)} />
                 </GroupProvider>
             </div>

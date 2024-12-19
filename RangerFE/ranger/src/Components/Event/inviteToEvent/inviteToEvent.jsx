@@ -107,7 +107,7 @@ export const InviteToEvent = ({ eventId }) => {
                                                 <h6>Role: { u.EventParticipants.role }</h6>
                                                 { u.EventParticipants.role !== 'creator' && 
                                                 <button className="btn btn-outline-danger" onClick={ async ()=> {
-                                                    await removeParticipant(u.id)
+                                                    await removeParticipant(event.id, u.id)
                                                     fetchEvents()
                                                 }}>Remove</button>}
                                             </div>

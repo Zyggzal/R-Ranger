@@ -46,7 +46,6 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                 return inviteUserToEvent(e, event, eventInvites, 'member')
             })).then(()=>onClose(true))
         }
-        console.log("A")
     }
 
     if(!user) return <div>Loading...</div>
