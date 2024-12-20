@@ -46,7 +46,7 @@ export const AddGroup = ({showModal, onClose}) => {
                             Group Type
                         </label>
                         <select
-                            className="form-select"
+                            className="form-select add-page-input"
                             id="isPublic"
                             {...register("isPublic")}
                         >
@@ -55,7 +55,7 @@ export const AddGroup = ({showModal, onClose}) => {
                         </select>
                     </div>
                     <div className="d-flex justify-content-end">
-                        <button type="submit" className="btn btn-success">
+                        <button type="submit" className="btn btn-crimson">
                             Add Group
                         </button>
                     </div>

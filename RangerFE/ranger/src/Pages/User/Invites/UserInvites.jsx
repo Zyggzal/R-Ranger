@@ -30,8 +30,6 @@ const UserInvites = () => {
                         </div>
                     </div>
                     <ListUserAllInvites type={type} asc={sortBy}/>
-                    <hr/>
-                    <ListUserSortedInvites/>
                 </EventProvider>
             </FriendProvider>
         </InviteProvider>

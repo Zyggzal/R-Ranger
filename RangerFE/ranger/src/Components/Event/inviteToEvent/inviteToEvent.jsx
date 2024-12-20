@@ -81,7 +81,7 @@ export const InviteToEvent = ({ eventId }) => {
                 <h1>Invite Others to {event.name}</h1>
                 <h4>
                     Current Participants: 
-                    <span className={`badge ms-1 text-bg-${isFull ? 'danger' : 'success'}`}>{event.participants.length + eventInvites.length}{event.participantsLimit && `/${event.participantsLimit}`}</span> 
+                    <span className={`badge ms-3 text-bg-${isFull ? 'danger' : 'success'}`}>{event.participants.length + eventInvites.length}{event.participantsLimit && `/${event.participantsLimit}`}</span> 
                     { !isOver && !isFull && <button className="btn btn-outline-success ms-3" onClick={()=>setModal(true)}><strong>+</strong></button>}
                     
                 </h4>

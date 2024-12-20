@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { GroupContext } from "../../../Context/Group/GroupContext"
 import Loader from "../../Loader/Loader"
 import { UserContext } from "../../../Context/UserContext"
+import NoContent from "../../NoContent/NoContent"
 
 export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
     const {isLoading, fetchUserGroupsWithIncludes} = useContext(GroupContext)
@@ -68,7 +69,7 @@ export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
                         )
                     })
                     :
-                    <h2>Nothing to see here yet</h2>
+                    <NoContent/>
                 }
             </div>
             <div className="d-flex justify-content-end">

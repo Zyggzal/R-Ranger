@@ -240,3 +240,19 @@ module.exports.updateParticipant = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
+
+module.exports.getUserStatus = async (req, res) => {
+    try {
+        const ep = await EventParticipants.findOne({ where: { EventId: req.params.eventId, UserId: req.params.userId } })
+
+        if(ep) {
+            res.status(200).json(ep);
+        }
+        else {
+            errHandler(res, 'Event not found', 404)
+        }
+    }
+    catch (err) {
+        errHandler(res, err, 500);
+    }
+}

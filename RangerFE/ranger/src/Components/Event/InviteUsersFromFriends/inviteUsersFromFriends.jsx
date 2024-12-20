@@ -1,6 +1,7 @@
 import { useContext, useState } from "react"
 import Loader from "../../Loader/Loader"
 import { FriendContext } from "../../../Context/Friend/FriendContext"
+import NoContent from "../../NoContent/NoContent"
 
 export const InviteUsersFromFriends = ({onSubmit, event, eventInvites}) => {
     const {isLoading, userFriends} = useContext(FriendContext)
@@ -25,7 +26,7 @@ export const InviteUsersFromFriends = ({onSubmit, event, eventInvites}) => {
                     userFriends && userFriends.length > 0 ?
                     userFriends.map(f => {
                         return (
-                            !isInvited(f) &&
+                            !isInvited(f) && f.Friend.status === 'accepted' &&
                             <div className="list-group-item list-group-item-action d-flex justify-content-between" key={`frienditem${f.id}`}>
                                 <label className="form-check-label" htmlFor={`friendcheck${f.id}`}>{f.firstName} {f.lastName}</label>
                                 <input className="form-check-input" id={`friendcheck${f.id}`} type="checkbox" onChange={(e) => {
@@ -38,7 +39,7 @@ export const InviteUsersFromFriends = ({onSubmit, event, eventInvites}) => {
                         )
                     })
                     :
-                    <h2>Nothing to see here yet</h2>
+                    <NoContent/>
                 }
             </div>
             <div className="d-flex justify-content-end">

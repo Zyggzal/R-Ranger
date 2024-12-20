@@ -15,5 +15,6 @@ router.get('/:id/participants', passport.authenticate('jwt', { session: false })
 router.patch('/:id/participants', passport.authenticate('jwt', { session: false }), controller.updateParticipant);
 router.post('/:id/participants', passport.authenticate('jwt', { session: false }), controller.addParticipantToEvent);
 router.delete('/:id/participants', passport.authenticate('jwt', { session: false }), controller.removeParticipant);
+router.get('/:eventId/participantStatus/:userId', passport.authenticate('jwt', { session: false }), controller.getUserStatus);
 
 module.exports = router;

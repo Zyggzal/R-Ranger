@@ -4,6 +4,8 @@ import ClockIcon from "../Icons/ClockIcon/ClockIcon";
 import { DateToAgo } from "../../Utils/DateTransformer";
 import { Modal } from "react-bootstrap";
 import Loader from "../Loader/Loader";
+import NoContent from "../NoContent/NoContent";
+import LockIcon from "../Icons/LockIcon/LockIcon";
 
 export const ListUserGroups = () => {
 
@@ -17,7 +19,7 @@ export const ListUserGroups = () => {
         <div className="user-list-container list-group">
             {
                 (!userGroups[0] || userGroups[0].length === 0) && (!userGroups[1] || userGroups[1].length === 0)
-                && <h3>Nothing to see here yet</h3>
+                && <NoContent/>
             }
             {
                 userGroups[0] && userGroups[0].length > 0 &&
@@ -27,7 +29,7 @@ export const ListUserGroups = () => {
                     {userGroups[0].map((group) => (
                         <div key={`grouplistitem${group.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
                             <div>
-                                <h5>{group.name}</h5>
+                                <h5>{group.name} <LockIcon unlocked={group.isPublic}/></h5>
                                 <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
                             </div>
                             <div className="d-flex flex-column align-items-end justify-content-center">

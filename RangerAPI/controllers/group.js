@@ -210,3 +210,18 @@ module.exports.getMembers = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
+
+module.exports.userStatus = async (req, res) => {
+    try {
+        const ug = await UsersGroups.findOne({ where: { UserId: req.body.id, GroupId: req.params.id } })
+        if(ug) {
+            res.status(200).json(ug);
+        }
+        else {
+            res.status(200).json('stranger');
+        }
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}

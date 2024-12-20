@@ -2,15 +2,19 @@ import {useContext, useEffect, useState} from "react";
 import {EventContext} from "../../Context/Event/EventContext";
 import {useLocation} from "react-router-dom";
 import {ListParticipants} from "./listParticipants";
+import Loader from "../Loader/Loader";
+import { UserContext } from "../../Context/UserContext";
 
-export const EventItem = ({id, role}) =>{
+export const EventItem = ({id}) =>{
 
-    const {eventById, eventParticipants} = useContext(EventContext);
+    const {eventById, eventParticipants, getEventUserStatus} = useContext(EventContext);
+    const {user} = useContext(UserContext);
 
     const [event, setEvent] = useState({});
     const [participants, setParticipants] = useState(null);
     const [creator, setCreator] = useState({});
     const [date, setDate] = useState({});
+    const [userStatus, setUserStatus] = useState(null);
 
     // console.log("Role: ", role);
 
@@ -25,18 +29,28 @@ export const EventItem = ({id, role}) =>{
                 const eventEndDate = new Date(thisEvent.endDate).toLocaleString();
                 setDate({start: eventStartDate, end: eventEndDate});
 
-                if(role === 'admin' || role === 'creator'){
-                    const thisParticipants = await eventParticipants(id);
-
-                    setParticipants(thisParticipants);
-                }
+                const status = await getEventUserStatus(user.id, id);
+                setUserStatus(status);
             }
         };
 
         fetchEvent();
 
     }, []);
-    if(!event) return <div>Loading...</div>
+
+    useEffect(() => {
+        if(!userStatus) return;
+        
+        const fetchParticipants = async () => {
+            if(userStatus.role === 'admin' || userStatus.role === 'creator'){
+                const thisParticipants = await eventParticipants(id);
+    
+                setParticipants(thisParticipants);
+            }
+        }
+        fetchParticipants();
+    }, [userStatus])
+    if(!event) return <Loader/>
     return (
         <div className="container mt-4 p-4 border rounded bg-light shadow">
             <h1>{event.name}</h1>
@@ -45,7 +59,7 @@ export const EventItem = ({id, role}) =>{
                 {date.start} - {date.end}
             </div>
 
-            {participants && (role === 'admin' || role === 'creator') && (
+            {participants && (userStatus.role === 'admin' || userStatus.role === 'creator') && (
                 <div className="mt-4 p-3 bg-white border rounded">
                     <h5 className="mb-3">
                         Participants:
@@ -57,7 +71,7 @@ export const EventItem = ({id, role}) =>{
                         )}
                     </h5>
                     <div>
-                        <ListParticipants participants={participants} role={role}/>
+                        <ListParticipants participants={participants} role={userStatus.role}/>
                     </div>
                 </div>
             )}

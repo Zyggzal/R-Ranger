@@ -1,16 +1,17 @@
 import { EventProvider } from "../../../Context/Event/EventContext";
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {EventItem} from "../../../Components/Event/EventItem";
 
 const SimpleEvent = () => {
 
-    const location = useLocation();
-    const {eventId, role} = location.state || {};
+    const params = useParams()
+
+    //const {eventId, role} = location.state || {};
 
     return (
         <EventProvider>
             <div>
-                <EventItem id={eventId} role={role} />
+                <EventItem id={params.id} />
             </div>
         </EventProvider>
     )

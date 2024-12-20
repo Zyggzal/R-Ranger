@@ -187,12 +187,29 @@ export const EventProvider = ({ children }) => {
         }
     }
 
+    const getEventUserStatus = async (UserId, EventId) => {
+        if(!user) return;
+        try{
+            const response = await api.Get(`events/${EventId}/participantStatus/${UserId}`);
+
+            if(response.status !== 200) {
+                throw response.message;
+            }
+
+            return response.data;
+        }
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     useEffect(()=>{
         if(user)fetchUserEvents();
     }, [user])
 
     return (
-        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite }}>
+        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite, getEventUserStatus }}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
