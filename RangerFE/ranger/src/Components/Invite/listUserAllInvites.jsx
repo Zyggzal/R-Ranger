@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from "react";
 import {InviteContext} from "../../Context/Invite/InviteContext";
 import { InviteItem } from "./InviteItem/InviteItem";
 import './listUserAllInvites.css'
+import Loader from "../Loader/Loader";
 
 const ListUserAllInvites = ({type, asc}) => {
     const {allInvites, isLoading, fetchUserInvites} = useContext(InviteContext);
@@ -9,27 +10,29 @@ const ListUserAllInvites = ({type, asc}) => {
 
     useEffect(() => {
         if(!allInvites) return;
+
+        let list = [];
         switch(type) {
             case 'friends':
-                setInvitesToShow(allInvites.filter((i) => i.Friend)); break;
+                list = allInvites.filter((i) => i.Friend); break;
             case 'events':
-                setInvitesToShow(allInvites.filter((i) => i.EventId)); break;
+                list = allInvites.filter((i) => i.EventId); break;
             default:
-                setInvitesToShow(allInvites); break;
+                list = allInvites; break;
         }
-    }, [allInvites, type]);
 
-    useEffect(() => {
-        invitesToShow && setInvitesToShow(invitesToShow.sort((a, b) => {
+        list = list.sort((a, b) => {
             const ad = new Date(a.createdAt).getTime()
             const bd = new Date(b.createdAt).getTime()
-            
-            return asc ? ad - bd : bd - ad;
-        }))
-    }, [invitesToShow, asc])
+
+            return asc === '1' ? ad - bd : bd - ad;
+        })
+
+        setInvitesToShow(list)
+    }, [allInvites, type, asc]);
 
 
-    if(isLoading || !invitesToShow) return <div>Loading...</div>
+    if(isLoading || !invitesToShow) return <Loader/>
     return (
         <>
             {invitesToShow.length <= 0 ? 

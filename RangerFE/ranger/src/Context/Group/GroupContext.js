@@ -24,6 +24,7 @@ export const GroupProvider = ({children}) => {
 
         try{
             const response = await api.Get(`users/${user.id}`, 'creatorOfGroups,memberOf');
+
             if(response.status !== 200) {
                 throw response.message;
             }
@@ -169,7 +170,7 @@ export const GroupProvider = ({children}) => {
         if(!user) return;
         try {
             setIsLoading(true);
-            const response = await api.Get(`groups/${GroupId}/memberStatus`, { id: UserId });
+            const response = await api.Get(`groups/${GroupId}/memberStatus/${UserId}`);
 
             setIsLoading(false);
 

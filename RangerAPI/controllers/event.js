@@ -249,7 +249,7 @@ module.exports.getUserStatus = async (req, res) => {
             res.status(200).json(ep);
         }
         else {
-            errHandler(res, 'Event not found', 404)
+            res.status(200).json({ role: 'stranger' });
         }
     }
     catch (err) {

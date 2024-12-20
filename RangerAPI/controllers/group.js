@@ -213,12 +213,12 @@ module.exports.getMembers = async (req, res) => {
 
 module.exports.userStatus = async (req, res) => {
     try {
-        const ug = await UsersGroups.findOne({ where: { UserId: req.body.id, GroupId: req.params.id } })
+        const ug = await UsersGroups.findOne({ where: { UserId: req.params.userId, GroupId: req.params.groupId } })
         if(ug) {
             res.status(200).json(ug);
         }
         else {
-            res.status(200).json('stranger');
+            res.status(200).json({ role: 'stranger' });
         }
     }
     catch(err) {

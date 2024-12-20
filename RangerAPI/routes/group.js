@@ -15,5 +15,6 @@ router.get('/:id/members', passport.authenticate('jwt', { session: false }), con
 router.post('/:id/members', passport.authenticate('jwt', { session: false }), controller.addMember);
 router.patch('/:id/members', passport.authenticate('jwt', { session: false }), controller.editMember);
 router.delete('/:id/members', passport.authenticate('jwt', { session: false }), controller.deleteMember);
-router.get('/:id/memberStatus', passport.authenticate('jwt', { session: false }), controller.userStatus);
+router.get('/:groupId/memberStatus/:userId', passport.authenticate('jwt', { session: false }), controller.userStatus);
+
 module.exports = router;

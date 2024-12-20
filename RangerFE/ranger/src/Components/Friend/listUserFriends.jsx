@@ -1,19 +1,40 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {FriendContext} from "../../Context/Friend/FriendContext";
 import { DateToAgo } from "../../Utils/DateTransformer";
 import PersonDashIcon from "../Icons/PersonDashIcon/PersonDashIcon";
 import { Modal } from "react-bootstrap";
+import NoContent from "../NoContent/NoContent";
+import Loader from "../Loader/Loader";
 
-export const ListUserFriends = () =>{
+export const ListUserFriends = ({asc}) =>{
 
     const {userFriends, isLoading, declineFriendRequest} = useContext(FriendContext);
+    const [friendsToShow, setFriendsToShow] = useState(null);
+
     const [toDelete, setToDelete] = useState(-1);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    if(isLoading || !userFriends) return <div>Loading...</div>;
+    useEffect(() => {
+        if(userFriends) {
+            let list = userFriends.filter((f) => f.Friend.status === 'accepted')
+
+            list = list.sort((a, b) => {
+                let diff = a.login.localeCompare(b.login);
+
+                if(asc === '0') diff *= -1;
+
+                return diff;
+            })
+
+            setFriendsToShow(list);
+        }
+    }, [userFriends, asc])
+
+    if(isLoading || !userFriends) return <Loader/>;
     return(
         <div className="user-list-container list-group mt-4">
-            { userFriends.map((f) => (
+            { 
+                !friendsToShow || friendsToShow.length === 0 ? <NoContent/> : friendsToShow.map((f) => (
                 f.Friend.status === 'accepted' && <div key={`friendlistitem${f.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
                     <div>
                         <h5>{f.firstName} {f.lastName}</h5>

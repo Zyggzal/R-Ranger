@@ -152,6 +152,22 @@ export const EventProvider = ({ children }) => {
         return 'Sign Up'
     }
 
+    const getEventStatusNum = (event) => {
+        const now = new Date();
+        
+        if(new Date(event.endDate) < now) {
+            return 3
+        }
+        if(new Date(event.startDate) < now) {
+            return 2
+        }
+        if(new Date(event.signUpEndDate) < now) {
+            return 1
+        }
+        
+        return 0
+    }
+
     const acceptEventInvite = async (invite) => {
         if(!user) return;
         try{
@@ -209,7 +225,7 @@ export const EventProvider = ({ children }) => {
     }, [user])
 
     return (
-        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite, getEventUserStatus }}>
+        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite, getEventUserStatus, getEventStatusNum }}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

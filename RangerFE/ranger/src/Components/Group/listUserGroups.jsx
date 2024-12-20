@@ -7,12 +7,44 @@ import Loader from "../Loader/Loader";
 import NoContent from "../NoContent/NoContent";
 import LockIcon from "../Icons/LockIcon/LockIcon";
 
-export const ListUserGroups = () => {
+export const ListUserGroups = ({sortBy, asc}) => {
 
     //const {user} = useContext(UserContext);s
     const {userGroups, isLoading, deleteGroup} = useContext(GroupContext);
     const [toDelete, setToDelete] = useState(-1);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [createdGroupsToShow, setCreatedGroupsToShow] = useState(null);
+    const [memberGroupsToShow, setMemberGroupsToShow] = useState(null);
+    useState(() => {
+        if(userGroups) {
+            let createdList = userGroups[0];
+            let memberList = userGroups[1];
+
+            const sortFunc = (a, b) => {
+                let diff = 0;
+                switch(sortBy) {
+                    case 'name':
+                        diff = a.name.localeCompare(b.name); break;
+                    case 'created':
+                        diff = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(); break;
+                    case 'private':
+                        diff = a.isPrivate - b.isPrivate; break;
+                }
+
+                if(asc === '1') diff *= -1;
+
+                return diff;
+            }
+
+            if(sortBy !== 'none') {
+                if(createdList) createdList = createdList.sort(sortFunc);
+                if(memberList) memberList = memberList.sort(sortFunc);
+            }
+
+            setCreatedGroupsToShow(createdList);
+            setMemberGroupsToShow(memberList);
+        }
+    }, [userGroups, sortBy, asc])
 
     if(isLoading || userGroups.length === 0) return <Loader/>
     return (

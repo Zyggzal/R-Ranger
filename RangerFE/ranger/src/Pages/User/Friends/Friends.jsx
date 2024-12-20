@@ -7,21 +7,28 @@ import PersonPlusIcon from '../../../Components/Icons/PersonPlusIcon/PersonPlusI
 const Friends = () => {
 
     const [showFriendModal, setShowFriendModal] = useState(false);
-    
+
+    const [asc, setAsc] = useState('1')
+
     return (
-        <div>
-            <div>
-                <FriendProvider>
-                    <button className="btn btn-crimson" onClick={() => setShowFriendModal(true)}>
-                        <PersonPlusIcon/> Add friend
-                    </button>
-                    <div>
-                        <ListUserFriends/>
-                    </div>
-                    <AddFriend showModal={showFriendModal} onClose={() => setShowFriendModal(false)} />
-                </FriendProvider>
+        <FriendProvider>
+            <div className="d-flex justify-content-between mb-3">
+                <button className="btn btn-crimson" onClick={() => setShowFriendModal(true)}>
+                    <PersonPlusIcon/> Add friend
+                </button>
+                <div style={{ height: '5%', width: '20%' }} className="d-flex align-items-center">
+                    <p style={{ marginBottom: '0px', width: '100%' }}>Sort By Name:</p>
+                    <select style={{ width: '50%' }} className="form-select add-page-input" value={asc} onChange={(e) => setAsc(e.target.value)}>
+                        <option value='1'>Asc</option>
+                        <option value='0'>Desc</option>
+                    </select>
+                </div>
             </div>
-        </div>
+            <div>
+                <ListUserFriends asc={asc} />
+            </div>
+            <AddFriend showModal={showFriendModal} onClose={() => setShowFriendModal(false)} />
+        </FriendProvider>
     )
 }
 
