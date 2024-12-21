@@ -1,5 +1,10 @@
 .event-box{
-    background-color: #e9ecef;
+    background-color: #161A1D;
+    color: #F5F3F4;
+}
+
+.event-box .edit-btn {
+    color: white;
 }
 
 .main-grid-box{
@@ -7,9 +12,7 @@
     grid-template-columns: 1fr 1fr;
     column-gap: 20px;
 }
-.main-text{
 
-}
 .main-time{
     display: flex;
     justify-content: space-around;
@@ -25,7 +28,7 @@
     width: 100%;
     border: none;
     height: 4px;
-    background-color: #262626;
+    background-color: white;
     border-radius: 2px;
 }
 .divider-mini{
@@ -39,9 +42,12 @@
 .event-name{
     text-align: center;
     padding: 8px;
+    padding-left: 25px;
     border-radius: 25px;
     border: 4px solid #B1A7A6;
+    width: 100%;
 }
+
 .event-type{
     margin: 0 20px;
     font-size: 1.2rem;
@@ -56,6 +62,7 @@
     font-size: 1.4rem;
     margin-bottom: 10px;
 }
+
 .private{
     text-align: left;
     margin: 0 20px;

@@ -1,16 +1,15 @@
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import InviteToEvent from "../../../Components/Event/inviteToEvent/inviteToEvent"
 import { EventProvider } from "../../../Context/Event/EventContext"
 import { InviteProvider } from "../../../Context/Invite/InviteContext";
 
 export const InviteToEventPage = () => {
-    const location = useLocation();
-    const {eventId} = location.state || {};
+    const params = useParams()
     
     return (
         <EventProvider>
             <InviteProvider>
-                <InviteToEvent eventId={eventId}/>
+                <InviteToEvent eventId={params.id}/>
             </InviteProvider>
         </EventProvider>
     )

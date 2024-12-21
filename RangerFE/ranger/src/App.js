@@ -30,7 +30,7 @@ function App() {
             </Route>
             <Route path='events/add' element={ <RequireAuth><AddEventPage/></RequireAuth> } />
             <Route path='events/:id' element={ <RequireAuth><SimpleEvent /></RequireAuth> } />
-            <Route path='eventInvite' element={ <RequireAuth><InviteToEventPage eventId={5}/></RequireAuth> } />
+            <Route path='events/:id/invite' element={ <RequireAuth><InviteToEventPage/></RequireAuth> } />
             <Route path='*' element={<NotFound />} />
         </Route>
       ));

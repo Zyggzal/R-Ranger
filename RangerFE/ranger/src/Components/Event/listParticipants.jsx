@@ -7,8 +7,8 @@ export const ListParticipants = ({participants, role}) =>{
     return (
         <div className="container mt-4">
             <div
-                className="list-container"
-                style={{maxHeight: "300px", overflowY: "auto", border: "1px solid #ddd"}}
+                className="user-list-container list-container"
+                style={{maxHeight: "300px", overflowY: "auto"}}
             >
                 <ul className="list-group">
                     {participants.map((user) => (
@@ -25,8 +25,8 @@ export const ListParticipants = ({participants, role}) =>{
                             <div>
                                 <strong>{user.firstName} {user.lastName}</strong>
                             </div>
-                            <div className="text-muted">{user.email}</div>
-                            <div className="text-muted">{user.EventParticipants.role}</div>
+                            <div>{user.email}</div>
+                            <div>{user.EventParticipants.role}</div>
                             {role === "creator" &&
                                 user.EventParticipants.role !== "creator" &&
                                 user.EventParticipants.role !== "admin" && (

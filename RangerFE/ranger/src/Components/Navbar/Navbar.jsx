@@ -28,7 +28,16 @@ const Navbar = () => {
                         <NavLink className='btn btn-link' to='/events/add' style={linkStyle}>Add Event</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/eventInvite' state={{ eventId: 5 }} style={linkStyle}>Invite to Event</NavLink>
+                        <NavLink className='btn btn-link' to='/profile/events' style={linkStyle}>Your Events</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className='btn btn-link' to='/profile/invites' state={'invites'} style={linkStyle}>Your Invites</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className='btn btn-link' to='/profile/friends' state={'friends'} style={linkStyle}>Your Friends</NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className='btn btn-link' to='/profile/groups' state={'groups'} style={linkStyle}>Your Groups</NavLink>
                     </li>
                 </ul>
                 { 

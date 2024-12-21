@@ -7,6 +7,7 @@ import EditIcon from "../../../Components/Icons/EditIcon/EditIcon";
 
 const UserProfile = () => {
     const [tab, setTab] = useState('events');
+
     const navigate = useNavigate();
 
     const { user } = useContext(UserContext);
@@ -14,7 +15,9 @@ const UserProfile = () => {
     const [isUpdate, setIsUpdate] = useState(false);
 
     useEffect(()=>{
-        navigate(tab);
+        if(tab) {
+            navigate(tab);
+        }
     }, [tab])
 
     return (

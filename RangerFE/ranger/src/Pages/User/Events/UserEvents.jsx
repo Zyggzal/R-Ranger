@@ -19,6 +19,7 @@ const UserEvents = () => {
                         <option value='start'>Start Date</option>
                         <option value='end'>End Date</option>
                         <option value='status'>Status</option>
+                        <option value='private'>Is Private</option>
                     </select>
                     <select className="form-select add-page-input" value={asc} onChange={(e) => setAsc(e.target.value)}>
                         <option value='1'>Asc</option>

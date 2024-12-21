@@ -35,6 +35,8 @@ export const ListUserEvents = ({sortBy, asc}) =>{
                             diff = new Date(a.endDate).getTime() - new Date(b.endDate).getTime(); break;
                         case 'status':
                             diff = getEventStatusNum(a) - getEventStatusNum(b); break;
+                        case 'private':
+                            diff = b.isPublic - a.isPublic; break;
                     }
 
                     if(asc === '1') diff *= -1;
@@ -54,7 +56,6 @@ export const ListUserEvents = ({sortBy, asc}) =>{
         return <NoContent/>
     }
     return (
-        // toLocaleDateString
         <div className="user-list-container list-group">
             {
                 eventsToShow.map((event) => (
