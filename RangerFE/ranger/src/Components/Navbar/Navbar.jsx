@@ -28,7 +28,7 @@ const Navbar = () => {
                         <NavLink className='btn btn-link' to='/events/add' style={linkStyle}>Add Event</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/eventInvite' state={{ eventId: 2028 }} style={linkStyle}>Invite to Event</NavLink>
+                        <NavLink className='btn btn-link' to='/eventInvite' state={{ eventId: 5 }} style={linkStyle}>Invite to Event</NavLink>
                     </li>
                 </ul>
                 { 
