@@ -47,7 +47,7 @@ export const ListUserEvents = ({sortBy, asc}) =>{
     }, [userEvents, sortBy, asc])
 
 
-    if(loading || !userEvents){
+    if(loading || !userEvents || !userEvents.participatesIn){
         return <Loader/>
     }
     if(!eventsToShow || eventsToShow.length === 0){
@@ -57,8 +57,7 @@ export const ListUserEvents = ({sortBy, asc}) =>{
         // toLocaleDateString
         <div className="user-list-container list-group">
             {
-                !userEvents.participatesIn || userEvents.participatesIn.length === 0 ? <NoContent/> :
-                userEvents.participatesIn.map((event) => (
+                eventsToShow.map((event) => (
                     <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between">
                         <div>
                             <h2>{ event.name } { <LockIcon unlocked={event.isPublic} /> }</h2>

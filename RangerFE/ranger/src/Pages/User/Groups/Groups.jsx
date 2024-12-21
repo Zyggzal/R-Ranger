@@ -1,5 +1,5 @@
 import {GroupProvider} from "../../../Context/Group/GroupContext";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ListUserGroups} from "../../../Components/Group/listUserGroups";
 import {AddGroup} from "../../../Components/Group/addGroup";
 

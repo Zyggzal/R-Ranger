@@ -15,7 +15,8 @@ export const ListUserGroups = ({sortBy, asc}) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [createdGroupsToShow, setCreatedGroupsToShow] = useState(null);
     const [memberGroupsToShow, setMemberGroupsToShow] = useState(null);
-    useState(() => {
+
+    useEffect(() => {
         if(userGroups) {
             let createdList = userGroups[0];
             let memberList = userGroups[1];
@@ -28,7 +29,7 @@ export const ListUserGroups = ({sortBy, asc}) => {
                     case 'created':
                         diff = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(); break;
                     case 'private':
-                        diff = a.isPrivate - b.isPrivate; break;
+                        diff =  b.isPublic - a.isPublic; break;
                 }
 
                 if(asc === '1') diff *= -1;
@@ -44,21 +45,21 @@ export const ListUserGroups = ({sortBy, asc}) => {
             setCreatedGroupsToShow(createdList);
             setMemberGroupsToShow(memberList);
         }
-    }, [userGroups, sortBy, asc])
+    }, [userGroups, asc, sortBy])
 
     if(isLoading || userGroups.length === 0) return <Loader/>
     return (
         <div className="user-list-container list-group">
             {
-                (!userGroups[0] || userGroups[0].length === 0) && (!userGroups[1] || userGroups[1].length === 0)
+                (!createdGroupsToShow || createdGroupsToShow.length === 0) && (!memberGroupsToShow || memberGroupsToShow.length === 0)
                 && <NoContent/>
             }
             {
-                userGroups[0] && userGroups[0].length > 0 &&
+                createdGroupsToShow &&createdGroupsToShow.length > 0 &&
                 <>
                     <h3 className="mb-3 mt-2">Created by You</h3>
 
-                    {userGroups[0].map((group) => (
+                    {createdGroupsToShow.map((group) => (
                         <div key={`grouplistitem${group.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
                             <div>
                                 <h5>{group.name} <LockIcon unlocked={group.isPublic}/></h5>
@@ -75,10 +76,10 @@ export const ListUserGroups = ({sortBy, asc}) => {
                 </>
             }
             {
-                userGroups[1] && userGroups[1].length > 0 &&
+                memberGroupsToShow && memberGroupsToShow.length > 0 &&
                 <>
                     <h3 className="mb-3 mt-2">You are a member of</h3>
-                    {userGroups[1].map((group) => (
+                    {memberGroupsToShow.map((group) => (
                         <div key={`grouplistitem${group.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
                         <div>
                             <h5>{group.name}</h5>
