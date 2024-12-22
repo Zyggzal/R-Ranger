@@ -67,3 +67,9 @@
     text-align: left;
     margin: 0 20px;
 }
+.participants-limit{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

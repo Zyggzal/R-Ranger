@@ -8,6 +8,8 @@ import styles from "./EventItem.css";
 import InfoIcon from "../Icons/InfoIcon/InfoIcon";
 import ClockIcon from "../Icons/ClockIcon/ClockIcon";
 import EditIcon from "../Icons/EditIcon/EditIcon";
+import {EventReviewsList} from "./EventReview/EventRewiewsList";
+import {ReviewsProvider} from "../../Context/Reviews/ReviewsContext";
 
 export const EventItem = ({id}) =>{
 
@@ -51,11 +53,9 @@ export const EventItem = ({id}) =>{
         if(!userStatus) return;
         
         const fetchParticipants = async () => {
-            if(userStatus.role === 'admin' || userStatus.role === 'creator'){
-                const thisParticipants = await eventParticipants(id);
-    
-                setParticipants(thisParticipants);
-            }
+            const thisParticipants = await eventParticipants(id);
+
+            setParticipants(thisParticipants);
         }
         fetchParticipants();
     }, [userStatus])
@@ -67,12 +67,13 @@ export const EventItem = ({id}) =>{
                 <div className='main-text'>
                     <div className="d-flex justify-content-between align-items-center event-name">
                         <h1>{event.name}</h1>
-                        
+
                         <div>
                             {event.isPublic ?
                                 <div><span className='event-type text-bg-success badge'>
                                     Public 
-                                    <InfoIcon content={<p>Users can see this event on the dashboard and sign up without invitations.</p>}/>
+                                    <InfoIcon content={<p>Users can see this event on the dashboard and sign up without
+                                        invitations.</p>}/>
                                     </span>
                                 </div>
                                 :
@@ -109,8 +110,11 @@ export const EventItem = ({id}) =>{
 
             <div className="event-desc">
                 <div>
-                    Public Description 
-                    <InfoIcon content={<p><strong>Public</strong> description.<br/>Write the info you want everyone to see here. <br/><span className='text-secondary'>General info: type of activity, target audience, etc.</span></p>}/>
+                    Public Description
+                    <InfoIcon
+                        content={<p><strong>Public</strong> description.<br/>Write the info you want everyone to see
+                            here. <br/><span className='text-secondary'>General info: type of activity, target audience, etc.</span>
+                        </p>}/>
                 </div>
                 <p>{event.publicDescription}</p>
             </div>
@@ -118,30 +122,43 @@ export const EventItem = ({id}) =>{
             <div className="event-desc">
                 <div>
                     Private Description
-                    <InfoIcon content={<p><strong>Private</strong> description.<br/>Write the info you want only the participants to see here. <br/><span className='text-secondary'>Specific info: links, locations, etc.</span></p>}/>
+                    <InfoIcon content={<p><strong>Private</strong> description.<br/>Write the info you want only the
+                        participants to see here. <br/><span className='text-secondary'>Specific info: links, locations, etc.</span>
+                    </p>}/>
                 </div>
-                <div >{event.privateDescription}</div>
+                <div>{event.privateDescription}</div>
             </div>
             <hr className="divider"/>
 
-
-            {participants && (userStatus.role === 'admin' || userStatus.role === 'creator') && (
-                <div className="mt-4 p-3 border rounded">
-                    <h5 className="mb-3">
+            <div className="mt-4 p-3 border rounded div-participants">
+                <div className='participants-limit'>
+                    <div >
                         Participants:
-                        <span className="text-secondary ms-2"> {participants.length} </span>
+                        {participants && <span className="text-secondary ms-2"> {participants.length} </span>}
                         {event.participantsLimit && (
                             <span className="text-secondary">
-                        / {event.participantsLimit}
+                    / {event.participantsLimit}
                     </span>
                         )}
-                        <NavLink className='btn edit-btn' to={`/events/${id}/invite`}><EditIcon/></NavLink>
-                    </h5>
+                    </div>
                     <div>
-                        <ListParticipants participants={participants} role={userStatus.role}/>
+                        {participants && (userStatus.role === 'admin' || userStatus.role === 'creator') && (
+                            <NavLink className='btn edit-btn' to={`/events/${id}/invite`}>Edit <EditIcon/></NavLink>
+                        )}
                     </div>
                 </div>
-            )}
+
+                <div>
+                    <ListParticipants participants={participants}/>
+                </div>
+
+                <hr className="divider"/>
+                <ReviewsProvider>
+                    <EventReviewsList id={event.id}/>
+                </ReviewsProvider>
+
+
+            </div>
         </div>
     )
 

@@ -45,6 +45,21 @@ module.exports.getById = async (req, res) => {
     }
 }
 
+module.exports.getByEventId = async (req, res) => {
+    try {
+        const review = await Review.findAll( { include: getIncludes(req.query.include), where: { EventId: req.params.EventId } } );
+        if(review) {
+            res.status(200).json(review);
+        }
+        else {
+            errHandler(res, 'Reviews not found', 404);
+        }
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
 module.exports.create = async (req, res) => {
     try {
         const { rating, comment, EventId, UserId } = req.body;
