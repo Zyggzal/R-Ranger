@@ -3,3 +3,14 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+.review-pfp {
+    width: 6%;
+    margin-right: 10px;
+}
+
+.review-author {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}

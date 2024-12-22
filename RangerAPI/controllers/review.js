@@ -60,6 +60,21 @@ module.exports.getByEventId = async (req, res) => {
     }
 }
 
+module.exports.getByEventUserId = async (req, res) => {
+    try {
+        const review = await Review.findOne( { include: getIncludes(req.query.include), where: { EventId: req.params.EventId, UserId: req.params.UserId } } );
+        if(review) {
+            res.status(200).json(review);
+        }
+        else {
+            errHandler(res, 'Review not found', 404);
+        }
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
 module.exports.create = async (req, res) => {
     try {
         const { rating, comment, EventId, UserId } = req.body;

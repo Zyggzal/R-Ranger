@@ -20,7 +20,38 @@ export const ReviewsProvider = ({children}) => {
             if(response.status !== 200){
                 throw response.message
             }
-            return response.data;
+            const ret = []
+            ret[0] = response.data.find((r) => r.UserId === user.id)
+            ret[1] = response.data.filter((r) => r.UserId !== user.id)
+            return ret;
+        }
+        catch(err){
+            setAlertText(err)
+            setShowAlert(true)
+        }
+    }
+
+    const addReview = async (EventId, comment, rating) => {
+        if(!user) return;
+        try{
+            const response = await api.Post(`reviews/`, { EventId, UserId: user.id, comment, rating });
+            if(response.status !== 200){
+                throw response.message
+            }
+        }
+        catch(err){
+            setAlertText(err)
+            setShowAlert(true)
+        }
+    }
+
+    const editReview = async (ReviewId, comment, rating) => {
+        if(!user) return;
+        try{
+            const response = await api.Patch(`reviews/${ReviewId}`, { comment, rating });
+            if(response.status !== 200){
+                throw response.message
+            }
         }
         catch(err){
             setAlertText(err)
@@ -29,7 +60,7 @@ export const ReviewsProvider = ({children}) => {
     }
 
     return(
-        <ReviewsContext.Provider value={{getReviewsByEvent}}>
+        <ReviewsContext.Provider value={{getReviewsByEvent, addReview, editReview}}>
             <div style={{position: 'relative'}}>
                 {children}
                 {showAlert && <DismissableAlert text={alertText} onClosed={() => setShowAlert(false)}/>}

@@ -1,0 +1,16 @@
+.review-form {
+    margin: 10px 20px;
+}
+
+.review-form textarea{
+    background-color: #161A1D;
+    color: white;
+}
+
+.review-form textarea:focus{
+    background-color: #0B090A;
+}
+
+.review-form textarea::placeholder{
+    color: #B1A7A6;
+}

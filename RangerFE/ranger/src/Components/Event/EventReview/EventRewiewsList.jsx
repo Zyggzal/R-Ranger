@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {ReviewsContext, ReviewsProvider} from "../../../Context/Reviews/ReviewsContext";
 import Loader from "../../Loader/Loader";
 import NoContent from "../../NoContent/NoContent";
@@ -7,44 +7,56 @@ import LockIcon from "../../Icons/LockIcon/LockIcon";
 import ClockIcon from "../../Icons/ClockIcon/ClockIcon";
 import {NavLink} from "react-router-dom";
 import ThreeDotsIcon from "../../Icons/ThreeDotsIcon/ThreeDotsIcon";
+import ReviewForm from "../../Review/ReviewForm/ReviewForm";
+import { EventReviewsListItem } from "./EventReviewListItem";
+import EditIcon from "../../Icons/EditIcon/EditIcon";
 
 export const EventReviewsList = ({id}) =>{
 
     const {getReviewsByEvent} = useContext(ReviewsContext);
     const [reviews, setReviews] = useState([]);
+    const [userReview, setUserReview] = useState(null);
+    const [editReview, setEditReview] = useState(false);
+    
+    const fetchReviews = useCallback(async () => {
+        if(!id) return;
+
+        const newReviews = await getReviewsByEvent(id);
+        setUserReview(newReviews[0])
+        setReviews(newReviews[1]);
+    }, [id]);
 
     useEffect(()=>{
-        if(!id) return;
-        const fetchReviews = async () => {
-            const newReviews = await  getReviewsByEvent(id);
-            setReviews(newReviews);
-        }
        fetchReviews();
-    }, [id])
-    console.log(reviews);
+    }, [fetchReviews])
 
     if(!reviews) return <Loader/>
-    if(reviews.length === 0) return <NoContent/>
     return(
-            <div>
-                <div>{reviews.length} reviews</div>
-                <div className="user-list-container list-group">
+            <div className="user-list-container list-group">
+                <h3>Your review: 
+                    { userReview && (editReview ?
+                    <button className="btn edit-btn" onClick={() => setEditReview(false)}><strong>X</strong></button>
+                    :
+                    <button className="btn edit-btn" onClick={() => setEditReview(true)}><EditIcon/></button>
+                    )}
+                </h3>
+                {
+                    editReview || !userReview ?
+                    <ReviewForm id={id} onConfirm={() => {
+                        fetchReviews();
+                        setEditReview(false);
+                    }} review={userReview}/>
+                    :
+                    <EventReviewsListItem review={userReview}/>
+                }
+                <hr/>
+                <div>{reviews.length} review{reviews.length !== 1 && 's'}</div>
+                <div>
                     {
+                        reviews.length === 0 ? <NoContent/>
+                        :
                         reviews.map((review) => (
-                            <div key={review.id}
-                                 className="list-group-item list-group-item-action justify-content-between">
-                                <div className="review-author">
-                                    @{review.user.login}
-                                </div>
-                                <div className="review-text">
-                                    {review.comment}
-                                </div>
-                                <div className="review-rating">
-
-                                    <div>{review.rating} / 5</div>
-                                    <div>{new Date(review.createdAt).toLocaleString()}</div>
-                                </div>
-                            </div>
+                            <EventReviewsListItem  key={review.id} review={review}/>
                         ))
                     }
                 </div>

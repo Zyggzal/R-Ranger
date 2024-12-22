@@ -1,5 +1,3 @@
-import button from "bootstrap/js/src/button";
-
 export const ListParticipants = ({participants}) =>{
     if(!participants || participants.length === 0) return(
         <div>NoParticipants</div>

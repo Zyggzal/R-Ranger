@@ -56,11 +56,22 @@
 .event-desc{
     font-size: 1.1rem;
     text-align: center;
-    margin: 0 50px;
+    border: 1px solid white;
+    border-radius: 10px;
+    overflow-wrap: break-word;
 }
-.event-desc > *:first-child{
+
+.event-desc h1{
     font-size: 1.4rem;
     margin-bottom: 10px;
+    background-color: #A4161A;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.event-desc p {
+    padding-inline: 15px;
 }
 
 .private{
@@ -72,4 +83,50 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.heading {
+    background-color: #A4161A;
+    margin: -15px;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.heading .edit-btn {
+    margin-left: 30px;
+    border: 1px solid white;
+}
+
+.heading .edit-btn:hover {
+    margin-left: 30px;
+    background-color: white;
+}
+
+.heading .badge {
+    background-color: #660708;
+    color: white;
+}
+
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative
+}
+
+.timer-container *:not(.bi-clock) {
+    z-index: 1;
+}
+
+.timer-container .bi-clock {
+    color: #A4161A;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    transform: rotate(30deg);
+    opacity: 50%;
 }
