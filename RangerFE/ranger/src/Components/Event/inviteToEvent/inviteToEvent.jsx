@@ -5,12 +5,11 @@ import './inviteToEvent.css'
 import { InviteContext, InviteProvider } from "../../../Context/Invite/InviteContext";
 import { InviteUserModal } from "../inviteUserModal/inviteUserModal";
 import { DateToAgo } from "../../../Utils/DateTransformer";
-import { Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import ArrowDownIcon from "../../Icons/ArrowDownIcon/ArrowDownIcon";
 import ArrowLeftSquareIcon from "../../Icons/ArrowLeftSquareIcon/ArrowLeftSquareIcon";
 
 export const InviteToEvent = ({ eventId }) => {
-    const navigate = useNavigate()
 
     const [event, setEvent] = useState(null);
     const [eventInvites, setEventInvites] = useState(null);
@@ -78,7 +77,10 @@ export const InviteToEvent = ({ eventId }) => {
             {
             event && eventInvites ?
             <div className="container text-center">
-                <h1>Invite Others to {event.name}</h1>
+                <div>
+                    <h1 style={{ display: 'inline-block' }}>Invite Others to {event.name}</h1>
+                    <NavLink style={{ marginLeft: '15px', marginBottom: '15px' }} className='btn btn-crimson' to={`/events/${event.id}`}><strong>X</strong></NavLink>
+                </div>
                 <h4>
                     Current Participants: 
                     <span className={`badge ms-3 text-bg-${isFull ? 'danger' : 'success'}`}>{event.participants.length + eventInvites.length}{event.participantsLimit && `/${event.participantsLimit}`}</span> 

@@ -83,7 +83,7 @@ export const AddEvent = () => {
   
       const res = await addEvent(processedValues)
       if(res){
-        navigate('/eventInvite', { state: { eventId: res.data[0].id }, replace: true })
+        navigate(`/events/${res.data[0].id}/invite`, { replace: true })
       }
 
     }

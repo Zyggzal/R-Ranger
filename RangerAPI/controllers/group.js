@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 const { Group, User, UsersGroups, Event, Invite } = require('../models');
 const errHandler = require('../utils/ErrorHandler');
+const sequelize = require("../config/database");
 
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'creator' } ];
@@ -89,16 +90,36 @@ module.exports.getAllByUserId = async (req, res) => {
 }
 
 module.exports.create = async (req, res) => {
+    const transaction = await sequelize.transaction();
     try {
+
         const { name, isPublic, createdBy } = req.body;
-        const group = await Group.create({ name, isPublic, createdBy });
-        // await UsersGroups.create({ 
-        //     GroupId: group.id,
-        //     UserId: group.createdBy
-        // });
-        res.status(200).json(group);
+        const group = await Group.create({ name, isPublic, createdBy }, { transaction });
+
+        if(group) {
+            //adding creator to participants
+            const creatorParticipant = await UsersGroups.create({ 
+                GroupId: group.id,
+                UserId: group.createdBy,
+                role: 'creator'
+            }, { transaction });
+
+            if(creatorParticipant) {
+                await transaction.commit();
+                res.status(200).json([group, creatorParticipant]);
+            }
+            else{
+                await transaction.rollback();
+                errHandler(res, 'Adding creator failed', 500);
+            }
+        }
+        else {
+            await transaction.rollback();
+            errHandler(res, 'Adding event failed', 500);
+        }
     }
     catch(err) {
+        await transaction.rollback();
         errHandler(res, err, 500);
     }
 }

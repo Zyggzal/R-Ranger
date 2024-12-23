@@ -51,3 +51,8 @@ div:has(>input:disabled) {
     padding-left: 15px;
     border-radius: 0 0 15px 0;
 }
+
+.stepContainer .bi-info-circle {
+    margin: 0;
+    margin-left: 5px;
+}

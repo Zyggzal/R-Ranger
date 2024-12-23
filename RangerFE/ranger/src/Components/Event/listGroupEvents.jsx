@@ -5,6 +5,7 @@ import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
 import {useContext} from "react";
 import {EventContext} from "../../Context/Event/EventContext";
 import styles from "./listGroupEvents.css";
+import NoContent from "../NoContent/NoContent";
 
 export const ListGroupEvents = ({events}) => {
 
@@ -12,6 +13,7 @@ export const ListGroupEvents = ({events}) => {
     const {getEventStatus} = useContext(EventContext)
 
     return (
+        events.length === 0 ? <NoContent/> :
         <div className="user-list-container list-group">
             {
                 events.map((event) => (

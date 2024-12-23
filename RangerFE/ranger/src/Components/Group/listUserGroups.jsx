@@ -7,6 +7,8 @@ import Loader from "../Loader/Loader";
 import NoContent from "../NoContent/NoContent";
 import LockIcon from "../Icons/LockIcon/LockIcon";
 import {NavLink} from "react-router-dom";
+import TrashIcon from "../Icons/TrashIcon/TrashIcon";
+import './listUserGroups.css'
 import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
 
 export const ListUserGroups = ({sortBy, asc}) => {
@@ -57,27 +59,25 @@ export const ListUserGroups = ({sortBy, asc}) => {
                 && <NoContent/>
             }
             {
-                createdGroupsToShow &&createdGroupsToShow.length > 0 &&
+                createdGroupsToShow && createdGroupsToShow.length > 0 &&
                 <>
                     <h3 className="mb-3 mt-2">Created by You</h3>
 
                     {createdGroupsToShow.map((group) => (
                         <div key={`grouplistitem${group.id}`}
-                             className="list-group-item list-group-item-action d-flex justify-content-between">
+                             className="list-group-item list-group-item-action d-flex justify-content-between group-link">
                             <div>
                                 <h5>{group.name} <LockIcon unlocked={group.isPublic}/></h5>
                                 <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
                             </div>
-                            <div className="d-flex flex-column align-items-end justify-content-center">
+                            <div className="d-flex flex-column align-items-end">
+                            <NavLink className='btn p-1 btn-outline-secondary mb-2'
+                                         to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
                                 <button onClick={() => {
                                     setToDelete(group);
                                     setShowDeleteModal(true);
-                                }} className="btn btn-outline-danger">Delete
+                                    }} className="btn p-1 btn-outline-danger" style={{ height: '45%', textAlign: 'center' }}><TrashIcon/>
                                 </button>
-                            </div>
-                            <div className="d-flex flex-column align-items-end">
-                                <NavLink className='btn p-1 btn-outline-danger'
-                                         to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
                             </div>
                         </div>
                     ))}
@@ -124,22 +124,3 @@ export const ListUserGroups = ({sortBy, asc}) => {
         </div>
     )
 }
-
-
-
-// <div className="user-list-container list-group mt-4">
-// { userFriends.map((f) => (
-//     f.Friend.status === 'accepted' && <div key={`friendlistitem${f.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
-//         <div>
-//             <h5>{f.firstName} {f.lastName}</h5>
-//             <p className="text-secondary">@{f.login}</p>
-//         </div>
-//         <div className="d-flex align-items-center h-1">
-//             <button onClick={()=> {
-//                 setToDelete(f.Friend);
-//                 setShowDeleteModal(true);
-//             }} className="btn btn-outline-danger"><PersonDashIcon/> </button>
-//         </div>
-//     </div>
-// )) }
-// </div>

@@ -12,6 +12,8 @@ import {EventReviewsList} from "./EventReview/EventRewiewsList";
 import {ReviewsProvider} from "../../Context/Reviews/ReviewsContext";
 import CountdownComponent from "../CountdownComponent/CountdownComponent";
 import { DateToAgo } from "../../Utils/DateTransformer";
+import GroupIcon from '../../Components/Icons/GroupIcon/GroupIcon';
+import HumanIcon from "../Icons/HumanIcon/HumanIcon";
 
 export const EventItem = ({id}) =>{
 
@@ -98,17 +100,23 @@ export const EventItem = ({id}) =>{
                     </div>
 
                     <div className="main-time">
-                        <span><ClockIcon/> {date.start}</span> - <span><ClockIcon/> {date.end}</span>
+                        <span><ClockIcon/> {date.start}</span>&nbsp; - <span><ClockIcon/> {date.end}</span>
                     </div>
                     <hr className="divider"/>
-                    {event.creator && (
-                        <div className="main-creator">
-
-                            <div>Creator:</div>
-                            <div>{`${event.creator.firstName} ${event.creator.lastName} `}</div>
-                            <div className='text-secondary'>{`@${event.creator.login}`}</div>
-                        </div>
-                    )}
+                    <div className="d-flex justify-content-around">
+                        {event.creatorGroup && (
+                            <div className="main-organizer">
+                                Organized by
+                                <NavLink className='event-group-link' to={`/groups/${event.creatorGroup.id}`}><GroupIcon/>{event.creatorGroup.name}</NavLink>
+                            </div>
+                        )}
+                        {event.creator && (
+                            <div>
+                                Created by:
+                                <NavLink className='event-group-link'><HumanIcon/>{`@${event.creator.login}`}</NavLink>
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className="timer-container">
                     <ClockIcon/>

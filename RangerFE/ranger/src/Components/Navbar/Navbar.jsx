@@ -43,7 +43,7 @@ const Navbar = () => {
                 { 
                 user ? 
                     <div className="d-flex align-items-center">
-                        <NavLink className='nav-link m-3 user-name' to='/profile' style={linkStyle}><HumanIcon/>{user.login}</NavLink>
+                        <NavLink className='nav-link m-3 user-name' to='/profile/events' style={linkStyle}><HumanIcon/>{user.login}</NavLink>
                         <button className="btn btn-outline-danger logout-button" onClick={Logout}><ExitIcon/></button>
                     </div>
                     :

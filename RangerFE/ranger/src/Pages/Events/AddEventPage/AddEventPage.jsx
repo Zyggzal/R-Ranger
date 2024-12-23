@@ -1,4 +1,5 @@
 import { AddEvent } from "../../../Components/Event/addEvent/addEvent";
+import InfoIcon from "../../../Components/Icons/InfoIcon/InfoIcon";
 import { EventProvider } from "../../../Context/Event/EventContext";
 import './AddEventPage.css'
 import {useLocation} from "react-router-dom";
@@ -14,8 +15,10 @@ const AddEventPage = () => {
             <div className="card text-center stepContainer">
                 <div className="card-body">
                     <div className="card-body">
-                        {groupId && <h5>Group Event</h5>}
                         <h5 className="card-title">Event Info</h5>
+                        {groupId && <h4 className="badge p-2 bg-danger">Group Event <InfoIcon content={
+                            <p><strong>Group events</strong> will be visible to all members of the group regardless of whether the event is <strong>public</strong> or <strong>private</strong>.</p>
+                        }/></h4>}
                     </div>
                 </div>
             </div>

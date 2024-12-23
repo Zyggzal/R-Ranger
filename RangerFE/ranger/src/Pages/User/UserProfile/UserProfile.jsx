@@ -1,24 +1,16 @@
-import { useContext, useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
 import { UserContext } from "../../../Context/UserContext";
 import './UserProfile.css'
 import UpdateUserForm from "../../../Components/UpdateUserForm/UpdateUserForm";
 import EditIcon from "../../../Components/Icons/EditIcon/EditIcon";
 
 const UserProfile = () => {
-    const [tab, setTab] = useState('events');
-
-    const navigate = useNavigate();
 
     const { user } = useContext(UserContext);
 
     const [isUpdate, setIsUpdate] = useState(false);
 
-    useEffect(()=>{
-        if(tab) {
-            navigate(tab);
-        }
-    }, [tab])
 
     return (
         <div className="d-flex justify-content-between p-3 user-profile-container">
@@ -43,16 +35,16 @@ const UserProfile = () => {
                 <div>
                     <ul className="nav nav-tabs">
                         <li className="nav-item">
-                            <p className= { "nav-link" + (tab === 'events' ? ' active' : '')  } onClick={()=>setTab('events')} aria-current="page" to="events">Your events</p>
+                            <NavLink className='nav-link' to='/profile/events'>Your Events</NavLink>
                         </li>
                         <li className="nav-item">
-                            <p className= { "nav-link" + (tab === 'invites' ? ' active' : '')  } onClick={()=>setTab('invites')} aria-current="page" to="invites">Your invitations</p>
+                            <NavLink className='nav-link' to='/profile/invites'>Your Invitations</NavLink>
                         </li>
                         <li className="nav-item">
-                            <p className= { "nav-link" + (tab === 'friends' ? ' active' : '')  } onClick={()=>setTab('friends')} aria-current="page" to="friends">Your friends</p>
+                            <NavLink className='nav-link' to='/profile/friends'>Your Friends</NavLink>
                         </li>
                         <li className="nav-item">
-                            <p className= { "nav-link" + (tab === 'groups' ? ' active' : '')  } onClick={()=>setTab('groups')} aria-current="page" to="groups">Your groups</p>
+                            <NavLink className='nav-link' to='/profile/groups'>Your Groups</NavLink>
                         </li>
                     </ul>
                 </div>

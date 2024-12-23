@@ -28,7 +28,9 @@ export const GroupProvider = ({children}) => {
             if(response.status !== 200) {
                 throw response.message;
             }
-            setUserGroups([response.data.creatorOfGroups, response.data.memberOf]);
+            setUserGroups([response.data.creatorOfGroups,
+                 response.data.memberOf.filter((g) => g.UsersGroups.role !== 'creator')
+                ]);
         }
         catch(err){
             setAlertText(err)

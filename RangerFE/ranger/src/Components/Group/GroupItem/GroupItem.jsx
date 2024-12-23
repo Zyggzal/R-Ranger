@@ -17,6 +17,7 @@ import {EventProvider} from "../../../Context/Event/EventContext";
 import styles from "./GroupItem.css"
 import {ListGroupMembers} from "../listGroupMembers";
 import LockIcon from "../../Icons/LockIcon/LockIcon";
+import NoContent from "../../NoContent/NoContent";
 
 export const GroupItem = ({id}) => {
 
@@ -30,9 +31,18 @@ export const GroupItem = ({id}) => {
 
     const findUserStatus = () =>{
         if(group.members){
-            const status = group.members.find(member => member.id === user.id).UsersGroups.role;
+            const m = group.members.find(member => member.id === user.id);
 
-            setUserStatus(status);//
+            let status;
+
+            if(m && m.UsersGroups) {
+                status = m.UsersGroups.role;
+            }
+            else {
+                status = 'stranger'
+            }
+
+            setUserStatus(status);
         }
     }
 
@@ -90,22 +100,27 @@ export const GroupItem = ({id}) => {
 
                     )}
                 </div>
-                <div>
+                <div className="group-events-container">
                     <h2>Group Events
-                        {userStatus === 'Creator' || userStatus === 'Admin' ? (
+                        {userStatus === 'creator' || userStatus === 'admin' ? (
                             <NavLink className="btn btn-crimson ms-3" to={`/events/add`} state={{groupId: group.id}}>
-                                Create group event
+                                +
                             </NavLink>
                         ) :
-                        null
+                            null
                         }
 
                     </h2>
-                    {events && (
-                        <EventProvider>
-                            <ListGroupEvents events={events}/>
-                        </EventProvider>
-                    )}
+                    <div className="group-events-list">
+                        {
+                            events ? (
+                                <EventProvider>
+                                    <ListGroupEvents events={events}/>
+                                </EventProvider>)
+                                :
+                                <Loader/>
+                        }
+                    </div>
                 </div>
             </div>
         </div>

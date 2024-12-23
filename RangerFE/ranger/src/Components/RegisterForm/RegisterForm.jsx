@@ -16,7 +16,7 @@ const RegisterForm = () => {
 
     const handleRegister = async (value) => {
         await Register(value.login, value.fname, value.lname, value.email, value.password);
-        navigate('/profile');
+        navigate('/profile/events');
     }
     return (
         api.isBusy ? <Loader /> :

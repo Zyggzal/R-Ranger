@@ -19,11 +19,20 @@
 
 }
 .group-name > *{
-    box-shadow: 0 8px 6px -5px #B1A7A6;
+    box-shadow: 0 8px 0 -5px #646464;
     padding: 10px 20px;
     border-radius: 10px;
 }
 .members-count{
     font-size: 1.2rem;
     margin-bottom: 10px;
+}
+
+.group-events-container {
+    padding-left: 20px;
+    border-left: 3px solid #646464;
+}
+
+.group-events-list {
+    padding: 10px;
 }

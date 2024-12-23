@@ -1,6 +1,7 @@
 .event-box{
     background-color: #161A1D;
     color: #F5F3F4;
+    position: relative;
 }
 
 .event-box .edit-btn {
@@ -11,11 +12,12 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 20px;
+    margin-bottom: 50px;
 }
 
 .main-time{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin: 10px 0;
     font-size: 1.3rem;
 }
@@ -129,4 +131,20 @@
     z-index: 0;
     transform: rotate(30deg);
     opacity: 50%;
+}
+
+.event-group-link {
+    color: #A4161A;
+    font-weight: 400;
+    margin-left: 5px;
+    text-decoration: none;
+}
+
+.event-group-link:hover {
+    color: #E5383B;
+}
+
+.event-group-link .bi-person-fill {
+    width: 35px;
+    height: 35px;
 }

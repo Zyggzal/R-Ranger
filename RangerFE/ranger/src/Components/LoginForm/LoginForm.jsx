@@ -19,7 +19,7 @@ const LoginForm = () => {
 
     const handleLogin = async (values) => {
         await Login(values.email, values.password);
-        navigate(from ? from : '/profile');
+        navigate(from ? from : '/profile/events');
     }
     return (
         api.isBusy ? <Loader/> :
