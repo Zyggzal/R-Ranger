@@ -1,0 +1,7 @@
+.event-time-status{
+    display: flex;
+    align-items: center;
+
+}
+.event-time-status > *:nth-child(2){
+    margin-left: 15px;

@@ -82,6 +82,21 @@ export const GroupProvider = ({children}) => {
         }
     }
 
+    const groupById = async (id, include) =>{
+        if(!user) return;
+        try{
+            const response = await api.Get(`groups/${id}`, include);
+            if(response.status !== 200) {
+                throw response.message
+            }
+            return response.data;
+        }
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     const addGroup = async (group) => {
         if(!user) return;
         try {
@@ -190,7 +205,7 @@ export const GroupProvider = ({children}) => {
         if(user) fetchUserGroups();
     }, [user])
 
-    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus}}>
+    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById}}>
         {children}
         { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
     </GroupContext.Provider>;

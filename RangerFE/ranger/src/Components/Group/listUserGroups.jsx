@@ -6,6 +6,8 @@ import { Modal } from "react-bootstrap";
 import Loader from "../Loader/Loader";
 import NoContent from "../NoContent/NoContent";
 import LockIcon from "../Icons/LockIcon/LockIcon";
+import {NavLink} from "react-router-dom";
+import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
 
 export const ListUserGroups = ({sortBy, asc}) => {
 
@@ -60,16 +62,22 @@ export const ListUserGroups = ({sortBy, asc}) => {
                     <h3 className="mb-3 mt-2">Created by You</h3>
 
                     {createdGroupsToShow.map((group) => (
-                        <div key={`grouplistitem${group.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
+                        <div key={`grouplistitem${group.id}`}
+                             className="list-group-item list-group-item-action d-flex justify-content-between">
                             <div>
                                 <h5>{group.name} <LockIcon unlocked={group.isPublic}/></h5>
                                 <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
                             </div>
                             <div className="d-flex flex-column align-items-end justify-content-center">
-                                <button onClick={()=> {
+                                <button onClick={() => {
                                     setToDelete(group);
                                     setShowDeleteModal(true);
-                                }} className="btn btn-outline-danger">Delete</button>
+                                }} className="btn btn-outline-danger">Delete
+                                </button>
+                            </div>
+                            <div className="d-flex flex-column align-items-end">
+                                <NavLink className='btn p-1 btn-outline-danger'
+                                         to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
                             </div>
                         </div>
                     ))}
@@ -80,10 +88,11 @@ export const ListUserGroups = ({sortBy, asc}) => {
                 <>
                     <h3 className="mb-3 mt-2">You are a member of</h3>
                     {memberGroupsToShow.map((group) => (
-                        <div key={`grouplistitem${group.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
-                        <div>
-                            <h5>{group.name}</h5>
-                            <p className="text-secondary">Created by @{group.creator.login}</p>
+                        <div key={`grouplistitem${group.id}`}
+                             className="list-group-item list-group-item-action d-flex justify-content-between">
+                            <div>
+                                <h5>{group.name}</h5>
+                                <p className="text-secondary">Created by @{group.creator.login}</p>
                             <p className="text-secondary">Role: {group.UsersGroups.role}</p>
                         </div>
                         <div className="d-flex flex-column align-items-end">
