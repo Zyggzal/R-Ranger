@@ -6,7 +6,7 @@ import InfoIcon from '../../Icons/InfoIcon/InfoIcon';
 import ClockIcon from '../../Icons/ClockIcon/ClockIcon';
 import ArrowDownIcon from '../../Icons/ArrowDownIcon/ArrowDownIcon';
 import './addEvent.css'
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 export const AddEvent = () => {
     const {
@@ -26,6 +26,9 @@ export const AddEvent = () => {
     const watchSignUpEndDate = watch("signUpEndDate")
 
     const navigate = useNavigate()
+
+    const location = useLocation();
+    const {groupId} = location.state || {};
   
     useEffect(() => {
       if (watchStartDate) {
@@ -71,8 +74,8 @@ export const AddEvent = () => {
             ? parseInt(values.participantsLimit)
             : null,
         createdBy: user.id,
-        createdByGroup: null,
-        isGroupEvent: "0",
+        createdByGroup: groupId ? groupId : null,
+        isGroupEvent: groupId ? "1" : "0",
         startDate: new Date(values.startDate).toISOString(),
         endDate: new Date(values.endDate).toISOString(),
         signUpEndDate: new Date(values.signUpEndDate).toISOString(),

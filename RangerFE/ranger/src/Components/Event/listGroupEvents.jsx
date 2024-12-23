@@ -8,7 +8,7 @@ import styles from "./listGroupEvents.css";
 
 export const ListGroupEvents = ({events}) => {
 
-    console.log(events);
+    // console.log(events);
     const {getEventStatus} = useContext(EventContext)
 
     return (
@@ -18,11 +18,11 @@ export const ListGroupEvents = ({events}) => {
                     <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between">
                         <div>
                             <h2>{ event.name } { <LockIcon unlocked={event.isPublic} /> }</h2>
-                            <p className="text-secondary event-time-status">
+                            <div className="text-secondary event-time-status">
                                 <ClockIcon/>
                                 {`${new Date(event.startDate).toLocaleDateString()} - ${new Date(event.endDate).toLocaleDateString()}`}
                                 <div>Status: {getEventStatus(event)}</div>
-                            </p>
+                            </div>
 
                         </div>
                         <div className="d-flex flex-column align-items-end">

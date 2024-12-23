@@ -3,5 +3,6 @@
     align-items: center;
 
 }
-.event-time-status > *:nth-child(2){
+.event-time-status > *:nth-child(2) {
     margin-left: 15px;
+}

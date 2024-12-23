@@ -2,3 +2,28 @@
     display: grid;
     grid-template-columns:1fr 2fr;
 }
+.group-info{
+    display: flex;
+    flex-direction: column;
+}
+.group-creator{
+    font-size: 1.25rem;
+    margin: 10px 0;
+}
+.group-type{
+    margin: 10px 0 0 0;
+    padding: 2px 15px;
+}
+.group-name{
+    text-align: center;
+
+}
+.group-name > *{
+    box-shadow: 0 8px 6px -5px #B1A7A6;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+.members-count{
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
