@@ -203,11 +203,31 @@ export const GroupProvider = ({children}) => {
         }
     }
 
+    const updateGroup = async (GroupId, name, isPublic) => {
+        if(!user) return;
+        try {
+            setIsLoading(true);
+            const response = await api.Patch(`groups/${GroupId}`, { name, isPublic });
+
+            setIsLoading(false);
+
+            if(response.status !== 200) {
+                throw response.message
+            }
+
+            return response.data;
+        }
+        catch(err){
+            setAlertText(err)
+            setShowAlert(true)
+        }
+    }
+
     useEffect(() => {
         if(user) fetchUserGroups();
     }, [user])
 
-    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById}}>
+    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById, updateGroup}}>
         {children}
         { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
     </GroupContext.Provider>;

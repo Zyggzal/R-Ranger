@@ -29,11 +29,36 @@
 
 .time-container {
     background-color: #161a1d8a;
-    
     border: 2px white solid;
     color: white;
 }
 
 .time-container>div {
     padding-inline: 16px;
+}
+
+.first-line {
+    width: 55%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 20px;
+}
+
+.date-picker-input {
+    background-color: #161A1D!important;
+    color: white;
+    padding: 10px;
+}
+
+::-webkit-calendar-picker-indicator { 
+    background-color: #A4161A;
+    padding: 8px;
+    border-radius: 5px;
+    margin-left: 5px;
+}
+
+::-webkit-calendar-picker-indicator:hover { 
+    background-color: #1ac7c4;
+    filter: invert();
 }

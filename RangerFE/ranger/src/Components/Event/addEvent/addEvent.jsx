@@ -90,7 +90,7 @@ export const AddEvent = () => {
   
     return (
       <form onSubmit={handleSubmit(onSubmit)} className="form p-5 add-page-form">
-        <div className="mb-3 d-flex justify-content-between">
+        <div className="mb-3 first-line">
           <div>
             <label className="form-label">Event Name</label>
             <InfoIcon content={'The name of your event'}/>
@@ -101,8 +101,7 @@ export const AddEvent = () => {
             />
             {errors.name && <span className="invalid-feedback error">{errors.name.message}</span>}
           </div>
-  
-          <div>
+          <div className='me-5'>
             <label className="form-label">Type</label>
             <InfoIcon content={<p><strong>Public</strong> events will be open to anyone<br /><strong>Private</strong> events will only be accessible via invitations</p>}/>
             <select
@@ -114,7 +113,7 @@ export const AddEvent = () => {
               <option value="0">Private</option>
             </select>
           </div>
-  
+
           <div>
             <div className="d-flex align-items-center">
               <input
@@ -135,11 +134,11 @@ export const AddEvent = () => {
                 type="number"
                 min="1"
                 {...register("participantsLimit")}
-              />
-              {errors.participantsLimit && (
-                <span className="invalid-feedback error">{errors.participantsLimit.message}</span>
-              )}
-            </div>
+                />
+                {errors.participantsLimit && (
+                  <span className="invalid-feedback error">{errors.participantsLimit.message}</span>
+                )}
+              </div>
           </div>
         </div>
   
@@ -175,7 +174,7 @@ export const AddEvent = () => {
               <label className="form-label">Sign up end date</label>
               <InfoIcon content={<p>After this date, users will be unable to sign up to the event.</p>}/>
               <input
-                className={`add-page-input form-control ${errors.signUpEndDate && 'is-invalid'}`}
+                className={`date-picker-input add-page-input form-control ${errors.signUpEndDate && 'is-invalid'}`}
                 type="datetime-local"
                 {...register("signUpEndDate", {
                   required: "Sign up end date is required",
@@ -198,7 +197,7 @@ export const AddEvent = () => {
               <label className="form-label">Start date</label>
               <InfoIcon content={<p>When this event starts.</p>}/>
               <input
-                className={`add-page-input form-control ${errors.startDate && 'is-invalid'}`}
+                className={`date-picker-input add-page-input form-control ${errors.startDate && 'is-invalid'}`}
                 type="datetime-local"
                 {...register("startDate", {
                   required: "Start date is required",
@@ -221,7 +220,7 @@ export const AddEvent = () => {
               <label className="form-label">End Date</label>
               <InfoIcon content={<p>When this event ends.</p>}/>
               <input
-                className={`add-page-input form-control ${errors.endDate && 'is-invalid'}`}
+                className={`date-picker-input add-page-input form-control ${errors.endDate && 'is-invalid'}`}
                 type="datetime-local"
                 {...register("endDate", {
                   required: "End date is required",

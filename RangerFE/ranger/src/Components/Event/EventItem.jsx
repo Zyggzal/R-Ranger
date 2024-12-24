@@ -146,7 +146,7 @@ export const EventItem = ({id}) =>{
                             </h1>
                             <CountdownComponent time={event.endDate}/>
                             <div style={{width: '70%', backgroundColor: '#B1A7A6' }} className="progress" role="progressbar">
-                                <div className="progress-bar" style={{ backgroundColor: '#A4161A',  width: `${getEventProgressPercent()}%`}} >Event Progress</div>
+                                <div className="progress-bar p-2" style={{ backgroundColor: '#A4161A',  width: `${getEventProgressPercent()}%`}} >Event Progress</div>
                             </div>
                         </>
                     }

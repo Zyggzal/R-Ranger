@@ -69,3 +69,32 @@ html, body {
 main {
   min-height: 77.4vh;
 }
+
+::-webkit-datetime-edit {
+  background-color: #262626;
+  color: white;
+  padding: 5px!important;
+}
+::-webkit-datetime-edit-fields-wrapper {
+  color: white;
+}
+::-webkit-datetime-edit-text {
+  color: white;
+}
+
+::-webkit-inner-spin-button {
+  color: white;
+}
+::-webkit-calendar-picker-indicator {
+  color: white;
+}
+::-webkit-calendar-picker-indicator { 
+  background-color: #A4161A;
+  padding: 8px;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+::-webkit-calendar-picker-indicator:hover { 
+  background-color: #1ac7c4;
+  filter: invert();
+}

@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {GroupContext} from "../../../Context/Group/GroupContext";
 import {UserContext} from "../../../Context/UserContext";
 import Loader from "../../Loader/Loader";
@@ -6,7 +6,7 @@ import InfoIcon from "../../Icons/InfoIcon/InfoIcon";
 import ClockIcon from "../../Icons/ClockIcon/ClockIcon";
 import CountdownComponent from "../../CountdownComponent/CountdownComponent";
 import {DateToAgo} from "../../../Utils/DateTransformer";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import EditIcon from "../../Icons/EditIcon/EditIcon";
 import {ListParticipants} from "../../Event/listParticipants";
 import {ReviewsProvider} from "../../../Context/Reviews/ReviewsContext";
@@ -18,16 +18,24 @@ import styles from "./GroupItem.css"
 import {ListGroupMembers} from "../listGroupMembers";
 import LockIcon from "../../Icons/LockIcon/LockIcon";
 import NoContent from "../../NoContent/NoContent";
+import UpdateGroupForm from "../UpdateGroupForm/UpdateGroupForm";
+import TrashIcon from "../../Icons/TrashIcon/TrashIcon";
+import { Modal } from "react-bootstrap";
 
 export const GroupItem = ({id}) => {
+    const navigate = useNavigate();
 
-    const {groupById} = useContext(GroupContext);
+    const {groupById, deleteGroup} = useContext(GroupContext);
     const {user} = useContext(UserContext);
 
     const [group, setGroup] = useState({});
     const [events, setEvents] = useState([]);
 
+    const [isUpdate, setIsUpdate] = useState(false);
+
     const [userStatus, setUserStatus] = useState('stranger');
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const findUserStatus = () =>{
         if(group.members){
@@ -46,16 +54,15 @@ export const GroupItem = ({id}) => {
         }
     }
 
+    const fetchGroup = useCallback(async () => {
+        const thisGroup = await groupById(id, ["creatorOf", 'members']);
+        setEvents(thisGroup.creatorOf)
+        setGroup(thisGroup);
+    }, [id])
+
     useEffect(() => {
-        const fetchGroup = async () => {
-            const thisGroup = await groupById(id, ["creatorOf", 'members']);
-            setEvents(thisGroup.creatorOf)
-            setGroup(thisGroup);
-
-        }
-
         fetchGroup()
-    }, [])
+    }, [fetchGroup])
 
     useEffect(() => {
         if(group.members) findUserStatus();
@@ -69,12 +76,23 @@ export const GroupItem = ({id}) => {
                 <div className='group-info'>
                     <h3>
                         <div className='group-name'>
-                            <span>
-                                {group.name} <LockIcon unlocked={group.isPublic}/>
-                            </span>
+                            {
+                                !isUpdate ?
+                                <span>
+                                    {group.name} <LockIcon unlocked={group.isPublic}/>
+                                </span>
+                                :
+                                <UpdateGroupForm group={group} onSubmit={() => {
+                                    fetchGroup();
+                                    setIsUpdate(false);
+                                }}/>
+                            }
                         </div>
                     </h3>
-
+                    <div className="mb-3 mt-3 d-flex">
+                        <button className="btn edit-btn" onClick={() => setIsUpdate((prev) => !prev)}><EditIcon/></button>
+                        <button className="btn edit-btn" onClick={() => setShowDeleteModal(true)}><TrashIcon/></button>
+                    </div>
                     {group.creator && (
                         <div className="group-creator">
 
@@ -123,6 +141,22 @@ export const GroupItem = ({id}) => {
                     </div>
                 </div>
             </div>
+            <Modal show={showDeleteModal} onHide={()=>setShowDeleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Are you sure?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>This group will be removed for you and all its' members.</p>
+                    <div className="d-flex justify-content-end">
+                        <button  className="btn btn-danger me-2" onClick={()=>{
+                            setShowDeleteModal(false);
+                            deleteGroup(id);
+                            navigate('/profile/groups');
+                        }}>Delete</button>
+                        <button  className="btn btn-secondary" onClick={()=>setShowDeleteModal(false)}>Cancel</button>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }
