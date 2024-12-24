@@ -88,6 +88,13 @@ export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
                                 </h2>
                                 <div id={`flush-collapse${g.id}`} className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                 <div className="accordion-body list-group p-2">
+                                    <p id="every-button" className="btn btn-secondary" onClick={(e)=> {
+                                        for(const child of e.target.parentElement.children) {
+                                            if(child.id !== 'every-button') {
+                                                child.children[1].checked = !child.children[1].checked;
+                                            }
+                                        }
+                                    }}>All</p>
                                     {
                                         g.members.map((m) => {
                                             return (

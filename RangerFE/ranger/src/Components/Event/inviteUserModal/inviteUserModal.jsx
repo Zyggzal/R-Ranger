@@ -8,6 +8,7 @@ import { GroupProvider } from "../../../Context/Group/GroupContext";
 import { FriendContext, FriendProvider } from "../../../Context/Friend/FriendContext";
 import { InviteUsersFromFriends } from "../InviteUsersFromFriends/inviteUsersFromFriends";
 import './inviteUserModal.css'
+import Loader from "../../Loader/Loader";
 
 export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
     const {register, handleSubmit, formState: {errors}} = useForm();
@@ -48,7 +49,7 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
         }
     }
 
-    if(!user) return <div>Loading...</div>
+    if(!user) return <Loader/>
     return (
         <Modal show={showModal} onHide={()=>onClose(false)}>
             <Modal.Header closeButton>
