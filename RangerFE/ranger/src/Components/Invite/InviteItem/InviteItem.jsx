@@ -19,22 +19,22 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
         }
     }, [])
 
-    const handleAccept = () => {
+    const handleAccept = async () => {
         switch(eventType) {
             case 'friend':
-                acceptFriendRequest(invite.Friend); break;
+                await acceptFriendRequest(invite.Friend); break;
             case 'event':
-                acceptEventInvite(invite); break;
+                await acceptEventInvite(invite); break;
         }
         onAccept(invite);
     }
 
-    const handleDecline = () => {
+    const handleDecline = async () => {
         switch(eventType) {
             case 'friend':
-                declineFriendRequest(invite.Friend); break;
+                await declineFriendRequest(invite.Friend); break;
             case 'event':
-                declineEventInvite(invite); break;
+                await declineEventInvite(invite); break;
         }
         onDecline(invite);
     }

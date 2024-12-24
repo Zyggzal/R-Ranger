@@ -48,3 +48,14 @@ nav .btn-link:hover {
 .user-name {
     font-size: larger;
 }
+
+.btn-link svg {
+    margin: 0;
+    margin-right: 10px;
+    width: 16px;
+    height: 16px;
+}
+
+.navbar-nav .active img {
+    filter: brightness(50%) sepia(1) hue-rotate(321deg) saturate(301.5%) brightness(96%);
+}

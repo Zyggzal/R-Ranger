@@ -4,6 +4,10 @@ import { UserContext } from "../../../Context/UserContext";
 import './UserProfile.css'
 import UpdateUserForm from "../../../Components/UpdateUserForm/UpdateUserForm";
 import EditIcon from "../../../Components/Icons/EditIcon/EditIcon";
+import HumanIcon from "../../../Components/Icons/HumanIcon/HumanIcon";
+import InviteIcon from "../../../Components/Icons/InviteIcon/InviteIcon";
+import CalendarIcon from "../../../Components/Icons/CalendarIcon/CalendarIcon";
+import GroupIcon from "../../../Components/Icons/GroupIcon/GroupIcon";
 
 const UserProfile = () => {
 
@@ -35,16 +39,16 @@ const UserProfile = () => {
                 <div>
                     <ul className="nav nav-tabs">
                         <li className="nav-item">
-                            <NavLink className='nav-link' to='/profile/events'>Your Events</NavLink>
+                            <NavLink className='nav-link' to='/profile/events'><CalendarIcon/>Your Events</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className='nav-link' to='/profile/invites'>Your Invitations</NavLink>
+                            <NavLink className='nav-link' to='/profile/invites'><InviteIcon/>Your Invitations</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className='nav-link' to='/profile/friends'>Your Friends</NavLink>
+                            <NavLink className='nav-link' to='/profile/friends'><HumanIcon/>Your Friends</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className='nav-link' to='/profile/groups'>Your Groups</NavLink>
+                            <NavLink className='nav-link' to='/profile/groups'><GroupIcon/>Your Groups</NavLink>
                         </li>
                     </ul>
                 </div>

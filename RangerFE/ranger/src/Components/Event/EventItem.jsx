@@ -112,7 +112,7 @@ export const EventItem = ({id}) =>{
                         )}
                         {event.creator && (
                             <div>
-                                Created by:
+                                Created by
                                 <NavLink className='event-group-link'><HumanIcon/>{`@${event.creator.login}`}</NavLink>
                             </div>
                         )}

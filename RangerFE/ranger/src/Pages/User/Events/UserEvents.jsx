@@ -1,6 +1,7 @@
 import { EventProvider } from "../../../Context/Event/EventContext";
 import { ListUserEvents } from "../../../Components/Event/listUserEvents";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const UserEvents = () => {
     const [asc, setAsc] = useState('1')
@@ -9,7 +10,10 @@ const UserEvents = () => {
     return (
         <EventProvider>
             <div className="d-flex justify-content-between mb-3">
-                <h1>Your Events</h1>
+                <div className="d-flex align-items-center">
+                    <h1>Your Events</h1>
+                    <NavLink className='btn btn-crimson ms-3' to='/events/add'><strong>+</strong></NavLink>
+                </div>
                 <div style={{ height: '5%', width: '30%' }} className="d-flex align-items-center">
                     <p style={{ marginBottom: '0px', width: '100%' }}>Sort By:</p>
                     <select className="form-select add-page-input me-2 ms-2" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
