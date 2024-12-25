@@ -3,15 +3,15 @@ import Loader from "../../Loader/Loader"
 import { FriendContext } from "../../../Context/Friend/FriendContext"
 import NoContent from "../../NoContent/NoContent"
 
-export const InviteUsersFromFriends = ({onSubmit, event, eventInvites}) => {
+export const InviteUsersFromFriends = ({onSubmit, participants, invites}) => {
     const {isLoading, userFriends} = useContext(FriendContext)
 
     const [selected, setSelected] = useState([])
     const [asc, setAsc] = useState('1')
 
     const isInvited = (user) => {
-        if(!event && !eventInvites) return true;
-        return event.participants.some((m)=> m.id === user.id) || eventInvites.some((i)=> i.UserId === user.id)
+        if(!participants && !invites) return true;
+        return participants.some((m)=> m.id === user.id) || invites.some((i)=> i.UserId === user.id)
     }
 
 

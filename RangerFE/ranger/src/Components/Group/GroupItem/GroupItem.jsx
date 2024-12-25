@@ -108,7 +108,7 @@ export const GroupItem = ({id}) => {
                         <div>
                             <div className='members-count'>Members: {group.members.length}
                                 {userStatus === 'Creator' || userStatus === 'Admin' ? (
-                                        <NavLink className='btn edit-btn' to={`/events/${id}/invite`}>Edit(copied from event) <EditIcon/></NavLink>
+                                        <NavLink className='btn edit-btn' to={`/groups/${id}/invite`}>Edit<EditIcon/></NavLink>
                                     ) :
                                     null
                                 }

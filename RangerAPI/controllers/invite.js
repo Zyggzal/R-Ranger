@@ -63,10 +63,26 @@ module.exports.getByEventId = async (req, res) => {
     }
 }
 
+module.exports.getByGroupId = async (req, res) => {
+    try{
+        const where = { GroupId: req.params.id }
+        const invite = await Invite.findAll({ include: getIncludes(req.query.include), where: where });
+        if(invite) {
+            res.status(200).json(invite);
+        }
+        else {
+            errHandler(res, 'Invites not found', 404);
+        }
+    }
+    catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
 module.exports.create = async (req, res) => {
     try{
-        const { UserId, senderId, EventId, GroupId, type, role } = req.body;
-        const invite = await Invite.create({ UserId, senderId, EventId, GroupId, type, role });
+        const { UserId, senderId, EventId, GroupId, status } = req.body;
+        const invite = await Invite.create({ UserId, senderId, EventId, GroupId, status });
         res.status(200).json(invite);
     }
     catch(err) {

@@ -5,7 +5,7 @@ import { UserContext } from "../../../Context/UserContext"
 import NoContent from "../../NoContent/NoContent"
 import LockIcon from "../../Icons/LockIcon/LockIcon"
 
-export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
+export const InviteUsersFromGroups = ({onSubmit, participants, invites, actualGroup}) => {
     const {isLoading, fetchUserGroupsWithIncludes} = useContext(GroupContext)
 
     const {user} = useContext(UserContext);
@@ -18,7 +18,8 @@ export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
 
     useEffect(()=>{
         const fetchGroups = async () => {
-            const res = await fetchUserGroupsWithIncludes('members')
+            let res = await fetchUserGroupsWithIncludes('members')
+            if(actualGroup) res = res.filter((g) => g.id !== actualGroup.id);
 
             setGroups(res)
         }
@@ -48,8 +49,8 @@ export const InviteUsersFromGroups = ({onSubmit, event, eventInvites}) => {
     }, [asc, sortBy])
 
     const isInvited = (user) => {
-        if(!event && !eventInvites) return true;
-        return event.participants.some((m)=>m.id === user.id) || eventInvites.some((i)=>i.UserId === user.id)
+        if(!participants && !invites) return true;
+        return participants.some((m)=>m.id === user.id) || invites.some((i)=>i.UserId === user.id)
     }
 
     const batchSubmit = (e) => {

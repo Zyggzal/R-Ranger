@@ -99,6 +99,16 @@ export const GroupProvider = ({children}) => {
         }
     }
 
+    const removeParticipant = async (id, UserId) => {
+        if(!user) return;
+        try{
+            const response = await api.Delete(`groups/${id}/members`, {UserId});
+        }catch (err){
+            setAlertText(err);
+            setShowAlert(true);
+        }
+    }
+
     const addGroup = async (group) => {
         if(!user) return;
         try {
@@ -227,7 +237,7 @@ export const GroupProvider = ({children}) => {
         if(user) fetchUserGroups();
     }, [user])
 
-    return <GroupContext.Provider value={{userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById, updateGroup}}>
+    return <GroupContext.Provider value={{removeParticipant, userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById, updateGroup}}>
         {children}
         { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
     </GroupContext.Provider>;

@@ -82,9 +82,9 @@ export const InviteProvider = ({ children }) => {
     }
 
     const inviteUserToEvent = async (UserId, Event, invites) => {
-        //UserId, senderId, EventId, GroupId, type, role
+        //UserId, senderId, EventId, GroupId, status
         const senderId = user.id
-        const type = 'event'
+        const status = 'sent'
         try{
             if(UserId === user.id) {
                 throw "Can not invite yourself"
@@ -95,7 +95,34 @@ export const InviteProvider = ({ children }) => {
             if(invites && invites.some((e)=>e.UserId === UserId)) {
                 throw "This user is already invited"
             }
-            const response = await api.Post('invites', { UserId, EventId: Event.id, senderId, type })
+            const response = await api.Post('invites', { UserId, EventId: Event.id, senderId, status })
+            if(response.status !== 200) {
+                throw response.message;
+            }
+
+            return response.data;
+        }
+        catch(error) {
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
+    const inviteUserToGroup = async (UserId, Group, invites) => {
+        //UserId, senderId, EventId, GroupId, status
+        const senderId = user.id
+        const status = 'sent'
+        try{
+            if(UserId === user.id) {
+                throw "Can not invite yourself"
+            }
+            if(Group.members && Group.members.some((e)=>e.id === UserId)) {
+                throw "User already in ths group"
+            }
+            if(invites && invites.some((e)=>e.UserId === UserId)) {
+                throw "This user is already invited"
+            }
+            const response = await api.Post('invites', { UserId, GroupId: Group.id, senderId, status })
             if(response.status !== 200) {
                 throw response.message;
             }
@@ -122,6 +149,19 @@ export const InviteProvider = ({ children }) => {
         }
     }
 
+    const fetchGroupInvites = async (GroupId) =>{
+        try{
+            const response = await api.Get(`invites/groupId/${GroupId}`)
+            if(response.status !== 200){
+                throw response.message;
+            }
+            return response.data;
+        }catch (err){
+            setAlertText(err);
+            setShowAlert(true);
+        }
+    }
+
     const removeInvite = async (id) =>{
         if(!user) return;
         try{
@@ -137,7 +177,7 @@ export const InviteProvider = ({ children }) => {
     }
 
     return (
-        <InviteContext.Provider value={{friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent, fetchEventInvites, removeInvite, fetchUserInvites}}>
+        <InviteContext.Provider value={{inviteUserToGroup, fetchGroupInvites, friendInvites, eventInvites, groupInvites, allInvites, isLoading, eventUpdateStatus, inviteUserToEvent, fetchEventInvites, removeInvite, fetchUserInvites}}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

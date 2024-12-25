@@ -99,13 +99,13 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                         {
                             tab === 'groups' &&
                             <GroupProvider>
-                                <InviteUsersFromGroups event={event} eventInvites={eventInvites} onSubmit={inviteArray}/>
+                                <InviteUsersFromGroups participants={event.participants} invites={eventInvites} onSubmit={inviteArray}/>
                             </GroupProvider>
                         }
                         {
                             tab === 'friends' &&
                             <FriendProvider>
-                                <InviteUsersFromFriends event={event} eventInvites={eventInvites} onSubmit={inviteArray}/>
+                                <InviteUsersFromFriends participants={event.participants} invites={eventInvites} onSubmit={inviteArray}/>
                             </FriendProvider>
                         }
                     </div>
