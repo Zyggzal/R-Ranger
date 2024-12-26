@@ -53,3 +53,13 @@
     background-color: #161A1D;
     color: white;
 }
+
+.invite-item-link {
+    font-weight: bolder;
+    color: #BA181B;
+    text-decoration: none;
+}
+
+.invite-item-link:hover {
+    color: #E5383B;
+}

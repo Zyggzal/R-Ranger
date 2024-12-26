@@ -63,7 +63,9 @@
     overflow: hidden;
     position: relative;
     height: 77.4vh;
-    background-image: url('https://thumbs.dreamstime.com/z/calendar-27139310.jpg?ct=jpeg');
+    background-image: url('/public/Resources/Images/LoginBackground.png');
+    background-size:cover;
+    background-position-x: right;
     z-index: 0;
     display: flex;
     flex-direction: column;

@@ -89,10 +89,13 @@ export const GroupItem = ({id}) => {
                             }
                         </div>
                     </h3>
-                    <div className="mb-3 mt-3 d-flex">
-                        <button className="btn edit-btn" onClick={() => setIsUpdate((prev) => !prev)}><EditIcon/></button>
-                        <button className="btn edit-btn" onClick={() => setShowDeleteModal(true)}><TrashIcon/></button>
-                    </div>
+                    {
+                        userStatus === 'creator' &&
+                        <div className="mb-3 mt-3 d-flex">
+                            <button className="btn edit-btn" onClick={() => setIsUpdate((prev) => !prev)}><EditIcon/></button>
+                            <button className="btn edit-btn" onClick={() => setShowDeleteModal(true)}><TrashIcon/></button>
+                        </div>
+                    }
                     {group.creator && (
                         <div className="group-creator">
 
@@ -107,8 +110,8 @@ export const GroupItem = ({id}) => {
                     {group.members && (
                         <div>
                             <div className='members-count'>Members: {group.members.length}
-                                {userStatus === 'Creator' || userStatus === 'Admin' ? (
-                                        <NavLink className='btn edit-btn' to={`/groups/${id}/invite`}>Edit<EditIcon/></NavLink>
+                                {userStatus === 'creator' || userStatus === 'admin' ? (
+                                        <NavLink className='btn edit-btn' to={`/groups/${id}/invite`}><EditIcon/></NavLink>
                                     ) :
                                     null
                                 }

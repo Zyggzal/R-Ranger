@@ -97,10 +97,8 @@ export const ListUserGroups = ({sortBy, asc}) => {
                         </div>
                         <div className="d-flex flex-column align-items-end">
                             <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
-                            <button onClick={()=> {
-                                setToDelete(group);
-                                setShowDeleteModal(true);
-                            }} className="btn btn-outline-danger">Delete</button>
+                            <NavLink className='btn p-1 btn-outline-secondary mb-2'
+                                         to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
                         </div>
                     </div>
                     ))}

@@ -20,7 +20,9 @@ export const InviteUsersFromGroups = ({onSubmit, participants, invites, actualGr
         const fetchGroups = async () => {
             let res = await fetchUserGroupsWithIncludes('members')
             if(actualGroup) res = res.filter((g) => g.id !== actualGroup.id);
-
+            for(let i = 0; i < res.length; i++) {
+                res[i].members = res[i].members.filter(m => !isInvited(m) && user.id !== m.id)
+            }
             setGroups(res)
         }
         fetchGroups()
@@ -89,24 +91,32 @@ export const InviteUsersFromGroups = ({onSubmit, participants, invites, actualGr
                                 </h2>
                                 <div id={`flush-collapse${g.id}`} className="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                 <div className="accordion-body list-group p-2">
-                                    <p id="every-button" className="btn btn-secondary" onClick={(e)=> {
-                                        for(const child of e.target.parentElement.children) {
-                                            if(child.id !== 'every-button') {
-                                                child.children[1].checked = !child.children[1].checked;
+                                    <div className="list-group-item list-group-item-action d-flex">
+                                        <input type="checkbox" className="form-check-input me-3" onClick={(e)=> {
+                                            for(const child of e.target.parentElement.parentElement.children) {
+                                                if(child !== e.target) {
+                                                    child.children[1].checked = e.target.checked;
+                                                }
                                             }
-                                        }
-                                    }}>All</p>
+                                            if(e.target.checked === true) {
+                                                setSelected(s => [...s, ...g.members.map(m => m.id)])
+                                            }
+                                            else {
+                                                setSelected(s=>s.filter(i => !g.members.some(m => m.id === i)))
+                                            }
+                                        }}/>
+                                        <label className="form-check-label">All</label>
+                                    </div>
                                     {
                                         g.members.map((m) => {
                                             return (
-                                                !isInvited(m) && user.id !== m.id &&
                                                 <div className="list-group-item list-group-item-action d-flex justify-content-between" key={`groupmemberitem${m.id}`}>
                                                     <label className="form-check-label" htmlFor={`groupmembercheck${m.id}`}>{m.firstName} {m.lastName}</label>
                                                     <input className="form-check-input" id={`groupmembercheck${m.id}`} type="checkbox" onChange={(e) => {
                                                         e.target.checked ?
                                                             setSelected(s=>[...s, m.id])
                                                             :
-                                                            setSelected(s=>s.filter(i => i != m.id))
+                                                            setSelected(s=>s.filter(i => i !== m.id))
                                                     }}/>
                                                 </div>
                                             )

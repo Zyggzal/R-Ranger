@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Loader from "../../Loader/Loader"
 import { FriendContext } from "../../../Context/Friend/FriendContext"
 import NoContent from "../../NoContent/NoContent"
@@ -8,6 +8,15 @@ export const InviteUsersFromFriends = ({onSubmit, participants, invites}) => {
 
     const [selected, setSelected] = useState([])
     const [asc, setAsc] = useState('1')
+    const [friendsToShow, setFriendsToShow] = useState([])
+
+    useEffect(() => {
+        if(userFriends) {
+            setFriendsToShow(userFriends.sort((a, b) => {
+                return a.login.localeCompare(b.login) * (asc === '1' ? -1 : 1);
+            }))
+        }
+    }, [userFriends, asc])
 
     const isInvited = (user) => {
         if(!participants && !invites) return true;
@@ -32,8 +41,8 @@ export const InviteUsersFromFriends = ({onSubmit, participants, invites}) => {
             </div>
             <div className="list-group">
                 {
-                    userFriends && userFriends.length > 0 ?
-                    userFriends.map(f => {
+                    friendsToShow.length > 0 ?
+                    friendsToShow.map(f => {
                         return (
                             !isInvited(f) && f.Friend.status === 'accepted' &&
                             <div className="list-group-item list-group-item-action d-flex justify-content-between" key={`frienditem${f.id}`}>

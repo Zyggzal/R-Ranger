@@ -233,11 +233,46 @@ export const GroupProvider = ({children}) => {
         }
     }
 
+    const acceptGroupInvite = async (invite) => {
+        if(!user) return;
+        try{
+            const delResponse = await api.Delete('invites', { id: invite.id });
+
+            if(delResponse.status !== 200) {
+                throw delResponse.message;
+            }
+
+            const response = await api.Post(`groups/${invite.GroupId}/members`, { id: invite.UserId });
+            if(response.status !== 200) {
+                throw response.message
+            }
+        }
+        catch (error){
+            console.log(error)
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
+    const declineGroupInvite = async (invite) => {
+        if(!user) return;
+        try{
+            const response = await api.Delete('invites', { id: invite.id });
+            if(response.status !== 200) {
+                throw response.message;
+            }
+        }
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     useEffect(() => {
         if(user) fetchUserGroups();
     }, [user])
 
-    return <GroupContext.Provider value={{removeParticipant, userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById, updateGroup}}>
+    return <GroupContext.Provider value={{removeParticipant, userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById, updateGroup, acceptGroupInvite, declineGroupInvite}}>
         {children}
         { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
     </GroupContext.Provider>;

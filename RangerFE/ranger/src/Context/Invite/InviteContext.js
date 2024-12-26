@@ -96,6 +96,7 @@ export const InviteProvider = ({ children }) => {
                 throw "This user is already invited"
             }
             const response = await api.Post('invites', { UserId, EventId: Event.id, senderId, status })
+            
             if(response.status !== 200) {
                 throw response.message;
             }

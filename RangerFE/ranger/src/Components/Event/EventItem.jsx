@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useState} from "react";
 import {EventContext} from "../../Context/Event/EventContext";
-import {NavLink, useLocation} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {ListParticipants} from "./listParticipants";
 import Loader from "../Loader/Loader";
 import { UserContext } from "../../Context/UserContext";
@@ -14,10 +14,13 @@ import CountdownComponent from "../CountdownComponent/CountdownComponent";
 import { DateToAgo } from "../../Utils/DateTransformer";
 import GroupIcon from '../../Components/Icons/GroupIcon/GroupIcon';
 import HumanIcon from "../Icons/HumanIcon/HumanIcon";
+import TrashIcon from "../Icons/TrashIcon/TrashIcon";
+import { Modal } from "react-bootstrap";
+import ExitIcon from "../Icons/ExitIcon/ExitIcon";
 
 export const EventItem = ({id}) =>{
 
-    const {eventById, eventParticipants, getEventUserStatus, getEventStatusNum} = useContext(EventContext);
+    const {eventById, eventParticipants, getEventUserStatus, getEventStatusNum, deleteEvent, removeParticipant} = useContext(EventContext);
     const {user} = useContext(UserContext);
 
     const [event, setEvent] = useState({});
@@ -26,6 +29,10 @@ export const EventItem = ({id}) =>{
     const [date, setDate] = useState({});
     const [userStatus, setUserStatus] = useState(null);
     const [eventStatus, setEventStatus] = useState(null);
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect( () => {
         const fetchEvent = async () => {
@@ -116,6 +123,30 @@ export const EventItem = ({id}) =>{
                                 <NavLink className='event-group-link'><HumanIcon/>{`@${event.creator.login}`}</NavLink>
                             </div>
                         )}
+                    </div>
+                    <div>
+                        {
+                            userStatus &&
+                            <>
+                                {
+                                    userStatus.role === 'creator' &&
+                                    <>
+                                        <NavLink to='edit' className='btn edit-btn'>Edit <EditIcon/></NavLink>
+                                        <div onClick={()=>setShowDeleteModal(true)} className='btn edit-btn'>Delete <TrashIcon/></div>
+                                    </>
+                                }
+                                {
+                                    (userStatus.role === 'participant' || userStatus.role === 'admin') && 
+                                    <div onClick={()=> {
+                                        removeParticipant(id, user.id);
+                                        navigate('/profile/events');
+                                    }} className='btn edit-btn'>Quit &nbsp; <ExitIcon/></div>
+                                }
+                            </>
+                        }
+                        {
+                        //console.log(userStatus)
+                        }
                     </div>
                 </div>
                 <div className="timer-container">
@@ -212,6 +243,22 @@ export const EventItem = ({id}) =>{
                     </ReviewsProvider>
                 </div>
             }
+            <Modal show={showDeleteModal} onHide={()=>setShowDeleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Are you sure?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>This event will be removed for you and all its' participants.</p>
+                    <div className="d-flex justify-content-end">
+                        <button  className="btn btn-danger me-2" onClick={()=>{
+                            setShowDeleteModal(false);
+                            deleteEvent(id);
+                            navigate('/profile/events');
+                        }}>Delete</button>
+                        <button  className="btn btn-secondary" onClick={()=>setShowDeleteModal(false)}>Cancel</button>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </div>
     )
 

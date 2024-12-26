@@ -3,12 +3,15 @@ import ClockIcon from "../../Icons/ClockIcon/ClockIcon"
 import { DateToAgo } from "../../../Utils/DateTransformer"
 import { FriendContext } from "../../../Context/Friend/FriendContext"
 import { EventContext } from "../../../Context/Event/EventContext"
+import { GroupContext } from "../../../Context/Group/GroupContext"
+import { NavLink } from "react-router-dom"
 
 export const InviteItem = ({invite, onAccept, onDecline}) => {
     const [eventType, setEventType] = useState(null)
 
     const {acceptFriendRequest, declineFriendRequest} = useContext(FriendContext)
     const {acceptEventInvite, declineEventInvite} = useContext(EventContext)
+    const {acceptGroupInvite, declineGroupInvite} = useContext(GroupContext)
 
     useEffect(() => {
         if(invite.Friend) {
@@ -16,6 +19,9 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
         }
         else if(invite.EventId) {
             setEventType('event')
+        }
+        else if(invite.GroupId) {
+            setEventType('group')
         }
     }, [])
 
@@ -25,6 +31,8 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
                 await acceptFriendRequest(invite.Friend); break;
             case 'event':
                 await acceptEventInvite(invite); break;
+            case 'group':
+                await acceptGroupInvite(invite); break;
         }
         onAccept(invite);
     }
@@ -35,6 +43,8 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
                 await declineFriendRequest(invite.Friend); break;
             case 'event':
                 await declineEventInvite(invite); break;
+            case 'group':
+                await declineGroupInvite(invite); break;
         }
         onDecline(invite);
     }
@@ -53,7 +63,18 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
                 eventType === 'event' && 
                 <>
                     <p className="time-label text-secondary"><ClockIcon/> {DateToAgo(invite.createdAt) }</p>
-                    <h1>@{invite.sender.login} invited you to {invite.event.name}</h1>
+                    <h1>@{invite.sender.login} invited you to 
+                        <NavLink to={`/events/${invite.event.id}`} className='invite-item-link'> {invite.event.name}</NavLink>
+                    </h1>
+                </>
+            }
+            {
+                eventType === 'group' && 
+                <>
+                    <p className="time-label text-secondary"><ClockIcon/> {DateToAgo(invite.createdAt) }</p>
+                    <h1>@{invite.sender.login} invited you to 
+                        <NavLink to={`/groups/${invite.group.id}`} className='invite-item-link'> {invite.group.name}</NavLink>
+                    </h1>
                 </>
             }
             <hr/>

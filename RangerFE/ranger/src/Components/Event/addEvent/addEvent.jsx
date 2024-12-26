@@ -8,7 +8,7 @@ import ArrowDownIcon from '../../Icons/ArrowDownIcon/ArrowDownIcon';
 import './addEvent.css'
 import {useLocation, useNavigate} from 'react-router-dom';
 
-export const AddEvent = () => {
+export const AddEvent = ({ onSubmit, oldEvent, groupId }) => {
     const {
       register,
       handleSubmit,
@@ -17,18 +17,12 @@ export const AddEvent = () => {
       setValue,
     } = useForm()
     const { user } = useContext(UserContext)
-    const { addEvent } = useContext(EventContext)
   
     const [limit, setLimit] = useState(false)
   
     const watchStartDate = watch("startDate")
     const watchEndDate = watch("endDate")
     const watchSignUpEndDate = watch("signUpEndDate")
-
-    const navigate = useNavigate()
-
-    const location = useLocation();
-    const {groupId} = location.state || {};
   
     useEffect(() => {
       if (watchStartDate) {
@@ -66,7 +60,7 @@ export const AddEvent = () => {
       }
     }, [watchSignUpEndDate, setValue])
   
-    const onSubmit = async (values) => {
+    const onEventSubmit = async (values) => {
       const processedValues = {
         ...values,
         participantsLimit:
@@ -80,16 +74,29 @@ export const AddEvent = () => {
         endDate: new Date(values.endDate).toISOString(),
         signUpEndDate: new Date(values.signUpEndDate).toISOString(),
       }
-  
-      const res = await addEvent(processedValues)
-      if(res){
-        navigate(`/events/${res.data[0].id}/invite`, { replace: true })
-      }
-
+      onSubmit(processedValues);
     }
+
+    useEffect(() => {
+      if(oldEvent) {
+        setValue('name', oldEvent.name)
+        setValue('isPublic', oldEvent.isPublic ? '1' : '0')
+        setValue('participantsLimit', oldEvent.participantsLimit)
+        setValue('publicDescription', oldEvent.publicDescription)
+        setValue('privateDescription', oldEvent.privateDescription)
+
+        const convertDate = (value) => {
+          let date = new Date(value);
+          return date.toISOString().substring(0,16)
+        }
+        setValue('signUpEndDate', convertDate(oldEvent.signUpEndDate))
+        setValue('startDate', convertDate(oldEvent.startDate))
+        setValue('endDate', convertDate(oldEvent.endDate))
+      }
+    }, [oldEvent])
   
     return (
-      <form onSubmit={handleSubmit(onSubmit)} className="form p-5 add-page-form">
+      <form onSubmit={handleSubmit(onEventSubmit)} className="form p-5 add-page-form">
         <div className="mb-3 first-line">
           <div>
             <label className="form-label">Event Name</label>
@@ -146,14 +153,14 @@ export const AddEvent = () => {
           <label className="form-label">Event Description</label>
           <InfoIcon content={<p><strong>Public</strong> description.<br/>Write the info you want everyone to see here. <br/><span className='text-secondary'>General info: type of activity, target audience, etc.</span></p>}/>
           <textarea
-            className={`add-page-input form-control p-4 ${errors.description && 'is-invalid'}`}
-            {...register("description", {
+            className={`add-page-input form-control p-4 ${errors.publicDescription && 'is-invalid'}`}
+            {...register("publicDescription", {
               required: "Public description is required",
             })}
             placeholder="Public Description"
           />
-          {errors.description && (
-            <span className="invalid-feedback error">{errors.description.message}</span>
+          {errors.publicDescription && (
+            <span className="invalid-feedback error">{errors.publicDescription.message}</span>
           )}
         </div>
   
@@ -161,11 +168,11 @@ export const AddEvent = () => {
           <label className="form-label">Private Description</label>
           <InfoIcon content={<p><strong>Private</strong> description.<br/>Write the info you want only the participants to see here. <br/><span className='text-secondary'>Specific info: links, locations, etc.</span></p>}/>
           <textarea
-            className={`add-page-input form-control p-4 ${errors.link && 'is-invalid'}`}
-            {...register("link", { required: "Private description is required" })}
+            className={`add-page-input form-control p-4 ${errors.privateDescription && 'is-invalid'}`}
+            {...register("privateDescription", { required: "Private description is required" })}
             placeholder="Private Description"
           />
-          {errors.link && <span className="invalid-feedback error">{errors.link.message}</span>}
+          {errors.privateDescription && <span className="invalid-feedback error">{errors.privateDescription.message}</span>}
         </div>
         <div className="card p-5 time-container">
           <h1 className="mb-5">Event timeline</h1>
@@ -243,7 +250,7 @@ export const AddEvent = () => {
         </div>
   
         <button type="submit" className="btn mt-3 btn-crimson">
-          Create Event
+          Confirm
         </button>
       </form>
     )

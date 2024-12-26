@@ -3,7 +3,7 @@ const sequelize = require('../config/database')
 
 const Invite = sequelize.define('Invite', {
     status: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING,
         defaultValue: false
     },
     // type: {

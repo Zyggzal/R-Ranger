@@ -38,7 +38,7 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
 
             const c = event.participantsLimit- event.participants.length
             for(let i = 0; i < c; i++) {
-                promises.push(inviteUserToEvent(array[0], event, eventInvites, 'member'))
+                promises.push(inviteUserToEvent(array[i], event, eventInvites, 'member'))
             }
             Promise.all(promises).then(()=>onClose(true))
         }

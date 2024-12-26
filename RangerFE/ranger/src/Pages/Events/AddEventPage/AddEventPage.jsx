@@ -1,17 +1,27 @@
+import { useContext } from "react";
 import { AddEvent } from "../../../Components/Event/addEvent/addEvent";
 import InfoIcon from "../../../Components/Icons/InfoIcon/InfoIcon";
-import { EventProvider } from "../../../Context/Event/EventContext";
+import { EventContext } from "../../../Context/Event/EventContext";
 import './AddEventPage.css'
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const AddEventPage = () => {
+    const { addEvent } = useContext(EventContext)
 
     const location = useLocation();
-
     const {groupId} = location.state || {};
 
+    const navigate = useNavigate()
+
+    const onSubmit = async (values) => {
+      const res = await addEvent(values)
+      if(res){
+        navigate(`/events/${res.data[0].id}/invite`, { replace: true })
+      }
+    }
+
     return (
-        <EventProvider>
+        <>
             <div className="card text-center stepContainer">
                 <div className="card-body">
                     <div className="card-body">
@@ -23,10 +33,10 @@ const AddEventPage = () => {
                 </div>
             </div>
             <div>
-                <AddEvent/>
+                <AddEvent onSubmit={onSubmit} groupId={groupId}/>
                 <div className="background-stripe"></div>
             </div>
-        </EventProvider>
+        </>
     )
 }
 

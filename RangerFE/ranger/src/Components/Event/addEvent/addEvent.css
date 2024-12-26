@@ -50,15 +50,3 @@
     color: white;
     padding: 10px;
 }
-
-::-webkit-calendar-picker-indicator { 
-    background-color: #A4161A;
-    padding: 8px;
-    border-radius: 5px;
-    margin-left: 5px;
-}
-
-::-webkit-calendar-picker-indicator:hover { 
-    background-color: #1ac7c4;
-    filter: invert();
-}
