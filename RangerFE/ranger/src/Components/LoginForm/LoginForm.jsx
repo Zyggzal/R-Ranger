@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import useAPI from "../../Hooks/useAPI";
 import Loader from "../Loader/Loader";
@@ -8,21 +8,16 @@ import Loader from "../Loader/Loader";
 const LoginForm = () => {
     const {register, handleSubmit, formState: {errors}} = useForm();
 
-    const { Login } = useContext(UserContext);
+    const { Login, isLoading } = useContext(UserContext);
 
     const navigate = useNavigate();
 
-    const location = useLocation();
-    const {from} = location.state || {};
-
-    const api = useAPI()
-
     const handleLogin = async (values) => {
         await Login(values.email, values.password);
-        navigate(from ? from : '/profile/events');
+        navigate('/profile/events');
     }
     return (
-        api.isBusy ? <Loader/> :
+        isLoading ? <Loader/> :
         <form className="mb-3 form-left" onSubmit={handleSubmit(handleLogin)}>
             <div className="mb-3 input-cont">
                 <input

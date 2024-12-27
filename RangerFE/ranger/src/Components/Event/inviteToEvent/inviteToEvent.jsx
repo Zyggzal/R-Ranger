@@ -5,9 +5,7 @@ import './inviteToEvent.css'
 import { InviteContext, InviteProvider } from "../../../Context/Invite/InviteContext";
 import { InviteUserModal } from "../inviteUserModal/inviteUserModal";
 import { DateToAgo } from "../../../Utils/DateTransformer";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import ArrowDownIcon from "../../Icons/ArrowDownIcon/ArrowDownIcon";
-import ArrowLeftSquareIcon from "../../Icons/ArrowLeftSquareIcon/ArrowLeftSquareIcon";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 export const InviteToEvent = ({ eventId }) => {
 
@@ -20,7 +18,15 @@ export const InviteToEvent = ({ eventId }) => {
     const [isFull, setIsFull] = useState(true);
     const [isOver, setIsOver] = useState(false);
 
-    const [modal, setModal] = useState()
+    const [modal, setModal] = useState();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const {pass} = location.state || {};
+        if(!pass)navigate('/')
+    }, [])
 
     const fetchInvites = useCallback(async () => {
         if(event) {
@@ -53,7 +59,7 @@ export const InviteToEvent = ({ eventId }) => {
             setEventInvites(inv)
         }
         fetchEvent()
-    }, [eventId])
+    }, [eventById])
 
     useEffect(() => {
         if(event && event.participantsLimit) {

@@ -8,6 +8,7 @@ import HumanIcon from "../../../Components/Icons/HumanIcon/HumanIcon";
 import InviteIcon from "../../../Components/Icons/InviteIcon/InviteIcon";
 import CalendarIcon from "../../../Components/Icons/CalendarIcon/CalendarIcon";
 import GroupIcon from "../../../Components/Icons/GroupIcon/GroupIcon";
+import Loader from "../../../Components/Loader/Loader";
 
 const UserProfile = () => {
 
@@ -17,6 +18,7 @@ const UserProfile = () => {
 
 
     return (
+        !user ? <Loader/> :  
         <div className="d-flex justify-content-between p-3 user-profile-container">
                <div className="container-small user-info-container">
                     <img className="user-pfp" src="/Resources/Images/RangerPFP2.png" alt="profile"/>

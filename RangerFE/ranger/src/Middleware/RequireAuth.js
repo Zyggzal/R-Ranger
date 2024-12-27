@@ -7,7 +7,7 @@ const RequireAuth = ( {children} ) => {
     const location = useLocation();
 
     if (!isValid()) {
-        return <Navigate to='/login' state={{ from: location.pathname }}/>
+        return <Navigate to='/login'/>
     }
 
     return children;

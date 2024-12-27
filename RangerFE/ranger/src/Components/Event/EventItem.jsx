@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useState} from "react";
 import {EventContext} from "../../Context/Event/EventContext";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {ListParticipants} from "./listParticipants";
 import Loader from "../Loader/Loader";
 import { UserContext } from "../../Context/UserContext";
@@ -25,7 +25,6 @@ export const EventItem = ({id}) =>{
 
     const [event, setEvent] = useState({});
     const [participants, setParticipants] = useState(null);
-    const [creator, setCreator] = useState({});
     const [date, setDate] = useState({});
     const [userStatus, setUserStatus] = useState(null);
     const [eventStatus, setEventStatus] = useState(null);
@@ -34,12 +33,12 @@ export const EventItem = ({id}) =>{
 
     const navigate = useNavigate();
 
-    useEffect( () => {
+    useEffect(() => {
         const fetchEvent = async () => {
             if (id) {
-                const thisEvent = await eventById(await id);
+                const thisEvent = await eventById(id);
+                if(!thisEvent) return;
                 setEvent(thisEvent);
-                setCreator(thisEvent.creator);
                 const timeStyle = {
                     year: "numeric",
                     month: "2-digit",
@@ -60,7 +59,7 @@ export const EventItem = ({id}) =>{
 
         fetchEvent();
 
-    }, []);
+    }, [eventById]);
 
     const getEventProgressPercent = useCallback(() => {
         const now = Date.now() - new Date(event.startDate)
@@ -131,7 +130,10 @@ export const EventItem = ({id}) =>{
                                 {
                                     userStatus.role === 'creator' &&
                                     <>
-                                        <NavLink to='edit' className='btn edit-btn'>Edit <EditIcon/></NavLink>
+                                        {
+                                            eventStatus <= 1 &&
+                                            <NavLink to='edit' state={{ pass: 'p' }} className='btn edit-btn'>Edit <EditIcon/></NavLink>
+                                        }
                                         <div onClick={()=>setShowDeleteModal(true)} className='btn edit-btn'>Delete <TrashIcon/></div>
                                     </>
                                 }
@@ -225,7 +227,7 @@ export const EventItem = ({id}) =>{
                         }
                     </span>
                     {participants && (userStatus.role === 'admin' || userStatus.role === 'creator') && eventStatus <= 1 && (
-                        <NavLink className='btn edit-btn' to={`/events/${id}/invite`}>Edit <EditIcon/></NavLink>
+                        <NavLink className='btn edit-btn' to={`/events/${id}/invite`} state={{ pass:'p' }}>Edit <EditIcon/></NavLink>
                     )}
                 </h1>
 

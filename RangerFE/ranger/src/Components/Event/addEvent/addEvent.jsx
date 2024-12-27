@@ -1,12 +1,10 @@
 import { useForm } from 'react-hook-form'
 import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../../Context/UserContext";
-import {EventContext} from "../../../Context/Event/EventContext";
 import InfoIcon from '../../Icons/InfoIcon/InfoIcon';
 import ClockIcon from '../../Icons/ClockIcon/ClockIcon';
 import ArrowDownIcon from '../../Icons/ArrowDownIcon/ArrowDownIcon';
 import './addEvent.css'
-import {useLocation, useNavigate} from 'react-router-dom';
 
 export const AddEvent = ({ onSubmit, oldEvent, groupId }) => {
     const {

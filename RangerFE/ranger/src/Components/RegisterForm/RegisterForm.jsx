@@ -1,16 +1,13 @@
 import { useContext } from "react";
 import { UserContext } from "../../Context/UserContext";
 import Loader from "../Loader/Loader";
-import useAPI from "../../Hooks/useAPI";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
     const {register, handleSubmit, formState: {errors}, watch} = useForm();
 
-    const { Register } = useContext(UserContext);
-    
-    const api = useAPI();
+    const { Register, isLoading } = useContext(UserContext);
 
     const navigate = useNavigate()
 
@@ -19,7 +16,7 @@ const RegisterForm = () => {
         navigate('/profile/events');
     }
     return (
-        api.isBusy ? <Loader /> :
+        isLoading ? <Loader /> :
         <form className="mb-3 form-right" onSubmit={handleSubmit(handleRegister)}>
             <div className="mb-3 input-cont">
                 <input

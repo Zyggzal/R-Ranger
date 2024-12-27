@@ -3,8 +3,6 @@ import axios from 'axios'
 import API from '../Config/API'
 
 const useAPI = () => {
-    const [isBusy, setIsBusy] = useState(false);
-
     useEffect(()=>{
         axios.defaults.withCredentials = true;
     }, []);
@@ -34,13 +32,9 @@ const useAPI = () => {
     }, []);
 
     const Login = async (email, password) => {
-        setIsBusy(true)
-
         try {
             const request = `${API.host}/auth/login`
             const response = await axios.post(request, { email, password })
-
-            setIsBusy(false)
 
             const data = response.data;
             const status = response.status;
@@ -48,8 +42,6 @@ const useAPI = () => {
             return { status, data };
         }
         catch(err) {
-            setIsBusy(false)
-
             const status = err.response.status
             const message = err.response.data.message
             
@@ -58,12 +50,9 @@ const useAPI = () => {
     }
 
     const Logout = async () => {
-        setIsBusy(true)
         try {
             const request = `${API.host}/auth/logout`
             const response = await axios.post(request);
-
-            setIsBusy(false)
 
             const data = response.data;
             const status = response.status;
@@ -71,8 +60,6 @@ const useAPI = () => {
             return { status, data };
         }
         catch (err) {
-            setIsBusy(false)
-
             const status = err.response.status
             const message = err.response.data.message
             
@@ -80,13 +67,9 @@ const useAPI = () => {
         }
     }
     const Register = async (login, firstName, lastName, email, password) => {
-        setIsBusy(true)
-
         try {
             const request = `${API.host}/auth/register`
             const response = await axios.post(request, { login, firstName, lastName, email, password })
-            
-            setIsBusy(false)
             
             const data = response.data;
             const status = response.status;
@@ -94,8 +77,6 @@ const useAPI = () => {
             return { status, data };
         }
         catch(err) {
-            setIsBusy(false)
-
             const status = err.response.status
             const message = err.response.data.message
             
@@ -108,16 +89,12 @@ const useAPI = () => {
             const request = `${API.host}/auth/status`
             const response = await axios.post(request, { id })
             
-            setIsBusy(false)
-            
             const data = response.data;
             const status = response.status;
 
             return { status, data };
         }
         catch(err) {
-            setIsBusy(false)
-            
             const status = err.response.status
             const message = err.response.data.message
             
@@ -126,13 +103,9 @@ const useAPI = () => {
     }
 
     const Get = async (path, include) => {
-        setIsBusy(true)
-
         try {
             const request = `${API.host}/${path}?${include? `include=${include}` : '' }`
             const response = await axios.get(request)
-            
-            setIsBusy(false)
             
             const data = response.data;
             const status = response.status;
@@ -140,8 +113,6 @@ const useAPI = () => {
             return { status, data };
         }
         catch(err) {
-            setIsBusy(false)
-
             const status = err.response.status
             const message = err.response.statusText
             
@@ -150,22 +121,16 @@ const useAPI = () => {
     }
     
     const Post = async (path, params) => {
-        setIsBusy(true)
-
         try {
             const request = `${API.host}/${path}`
             const response = await axios.post(request, params)
-            
-            setIsBusy(false)
-            
+
             const data = response.data;
             const status = response.status;
 
             return { status, data };
         }
         catch(err) {
-            setIsBusy(false)
-
             const status = err.response.status
             const message = err.response.statusText
             
@@ -174,22 +139,16 @@ const useAPI = () => {
     }
 
     const Patch = async (path, params) => {
-        setIsBusy(true)
-
         try {
             const request = `${API.host}/${path}`
             const response = await axios.patch(request, params)
-            
-            setIsBusy(false)
-            
+ 
             const data = response.data;
             const status = response.status;
 
             return { status, data };
         }
         catch(err) {
-            setIsBusy(false)
-
             const status = err.response.status
             const message = err.response.statusText
             
@@ -198,22 +157,16 @@ const useAPI = () => {
     }
 
     const Delete = async (path, payload) => {
-        setIsBusy(true)
-
         try {
             const request = `${API.host}/${path}`
             const response = await axios.delete(request, { data: payload })
-            
-            setIsBusy(false)
-            
+
             const data = response.data;
             const status = response.status;
 
             return { status, data };
         }
         catch(err) {
-            setIsBusy(false)
-
             const status = err.response.status
             const message = err.response.statusText
             
@@ -222,7 +175,6 @@ const useAPI = () => {
     }
 
     return {
-        isBusy,
         Login,
         Logout,
         Register,

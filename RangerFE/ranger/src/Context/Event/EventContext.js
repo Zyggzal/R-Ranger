@@ -82,7 +82,6 @@ export const EventProvider = ({ children }) => {
                 if(response.status !== 200) {
                     throw response.message;
                 }
-                //fetchUserEvents();
             return response;
         }
         catch (error) {
@@ -91,7 +90,7 @@ export const EventProvider = ({ children }) => {
         }
     }
 
-    const eventById = async (id, include) =>{
+    const eventById = useCallback(async (id, include) =>{
         if(!user) return;
         try{
             const response = await api.Get(`events/${id}`, include);
@@ -104,7 +103,7 @@ export const EventProvider = ({ children }) => {
             setAlertText(error)
             setShowAlert(true)
         }
-    }
+    }, [user])
 
     const eventParticipants = async (id) => {
         if(!user) return;
@@ -183,7 +182,6 @@ export const EventProvider = ({ children }) => {
             }
         }
         catch (error){
-            console.log(error)
             setAlertText(error)
             setShowAlert(true)
         }

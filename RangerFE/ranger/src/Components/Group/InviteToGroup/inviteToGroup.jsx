@@ -1,9 +1,8 @@
 import {useCallback, useContext, useEffect, useState} from "react";
-import {NavLink, useParams} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {GroupContext} from "../../../Context/Group/GroupContext";
 import {InviteContext, InviteProvider} from "../../../Context/Invite/InviteContext";
 import {DateToAgo} from "../../../Utils/DateTransformer";
-import {InviteUserModal} from "../../Event/inviteUserModal/inviteUserModal";
 import Loader from "../../Loader/Loader";
 import {InviteUserToGroupModal} from "../../Event/inviteUserToGroupModal/inviteUserToGroupModal";
 
@@ -14,10 +13,15 @@ export const InviteToGroup = ({groupId}) => {
     const {groupById, removeParticipant} = useContext(GroupContext);
     const {fetchGroupInvites, removeInvite} = useContext(InviteContext);
 
-    // const [isFull, setIsFull] = useState(false);
-    // const [isOver, setIsOver] = useState(false);
-
     const [modal, setModal] = useState();
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const {pass} = location.state || {};
+        if(!pass)navigate('/')
+    }, [])
 
     const fetchInvites = useCallback(async () => {
         if(group){
@@ -48,10 +52,7 @@ export const InviteToGroup = ({groupId}) => {
         }
 
         fetchGroup();
-    }, [groupId])
-
-    // console.log(group);
-    // console.log(groupInvites);
+    }, [groupById])
 
     return (
         <div className="invite-event-body" style={{position: "relative"}}>

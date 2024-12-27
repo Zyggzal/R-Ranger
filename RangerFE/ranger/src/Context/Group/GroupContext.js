@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import useAPI from "../../Hooks/useAPI";
 import {UserContext} from "../UserContext";
 import DismissableAlert from "../../Components/DismissableAlert/DismissableAlert";
@@ -84,7 +84,7 @@ export const GroupProvider = ({children}) => {
         }
     }
 
-    const groupById = async (id, include) =>{
+    const groupById = useCallback(async (id, include) =>{
         if(!user) return;
         try{
             const response = await api.Get(`groups/${id}`, include);
@@ -97,12 +97,12 @@ export const GroupProvider = ({children}) => {
             setAlertText(error)
             setShowAlert(true)
         }
-    }
+    }, [user])
 
     const removeParticipant = async (id, UserId) => {
         if(!user) return;
         try{
-            const response = await api.Delete(`groups/${id}/members`, {UserId});
+            await api.Delete(`groups/${id}/members`, { id: UserId });
         }catch (err){
             setAlertText(err);
             setShowAlert(true);

@@ -1,17 +1,26 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AddEvent } from "../../../Components/Event/addEvent/addEvent";
 import InfoIcon from "../../../Components/Icons/InfoIcon/InfoIcon";
 import { EventContext } from "../../../Context/Event/EventContext";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import Loader from "../../../Components/Loader/Loader";
+import { UserContext } from "../../../Context/UserContext";
 
 const EditEventPage = () => {
     const { editEvent, eventById } = useContext(EventContext);
+
     const [event, setEvent] = useState(null);
 
     const params = useParams();
 
     const navigate = useNavigate();
+
+    const location = useLocation();
+
+    useEffect(() => {
+        const {pass} = location.state || {};
+        if(!pass)navigate('/')
+    }, [])
 
     const onSubmit = async (values) => {
       const res = await editEvent(params.id, values);
@@ -19,18 +28,18 @@ const EditEventPage = () => {
         navigate(`/events/${params.id}`, { replace: true });
       }
     }
+    
+    useEffect(() => {
+        const fetchEventToEdit = async () => {
+            const eventToEdit = await eventById(params.id);
 
-    const fetchEventToEdit = useCallback(async () => {
-        const eventToEdit = await eventById(params.id);
-        setEvent(eventToEdit);
+            setEvent(eventToEdit);
+        }
+        fetchEventToEdit();
     }, [eventById])
 
-    useState(() => {
-        fetchEventToEdit();
-    }, [fetchEventToEdit])
-
     return (
-        !event ? <><Loader/></> :
+        !event ? <Loader/> :
         <>
             <div className="card text-center stepContainer">
                 <div className="card-body">

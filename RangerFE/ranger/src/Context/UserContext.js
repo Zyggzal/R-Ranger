@@ -11,6 +11,8 @@ export const UserProvider = ({children}) => {
     const [showAlert, setShowAlert] = useState(false);
     const [alertText, setAlertText] = useState('');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const api = useAPI() 
     const StoreUser = ({ user, expires }) => {
         localStorage.setItem("user", JSON.stringify({
@@ -34,11 +36,11 @@ export const UserProvider = ({children}) => {
     }
 
     const isValid = () => {
-        if(!user || !user.expires) {
-            return false;
+        if(user && user.expires) {
+            return user.expires > Date.now()
         }
 
-        return user.expires > Date.now()
+        return GetUserFromStore() ? true : false;
     }
 
     useEffect(() => {
@@ -55,6 +57,7 @@ export const UserProvider = ({children}) => {
     } 
 
     const Login = async (email, password) => {
+        setIsLoading(true);
         const res = await api.Login(email, password)
         if(res.status === 200) {
             updateUser(res.data);
@@ -64,6 +67,7 @@ export const UserProvider = ({children}) => {
             setAlertText(res.message)
             setShowAlert(true)
         }
+        setIsLoading(false);
     }
 
     const Logout = () => {
@@ -74,6 +78,7 @@ export const UserProvider = ({children}) => {
     }
 
     const Register = async (login, firstName, lastName, email, password) => {
+        setIsLoading(true);
         const res = await api.Register(login, firstName, lastName, email, password);
 
         if(res.status === 201) {
@@ -83,17 +88,21 @@ export const UserProvider = ({children}) => {
             setAlertText(res.message)
             setShowAlert(true)
         }
+        setIsLoading(false);
     }
 
     const idByLogin = async (login) => {
+        setIsLoading(true);
         const response = await api.Get(`users/friends/search/${login}`);
-         // console.log(response);
+        
+        setIsLoading(false);
 
         if(response.data.length !== 0) return response.data[0].id;
         return -1
     }
 
     const editUser = async (id, firstName, lastName, password, newPassword) => {
+        setIsLoading(true);
         const params = { password }
         if(firstName) params.firstName = firstName;
         if(lastName) params.lastName = lastName;
@@ -107,10 +116,11 @@ export const UserProvider = ({children}) => {
             setAlertText(res.message)
             setShowAlert(true)
         }
+        setIsLoading(false);
     }
 
     return (
-        <UserContext.Provider value={{ user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
+        <UserContext.Provider value={{ isLoading, user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
             <div style={{ position: 'relative' }}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

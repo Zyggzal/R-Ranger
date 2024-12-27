@@ -2,30 +2,22 @@ import {useCallback, useContext, useEffect, useState} from "react";
 import {GroupContext} from "../../../Context/Group/GroupContext";
 import {UserContext} from "../../../Context/UserContext";
 import Loader from "../../Loader/Loader";
-import InfoIcon from "../../Icons/InfoIcon/InfoIcon";
-import ClockIcon from "../../Icons/ClockIcon/ClockIcon";
-import CountdownComponent from "../../CountdownComponent/CountdownComponent";
-import {DateToAgo} from "../../../Utils/DateTransformer";
 import {NavLink, useNavigate} from "react-router-dom";
 import EditIcon from "../../Icons/EditIcon/EditIcon";
-import {ListParticipants} from "../../Event/listParticipants";
-import {ReviewsProvider} from "../../../Context/Reviews/ReviewsContext";
-import {EventReviewsList} from "../../Event/EventReview/EventRewiewsList";
-import PersonPlusIcon from "../../Icons/PersonPlusIcon/PersonPlusIcon";
 import {ListGroupEvents} from "../../Event/listGroupEvents";
 import {EventProvider} from "../../../Context/Event/EventContext";
 import styles from "./GroupItem.css"
 import {ListGroupMembers} from "../listGroupMembers";
 import LockIcon from "../../Icons/LockIcon/LockIcon";
-import NoContent from "../../NoContent/NoContent";
 import UpdateGroupForm from "../UpdateGroupForm/UpdateGroupForm";
 import TrashIcon from "../../Icons/TrashIcon/TrashIcon";
 import { Modal } from "react-bootstrap";
+import ExitIcon from "../../Icons/ExitIcon/ExitIcon";
 
 export const GroupItem = ({id}) => {
     const navigate = useNavigate();
 
-    const {groupById, deleteGroup} = useContext(GroupContext);
+    const {groupById, deleteGroup, removeParticipant} = useContext(GroupContext);
     const {user} = useContext(UserContext);
 
     const [group, setGroup] = useState({});
@@ -56,9 +48,11 @@ export const GroupItem = ({id}) => {
 
     const fetchGroup = useCallback(async () => {
         const thisGroup = await groupById(id, ["creatorOf", 'members']);
-        setEvents(thisGroup.creatorOf)
-        setGroup(thisGroup);
-    }, [id])
+        if(thisGroup) {
+            setEvents(thisGroup.creatorOf);
+            setGroup(thisGroup);
+        }
+    }, [groupById])
 
     useEffect(() => {
         fetchGroup()
@@ -105,13 +99,23 @@ export const GroupItem = ({id}) => {
                         </div>
                     )}
 
+                    <div className="d-flex justify-content-end pe-3">
+                        {
+                            (userStatus === 'member' || userStatus === 'admin') &&
+                            <div onClick={()=> {
+                                removeParticipant(id, user.id);
+                                navigate('/profile/groups');
+                            }} className='btn edit-btn'>Quit &nbsp; <ExitIcon /></div>
+                        }
+                    </div>
+
                     <hr className="divider" style={{width:'95%'}}/>
 
                     {group.members && (
                         <div>
                             <div className='members-count'>Members: {group.members.length}
                                 {userStatus === 'creator' || userStatus === 'admin' ? (
-                                        <NavLink className='btn edit-btn' to={`/groups/${id}/invite`}><EditIcon/></NavLink>
+                                        <NavLink className='btn edit-btn' to={`/groups/${id}/invite`} state={{ pass: 'p' }}><EditIcon/></NavLink>
                                     ) :
                                     null
                                 }
