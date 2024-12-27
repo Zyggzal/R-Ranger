@@ -1,3 +1,5 @@
+import InfoIcon from "../Icons/InfoIcon/InfoIcon";
+
 export const ListParticipants = ({participants}) =>{
     if(!participants || participants.length === 0) return(
         <div>NoParticipants</div>
@@ -25,7 +27,25 @@ export const ListParticipants = ({participants}) =>{
                             </div>
                             <div>@{user.login}</div>
                             <div>@{user.email}</div>
-                            <div>{user.EventParticipants.role}</div>
+                            <div>
+                                {user.EventParticipants.role}
+                                <InfoIcon content={
+                                    <p>
+                                        {
+                                            user.EventParticipants.role === 'participant' &&
+                                            <><strong>Participants</strong> can view this event and its' members without making any changes</>
+                                        }
+                                        {
+                                            user.EventParticipants.role === 'admin' &&
+                                            <><strong>Admins</strong> can manage this event's participants (<strong>invite, remove, promote, demote</strong>)</>
+                                        }
+                                        {
+                                            user.EventParticipants.role === 'creator' &&
+                                            <><strong>Creator</strong> can edit this event's information as well as manage its' participants</>
+                                        }
+                                    </p>
+                                }/>
+                            </div>
                         </li>
                     ))}
                 </ul>

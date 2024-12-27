@@ -6,14 +6,18 @@ import { InviteContext, InviteProvider } from "../../../Context/Invite/InviteCon
 import { InviteUserModal } from "../inviteUserModal/inviteUserModal";
 import { DateToAgo } from "../../../Utils/DateTransformer";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import PersonDashIcon from "../../Icons/PersonDashIcon/PersonDashIcon";
+import { UserContext } from "../../../Context/UserContext";
+import InfoIcon from "../../Icons/InfoIcon/InfoIcon";
 
 export const InviteToEvent = ({ eventId }) => {
 
     const [event, setEvent] = useState(null);
     const [eventInvites, setEventInvites] = useState(null);
 
-    const { eventById, removeParticipant } = useContext(EventContext);
+    const { eventById, removeParticipant, changeUserRoleInEvent } = useContext(EventContext);
     const { fetchEventInvites, removeInvite } = useContext(InviteContext);
+    const {user} = useContext(UserContext);
 
     const [isFull, setIsFull] = useState(true);
     const [isOver, setIsOver] = useState(false);
@@ -79,7 +83,6 @@ export const InviteToEvent = ({ eventId }) => {
 
     return(
         <div className="invite-event-body" style={{position: "relative"}}>
-            {/* <button className="btn btn-outline-danger btn-exit" onClick={()=>navigate(-1)}><ArrowLeftSquareIcon/> Back</button> */}
             {
             event && eventInvites ?
             <div className="container text-center">
@@ -112,12 +115,45 @@ export const InviteToEvent = ({ eventId }) => {
                                             </div>
                                             <div className="d-flex flex-column align-items-end">
                                                 <p className="text-secondary">Signed Up: { DateToAgo(u.EventParticipants.createdAt) }</p>
-                                                <h6>Role: { u.EventParticipants.role }</h6>
-                                                { u.EventParticipants.role !== 'creator' && 
-                                                <button className="btn btn-outline-danger" onClick={ async ()=> {
-                                                    await removeParticipant(event.id, u.id)
-                                                    fetchEvents()
-                                                }}>Remove</button>}
+                                                <h6>
+                                                    Role: { u.EventParticipants.role }
+                                                    <InfoIcon content={
+                                                        <p>
+                                                            {
+                                                                u.EventParticipants.role === 'participant' &&
+                                                                <><strong>Participants</strong> can view this event and its' members without making any changes</>
+                                                            }
+                                                            {
+                                                                u.EventParticipants.role === 'admin' &&
+                                                                <><strong>Admins</strong> can manage this event's participants (<strong>invite, remove, promote, demote</strong>)</>
+                                                            }
+                                                            {
+                                                                u.EventParticipants.role === 'creator' &&
+                                                                <><strong>Creator</strong> can edit this event's information as well as manage its' participants</>
+                                                            }
+                                                        </p>
+                                                    }/>
+                                                </h6>
+                                                { u.EventParticipants.role !== 'creator' && user.id !== u.id &&
+                                                    <div className="d-flex">
+                                                        {
+                                                            u.EventParticipants.role === 'participant' ? 
+                                                                <button className="btn btn-crimson" onClick={ async ()=> {
+                                                                    await changeUserRoleInEvent(eventId, u.id, 'admin')
+                                                                    fetchEvents()
+                                                                }}>Promote</button>
+                                                                :
+                                                                <button className="btn btn-outline-secondary" onClick={ async ()=> {
+                                                                    await changeUserRoleInEvent(eventId, u.id, 'participant')
+                                                                    fetchEvents()
+                                                                }}>Demote</button>
+                                                        }
+                                                        <button className="btn btn-outline-danger ms-3 p-1" onClick={ async ()=> {
+                                                             await removeParticipant(event.id, u.id)
+                                                            fetchEvents()
+                                                        }}><PersonDashIcon/></button>
+                                                    </div>
+                                                }
                                             </div>
                                         </div>
                                     </div>

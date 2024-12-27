@@ -250,12 +250,27 @@ export const EventProvider = ({ children }) => {
         }
     }
 
+    const changeUserRoleInEvent = async (EventId, UserId, role) => {
+        if(!user) return;
+        try{
+            const response = await api.Patch(`events/${EventId}/participants`, { role, id: UserId });
+
+            if(response.status !== 200) {
+                throw response.message;
+            }
+        }
+        catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     useEffect(()=>{
         if(user)fetchUserEvents();
     }, [user])
 
     return (
-        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite, getEventUserStatus, getEventStatusNum, editEvent, deleteEvent }}>
+        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite, getEventUserStatus, getEventStatusNum, editEvent, deleteEvent, changeUserRoleInEvent }}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

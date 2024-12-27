@@ -128,7 +128,7 @@ export const EventItem = ({id}) =>{
                             userStatus &&
                             <>
                                 {
-                                    userStatus.role === 'creator' &&
+                                    (userStatus.role === 'creator' || userStatus.role === 'admin') &&
                                     <>
                                         {
                                             eventStatus <= 1 &&
@@ -145,9 +145,6 @@ export const EventItem = ({id}) =>{
                                     }} className='btn edit-btn'>Quit &nbsp; <ExitIcon/></div>
                                 }
                             </>
-                        }
-                        {
-                        //console.log(userStatus)
                         }
                     </div>
                 </div>

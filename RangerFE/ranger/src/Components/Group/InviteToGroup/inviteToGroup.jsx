@@ -5,13 +5,17 @@ import {InviteContext, InviteProvider} from "../../../Context/Invite/InviteConte
 import {DateToAgo} from "../../../Utils/DateTransformer";
 import Loader from "../../Loader/Loader";
 import {InviteUserToGroupModal} from "../../Event/inviteUserToGroupModal/inviteUserToGroupModal";
+import { UserContext } from "../../../Context/UserContext";
+import PersonDashIcon from "../../Icons/PersonDashIcon/PersonDashIcon";
+import InfoIcon from "../../Icons/InfoIcon/InfoIcon";
 
 export const InviteToGroup = ({groupId}) => {
     const [group, setGroup] = useState(null);
     const [groupInvites, setGroupInvites] = useState(null);
 
-    const {groupById, removeParticipant} = useContext(GroupContext);
+    const {groupById, removeParticipant, changeUserRoleInGroup} = useContext(GroupContext);
     const {fetchGroupInvites, removeInvite} = useContext(InviteContext);
+    const {user} = useContext(UserContext);
 
     const [modal, setModal] = useState();
 
@@ -93,13 +97,45 @@ export const InviteToGroup = ({groupId}) => {
                                                         <div className="d-flex flex-column align-items-end">
                                                             <p className="text-secondary">Signed
                                                                 Up: {DateToAgo(u.UsersGroups.createdAt)}</p>
-                                                            <h6>Role: {u.UsersGroups.role}</h6>
-                                                            {u.UsersGroups.role !== 'Creator' &&
-                                                                <button className="btn btn-outline-danger"
-                                                                        onClick={async () => {
-                                                                            await removeParticipant(group.id, u.id)
-                                                                            fetchGroups()
-                                                                        }}>Remove</button>}
+                                                            <h6>
+                                                                Role: {u.UsersGroups.role} 
+                                                                <InfoIcon content={
+                                                                    <p>
+                                                                        {
+                                                                            u.UsersGroups.role === 'member' &&
+                                                                            <><strong>Members</strong> can view this group and its' events without changing them</>
+                                                                        }
+                                                                        {
+                                                                            u.UsersGroups.role === 'admin' &&
+                                                                            <><strong>Admins</strong> can manage this group's members (<strong>invite, remove, promote, demote</strong>)</>
+                                                                        }
+{
+                                                                            u.UsersGroups.role === 'creator' &&
+                                                                            <><strong>Creator</strong> can edit this group's information as well as manage its' members</>
+                                                                        }
+                                                                    </p>
+                                                                }/>
+                                                            </h6>
+                                                            { u.UsersGroups.role !== 'creator' && user.id !== u.id &&
+                                                                <div className="d-flex pt-2">
+                                                                    {
+                                                                        u.UsersGroups.role === 'member' ? 
+                                                                            <button className="btn btn-crimson" onClick={ async ()=> {
+                                                                                await changeUserRoleInGroup(groupId, u.id, 'admin')
+                                                                                fetchGroups()
+                                                                            }}>Promote</button>
+                                                                            :
+                                                                            <button className="btn btn-outline-secondary" onClick={ async ()=> {
+                                                                                await changeUserRoleInGroup(groupId, u.id, 'member')
+                                                                                fetchGroups()
+                                                                            }}>Demote</button>
+                                                                    }
+                                                                    <button className="btn btn-outline-danger ms-3 p-1" onClick={ async ()=> {
+                                                                        await removeParticipant(group.id, u.id)
+                                                                        fetchGroups()
+                                                                    }}><PersonDashIcon/></button>
+                                                                </div>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
