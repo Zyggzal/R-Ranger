@@ -18,15 +18,15 @@ const UserInvites = () => {
                             <h1>Your invites</h1>
                             <div style={{ height: '5%', width: '30%' }} className="d-flex align-items-center">
                                 <p style={{ marginBottom: '0px', width: '100%' }}>Sort By Date:</p>
-                                <select className="form-select add-page-input me-2 ms-2" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-                                    <option value='1'>Asc</option>
-                                    <option value='0'>Desc</option>
-                                </select>
                                 <select className="form-select add-page-input" value={type} onChange={(e) => setType(e.target.value)}>
                                     <option value={'all'}>All</option>
                                     <option value={'friends'}>Friends</option>
                                     <option value={'events'}>Events</option>
-                                    {/* <option value={'groups'}>Groups</option> */}
+                                    <option value={'groups'}>Groups</option>
+                                </select>
+                                <select className="form-select add-page-input me-2 ms-2" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                                    <option value='1'>Asc</option>
+                                    <option value='0'>Desc</option>
                                 </select>
                             </div>
                         </div>

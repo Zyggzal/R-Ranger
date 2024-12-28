@@ -13,7 +13,6 @@ import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
 
 export const ListUserGroups = ({sortBy, asc}) => {
 
-    //const {user} = useContext(UserContext);s
     const {userGroups, isLoading, deleteGroup} = useContext(GroupContext);
     const [toDelete, setToDelete] = useState(-1);
     const [showDeleteModal, setShowDeleteModal] = useState(false);

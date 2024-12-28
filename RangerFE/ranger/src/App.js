@@ -19,13 +19,15 @@ import {InviteToGroupPage} from "./Pages/User/Groups/InviteToGroupPage";
 import { EventProvider } from './Context/Event/EventContext';
 import { EditEventPage } from './Pages/Events/EditEventPage/EditEventPage';
 import {StrangerPage} from "./Pages/User/StrangerPage/StrangerPage";
-
+import { ListPublicEvents } from './Components/Event/listPublicEvents';
 
 function App() {
     const router = createBrowserRouter(createRoutesFromElements(
     
         <Route path='/' element={<MainLayout />} >
-            <Route index element={<Home />} />
+            <Route path='home' element={<RequireAuth><Home /></RequireAuth>} >
+              <Route index element={ <ListPublicEvents /> } />
+            </Route>
             <Route path='login' element={ <Login/>} />
             <Route path='profile' element={ <RequireAuth><UserProfile /></RequireAuth> }>
               <Route path='events' element={ <UserEvents /> } />

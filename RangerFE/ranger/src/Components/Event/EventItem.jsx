@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useState} from "react";
 import {EventContext} from "../../Context/Event/EventContext";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
 import {ListParticipants} from "./listParticipants";
 import Loader from "../Loader/Loader";
 import { UserContext } from "../../Context/UserContext";
@@ -17,10 +17,11 @@ import HumanIcon from "../Icons/HumanIcon/HumanIcon";
 import TrashIcon from "../Icons/TrashIcon/TrashIcon";
 import { Modal } from "react-bootstrap";
 import ExitIcon from "../Icons/ExitIcon/ExitIcon";
+import PersonPlusIcon from "../Icons/PersonPlusIcon/PersonPlusIcon";
 
 export const EventItem = ({id}) =>{
 
-    const {eventById, eventParticipants, getEventUserStatus, getEventStatusNum, deleteEvent, removeParticipant} = useContext(EventContext);
+    const {eventById, eventParticipants, getEventUserStatus, getEventStatusNum, deleteEvent, removeParticipant, acceptEventInvite} = useContext(EventContext);
     const {user} = useContext(UserContext);
 
     const [event, setEvent] = useState({});
@@ -45,10 +46,12 @@ export const EventItem = ({id}) =>{
                     day: "2-digit",
                     hour: "2-digit",
                     minute: "2-digit",
-                    hour12: false
+                    hour12: false,
+                    timeZone: "UTC"
                 }
                 const eventStartDate = new Date(thisEvent.startDate).toLocaleString([], timeStyle);
                 const eventEndDate = new Date(thisEvent.endDate).toLocaleString([], timeStyle);
+
                 setDate({start: eventStartDate, end: eventEndDate});
 
                 const status = await getEventUserStatus(user.id, id);
@@ -139,10 +142,18 @@ export const EventItem = ({id}) =>{
                                 }
                                 {
                                     (userStatus.role === 'participant' || userStatus.role === 'admin') && 
-                                    <div onClick={()=> {
-                                        removeParticipant(id, user.id);
-                                        navigate('/profile/events');
+                                    <div onClick={async () => {
+                                        await removeParticipant(id, user.id);
+                                        window.location.reload();
                                     }} className='btn edit-btn'>Quit &nbsp; <ExitIcon/></div>
+                                }
+                                {
+                                    (userStatus.role === 'stranger' && eventStatus < 2 && event.isPublic === true &&
+                                        (event.participantsLimit ? participants && participants.length < event.participantsLimit : true)) &&
+                                    <div onClick={async () => {
+                                        await acceptEventInvite({ EventId: id, UserId: user.id });
+                                        window.location.reload()
+                                    }} className='btn btn-crimson'>Sign Up <PersonPlusIcon/></div>
                                 }
                             </>
                         }
@@ -203,15 +214,19 @@ export const EventItem = ({id}) =>{
                 <p>{event.publicDescription}</p>
             </div>
             <hr className="divider-mini"/>
-            <div className="event-desc">
-                <h1>
-                    Private Description
-                    <InfoIcon content={<p><strong>Private</strong> description.<br/>Write the info you want only the
-                        participants to see here. <br/><span className='text-secondary'>Specific info: links, locations, etc.</span>
-                    </p>}/>
-                </h1>
-                <p>{event.privateDescription}</p>
-            </div>
+            {
+                userStatus && userStatus.role !== 'stranger' &&
+                <div className="event-desc">
+                    <h1>
+                        Private Description
+                        <InfoIcon content={<p><strong>Private</strong> description.<br/>Write the info you want only the
+                            participants to see here. <br/><span className='text-secondary'>Specific info: links, locations, etc.</span>
+                        </p>}/>
+                    </h1>
+                    <p>{event.privateDescription}</p>
+                </div>
+            }
+            
             <hr className="divider"/>
 
             <div className="mt-4 p-3 border rounded div-participants">
@@ -232,9 +247,8 @@ export const EventItem = ({id}) =>{
                     <ListParticipants participants={participants}/>
                 </div>
             </div>
-
             {
-                eventStatus === 3 &&
+                eventStatus === 3 && userStatus.role !== 'stranger' && 
                 <div className="mt-4 p-3 border rounded div-participants">
                     <h1 className="heading">Reviews:</h1>
                     <ReviewsProvider>

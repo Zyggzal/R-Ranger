@@ -38,7 +38,6 @@ export const ListUserEvents = ({sortBy, asc}) =>{
                         case 'private':
                             diff = b.isPublic - a.isPublic; break;
                     }
-
                     if(asc === '1') diff *= -1;
 
                     return diff;
@@ -47,7 +46,6 @@ export const ListUserEvents = ({sortBy, asc}) =>{
             setEventsToShow(list)
         }
     }, [userEvents, sortBy, asc])
-
 
     if(loading || !userEvents || !userEvents.participatesIn){
         return <Loader/>

@@ -16,7 +16,7 @@ const AddEventPage = () => {
     const onSubmit = async (values) => {
       const res = await addEvent(values)
       if(res){
-        navigate(`/events/${res.data[0].id}/invite`, { replace: true })
+        navigate(`/events/${res.data[0].id}/invite`, { replace: true, state: { pass: 'd' } })
       }
     }
 

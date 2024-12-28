@@ -65,21 +65,26 @@ module.exports.getEventsByName = async (req, res) => {
             case 'private': condition = 'AND isPublic = 0'; break;
          }
 
-        const foundUsers = await sequelize.query(
-            `SELECT TOP 50 *
-            FROM events
-            WHERE CONTAINS(name, :name) ${condition}
-            ORDER BY LEN(name)`,
-            {
-                type: QueryTypes.SELECT,
-                replacements: {name: `"${name}*"`}
-            }
-        )
+        // const foundUsers = await sequelize.query(
+        //     `SELECT TOP 50 *
+        //     FROM events
+        //     WHERE CONTAINS(name, :name) ${condition}
+        //     ORDER BY LEN(name)`,
+        //     {
+        //         type: QueryTypes.SELECT,
+        //         replacements: {name: `"${name}*"`}
+        //     }
+        // )
 
+        const found = await Event.findAll({
+            where: `MATCH (name) AGAINST(${name}) ${condition}`
+        })
 
-        res.status(200).json(foundUsers);
+        console.log(found)
+        // res.status(200).json(foundUsers);
     }
     catch(err) {
+        console.log(err)
         errHandler(res, err, 500);
     }
 }

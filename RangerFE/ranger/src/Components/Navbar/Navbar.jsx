@@ -26,7 +26,7 @@ const Navbar = () => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                     <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/' style={linkStyle}>Home</NavLink>
+                        <NavLink className='btn btn-link' to='/home' style={linkStyle}>Home</NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink className='btn btn-link' to='/events/add' style={linkStyle}><EditIcon/>New Event</NavLink>

@@ -57,10 +57,10 @@
 }
 .event-desc{
     font-size: 1.1rem;
-    text-align: center;
     border: 1px solid white;
     border-radius: 10px;
     overflow-wrap: break-word;
+    white-space: pre-line;
 }
 
 .event-desc h1{
@@ -69,6 +69,7 @@
     background-color: #A4161A;
     width: 100%;
     padding: 10px;
+    padding-left: 20px;
     border-radius: 10px;
 }
 

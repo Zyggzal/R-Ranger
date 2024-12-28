@@ -1,16 +1,13 @@
-import { ListPublicEvents } from "../../Components/Event/listPublicEvents";
+import { Outlet } from "react-router-dom";
 import { EventProvider } from "../../Context/Event/EventContext";
-import {NavLink} from "react-router-dom";
+import './Home.css'
 
 const Home = () => {
     return (
         <EventProvider>
-            <div>
-                <h1>Main page</h1>
-                <NavLink to="/users/aBOUBA">dadad</NavLink>
-                <NavLink to="/users/zyggzal">zyggzal</NavLink>
-                <NavLink to="/users/rogerskevin">rogerskevin</NavLink>
-                <ListPublicEvents/>
+            <div className="home-container">
+                <h1 className="m-3">Events For You</h1>
+                <Outlet/>
             </div>
         </EventProvider>
     )

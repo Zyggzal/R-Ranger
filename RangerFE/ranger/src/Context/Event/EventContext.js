@@ -45,7 +45,7 @@ export const EventProvider = ({ children }) => {
         setIsLoading(true);
 
         try {
-            const response = await api.Get(`events/public`);
+            const response = await api.Get(`events/public`, 'participants');
             if(response.status !== 200) {
                 throw response.message
             }
@@ -170,8 +170,13 @@ export const EventProvider = ({ children }) => {
     const acceptEventInvite = async (invite) => {
         if(!user) return;
         try{
-            const delResponse = await api.Delete('invites', { id: invite.id });
-
+            let delResponse;
+            if(invite.id) {
+                delResponse = await api.Delete('invites', { id: invite.id });
+            }
+            else {
+                delResponse = await api.Delete('invites', { UserId: invite.UserId, EventId: invite.EventId });
+            }
             if(delResponse.status !== 200) {
                 throw delResponse.message;
             }

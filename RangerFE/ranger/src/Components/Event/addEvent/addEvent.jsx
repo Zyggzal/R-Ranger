@@ -137,7 +137,7 @@ export const AddEvent = ({ onSubmit, oldEvent, groupId }) => {
                 disabled={!limit}
                 className="add-page-input form-control"
                 type="number"
-                min="1"
+                min='1' 
                 {...register("participantsLimit")}
                 />
                 {errors.participantsLimit && (
