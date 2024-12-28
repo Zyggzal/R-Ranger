@@ -10,6 +10,7 @@ router.get('/search/:login', passport.authenticate('jwt', {session:false}), cont
 router.patch('/:id', passport.authenticate('jwt', {session:false}), controller.update)
 router.delete('/:id', passport.authenticate('jwt', {session:false}), controller.delete)
 router.get('/friends/:id', passport.authenticate('jwt', {session:false}), controller.getFriends)
+router.get('/allfriends/:id', passport.authenticate('jwt', {session:false}), controller.getAllUserFriendsStatus)
 router.post('/friends/:id', passport.authenticate('jwt', {session:false}), controller.addFriend)
 router.patch('/friends/:id', passport.authenticate('jwt', {session:false}), controller.updateFriend)
 router.delete('/friends/:id', passport.authenticate('jwt', {session:false}), controller.deleteFriend)

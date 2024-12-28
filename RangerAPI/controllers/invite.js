@@ -47,6 +47,22 @@ module.exports.getById = async (req, res) => {
     }
 }
 
+// module.exports.getBySenderId = async (req, res) => {
+//     try{
+//         const where = {senderId:req.params.senderId};
+//         const invite = await Invite.findAll({ include: getIncludes(req.query.include), where: where });
+//         if(invite) {
+//             res.status(200).json(invite);
+//         }
+//         else {
+//             errHandler(res, 'Invite not found', 404);
+//         }
+//     }
+//     catch(err) {
+//         errHandler(res, err, 500);
+//     }
+// }
+
 module.exports.getByEventId = async (req, res) => {
     try{
         const where = { EventId: req.params.id }

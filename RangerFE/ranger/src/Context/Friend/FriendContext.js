@@ -73,7 +73,7 @@ export const FriendProvider = ({ children }) => {
 
     const declineFriendRequest = async (invite) => {
         if(!user) return;
-
+        console.log(invite)
         try{
             const response = await api.Delete(`users/friends/${invite.UserId}`, {id: invite.friendId});
             if(response.status !== 200) {

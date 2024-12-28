@@ -18,6 +18,7 @@ import {SimpleGroup} from "./Pages/User/Groups/SimpleGroup";
 import {InviteToGroupPage} from "./Pages/User/Groups/InviteToGroupPage";
 import { EventProvider } from './Context/Event/EventContext';
 import { EditEventPage } from './Pages/Events/EditEventPage/EditEventPage';
+import {StrangerPage} from "./Pages/User/StrangerPage/StrangerPage";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
             <Route path='events/:id/invite' element={ <RequireAuth><InviteToEventPage/></RequireAuth> } />
             <Route path='groups/:id' element={<RequireAuth><SimpleGroup /></RequireAuth>  } />
             <Route path='groups/:id/invite' element={<RequireAuth><InviteToGroupPage /></RequireAuth>  } />
+            <Route path='users/:login' element={<RequireAuth><StrangerPage /></RequireAuth>  } />
             <Route path='*' element={<NotFound />} />
         </Route>
       ));

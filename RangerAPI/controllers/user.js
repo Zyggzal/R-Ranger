@@ -2,7 +2,7 @@ const Pwd = require('../utils/Password')
 const { User, Group, Event, Invite, Review, Friend } = require('../models')
 const errHandler = require('../utils/ErrorHandler')
 const sequelize = require("../config/database");
-const {QueryTypes, Sequelize} = require('sequelize');
+const {QueryTypes, Sequelize, Op} = require('sequelize');
 
 const getIncludes = (inc) => {
     const includes = [];
@@ -177,6 +177,22 @@ module.exports.getFriends = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
+
+module.exports.getAllUserFriendsStatus = async (req, res) => {
+    try{
+        const friends = await Friend.findAll({where: { [Op.or]: [{friendId: req.params.id}, {UserId: req.params.id}] }});
+
+        if(friends){
+            res.status(200).json(friends);
+        }
+        else{
+            errHandler(res, 'User not found', 404);
+        }
+    }catch (e){
+        errHandler(res, e, 500);
+    }
+}
+
 //accept/decline/delete friends
 module.exports.updateFriend = async (req, res) => {
     const transaction = await sequelize.transaction();

@@ -119,8 +119,39 @@ export const UserProvider = ({children}) => {
         setIsLoading(false);
     }
 
+    const getSomeUserInfo = async (login, userId) =>{
+        setIsLoading(true);
+        //get user
+        const actualUser = await api.Get(`users/friends/search/${login}`);
+        if(actualUser.data === []) return;
+        if(actualUser.data[0].id === userId) return 'its you';
+
+        //get status with me
+        const isFriend = await getFriendStatus(actualUser.data[0].id, userId);
+        console.log(isFriend)
+
+
+        //get general groups & friends & events
+
+        setIsLoading(false);
+
+        return {isFriend: isFriend, user: actualUser.data[0]};
+    }
+
+    const getFriendStatus = async (strangerId, userId) =>{
+        const userFriends = await api.Get(`users/allfriends/${userId}`, 'friends');
+        console.log(userFriends.data)
+        for(let friend of userFriends.data){
+            if((strangerId === friend.UserId && userId === friend.friendId) || (userId === friend.UserId && strangerId === friend.friendId)){
+                if(friend.status === "accepted") return friend;
+                if(friend.status === "invited") return "invited";
+            }
+        }
+        return "no";
+    }
+
     return (
-        <UserContext.Provider value={{ isLoading, user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
+        <UserContext.Provider value={{getSomeUserInfo, isLoading, user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
             <div style={{ position: 'relative' }}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
