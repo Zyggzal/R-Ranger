@@ -2,6 +2,7 @@ import {UserProvider} from "../../../Context/UserContext";
 import {RandomUserPage} from "../../../Components/User/RandomUserPage";
 import {useParams} from "react-router-dom";
 import {FriendProvider} from "../../../Context/Friend/FriendContext";
+import {EventContext, EventProvider} from "../../../Context/Event/EventContext";
 
 export const StrangerPage = () => {
 
@@ -10,7 +11,9 @@ export const StrangerPage = () => {
     return (
         <UserProvider>
             <FriendProvider>
-                <RandomUserPage login={params.login}/>
+                <EventProvider>
+                    <RandomUserPage login={params.login}/>
+                </EventProvider>
             </FriendProvider>
         </UserProvider>
     )

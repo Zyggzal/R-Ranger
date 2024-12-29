@@ -1,10 +1,12 @@
 import React, { createContext, useEffect, useState } from 'react';
 import useAPI from '../Hooks/useAPI';
 import DismissableAlert from '../Components/DismissableAlert/DismissableAlert'
+import {useNavigate} from "react-router-dom";
 
 export const UserContext = createContext()
 
 export const UserProvider = ({children}) => {
+
     const [user, setUser] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     
@@ -124,11 +126,11 @@ export const UserProvider = ({children}) => {
         //get user
         const actualUser = await api.Get(`users/friends/search/${login}`);
         if(actualUser.data === []) return;
-        if(actualUser.data[0].id === userId) return 'its you';
+        if(actualUser.data[0].id === userId) return 'profile';
 
         //get status with me
         const isFriend = await getFriendStatus(actualUser.data[0].id, userId);
-        console.log(isFriend)
+        // console.log(isFriend)
 
 
         //get general groups & friends & events
@@ -137,21 +139,47 @@ export const UserProvider = ({children}) => {
 
         return {isFriend: isFriend, user: actualUser.data[0]};
     }
+    //user public events
+    const userPublicEvents = async (id) =>{
+        setIsLoading(true);
+
+        const userEvents = await api.Get(`users/${id}`, ['participatesIn']);
+        const publicUserEvents = userEvents.data.participatesIn.filter((e) => e.isPublic === true);
+
+        setIsLoading(false);
+        return publicUserEvents;
+    }
+    //user public groups
+    const userPublicGroups = async (id) =>{
+        setIsLoading(true);
+
+        const userGroups = await api.Get(`users/${id}`, ['memberOf', 'creatorOfGroups']);
+
+        const member = userGroups.data.memberOf.filter((e) => e.isPublic === true);
+        const creator = userGroups.data.creatorOfGroups.filter((e) => e.isPublic === true);
+        const publicUserGroups = [...creator, ...member];
+
+        setIsLoading(false);
+        return publicUserGroups;
+    }
 
     const getFriendStatus = async (strangerId, userId) =>{
         const userFriends = await api.Get(`users/allfriends/${userId}`, 'friends');
-        console.log(userFriends.data)
+        // console.log(userFriends.data)
         for(let friend of userFriends.data){
-            if((strangerId === friend.UserId && userId === friend.friendId) || (userId === friend.UserId && strangerId === friend.friendId)){
+            if(strangerId === friend.UserId && userId === friend.friendId){
                 if(friend.status === "accepted") return friend;
                 if(friend.status === "invited") return "invited";
+            }
+            else if(userId === friend.UserId && strangerId === friend.friendId){
+                if(friend.status === "invited") return "invite you";
             }
         }
         return "no";
     }
 
     return (
-        <UserContext.Provider value={{getSomeUserInfo, isLoading, user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
+        <UserContext.Provider value={{userPublicGroups, userPublicEvents, getSomeUserInfo, isLoading, user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
             <div style={{ position: 'relative' }}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

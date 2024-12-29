@@ -1,4 +1,5 @@
 import InfoIcon from "../Icons/InfoIcon/InfoIcon";
+import {NavLink} from "react-router-dom";
 
 export const ListParticipants = ({participants}) =>{
     if(!participants || participants.length === 0) return(
@@ -25,7 +26,7 @@ export const ListParticipants = ({participants}) =>{
                             <div>
                                 {user.firstName} {user.lastName}
                             </div>
-                            <div>@{user.login}</div>
+                            <NavLink to={`/users/${user.login}`}>@{user.login}</NavLink>
                             <div>@{user.email}</div>
                             <div>
                                 {user.EventParticipants.role}

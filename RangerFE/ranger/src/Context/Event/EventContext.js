@@ -90,6 +90,20 @@ export const EventProvider = ({ children }) => {
         }
     }
 
+    const getEventsByName = async (name) => {
+        if(!user) return;
+        try {
+            const response = await api.Get(`events/search/${name}`);
+            if(response.status !== 200) {
+                throw response.message
+            }
+            return response.data;
+        }catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     const eventById = useCallback(async (id, include) =>{
         if(!user) return;
         try{
@@ -275,7 +289,7 @@ export const EventProvider = ({ children }) => {
     }, [user])
 
     return (
-        <EventContext.Provider value={{ userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite, getEventUserStatus, getEventStatusNum, editEvent, deleteEvent, changeUserRoleInEvent }}>
+        <EventContext.Provider value={{getEventsByName, userEvents, publicEvents, fetchPublicEvents, fetchUserEvents, isLoading, addEvent, eventById, removeParticipant, eventParticipants, getEventStatus, acceptEventInvite, declineEventInvite, getEventUserStatus, getEventStatusNum, editEvent, deleteEvent, changeUserRoleInEvent }}>
             <div style={{ position: 'relative'}}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
