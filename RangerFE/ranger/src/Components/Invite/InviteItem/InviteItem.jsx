@@ -51,7 +51,7 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
     return (
         <div className="container invite-item-container">
             <img className="arrow" alt='arrow' src='/Resources/Images/Arrow.png'/>
-            <img className="bend" alt='arrow' src='/Resources/Images/PaperBend.png'/>
+            <img className="bend" alt='bend' src='/Resources/Images/PaperBend.png'/>
             {
                 eventType === 'friend' &&
                 <>
