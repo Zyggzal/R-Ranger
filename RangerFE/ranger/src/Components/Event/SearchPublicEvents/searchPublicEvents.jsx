@@ -4,6 +4,7 @@ import {EventContext} from "../../../Context/Event/EventContext";
 import {PublicEventListComponent} from "../PublicEventListComponent/PublicEventListComponent";
 import Loader from "../../Loader/Loader";
 import {PublicEventSearchComponent} from "../PublicEventListComponent/PublicEventSearchComponent";
+import MaGlassIcon from "../../Icons/MaGlassIcon/MaGlassIcon";
 
 export const SearchPublicEvents = () => {
 
@@ -36,14 +37,17 @@ export const SearchPublicEvents = () => {
 
 
     return (
-        <div className="d-flex align-items-center justify-content-center flex-column">
-            <form action="" className="form-horizontal w-50">
-                <label className="form-label">Name: </label>
-                <input
-                    className={`add-page-input form-control`}
-                    type="text"
-                    {...register("eventName")}
-                />
+        <div className="d-flex justify-content-center flex-column">
+            <form action="" className="form-horizontal ms-2 w-25">
+                <div className="search-input">
+                    <MaGlassIcon/>
+                    <input
+                        className={`add-page-input form-control`}
+                        type="text"
+                        placeholder="Search"
+                        {...register("eventName")}
+                    />
+                </div>
             </form>
             <hr className="divider"/>
             {events.length > 0 && (

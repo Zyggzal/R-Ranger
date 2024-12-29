@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom"
 import StarIcon from "../../Icons/StarIcon/StarIcon"
 
 export const EventReviewsListItem = ({review}) => {
@@ -7,7 +8,7 @@ export const EventReviewsListItem = ({review}) => {
                 <img className="review-pfp" src="/Resources/Images/RangerPFP2.png" alt="profile"/>
                 <div className="mt-3">
                     <h5>{review.user.lastName} {review.user.firstName}</h5>
-                    <p className="text-secondary">@{review.user.login}</p>
+                    <NavLink to={`/users/${review.user.login}`} className="event-group-link">@{review.user.login}</NavLink>
                 </div>
             </div>
             <div className="review-text">

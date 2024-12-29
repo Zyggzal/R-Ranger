@@ -10,7 +10,8 @@ export const ListGroupMembers = ({members}) =>{
         <div className="user-list-container list-group w-75">
             {
                 members.map((user) => (
-                    <div key={user.id}
+                    <NavLink key={user.id}
+                    to={`/users/${user.login}`}
                          className="list-group-item list-group-item-action d-flex justify-content-between">
                         <div>
                             @{user.login}
@@ -34,7 +35,7 @@ export const ListGroupMembers = ({members}) =>{
                                 </p>
                             }/>
                         </div>
-                    </div>
+                    </NavLink>
                 ))
             }
         </div>

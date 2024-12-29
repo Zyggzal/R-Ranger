@@ -125,7 +125,7 @@ export const UserProvider = ({children}) => {
         setIsLoading(true);
         //get user
         const actualUser = await api.Get(`users/friends/search/${login}`);
-        if(actualUser.data === []) return;
+        if(actualUser.data.length === 0) return;
         if(actualUser.data[0].id === userId) return 'profile';
 
         //get status with me
@@ -153,14 +153,12 @@ export const UserProvider = ({children}) => {
     const userPublicGroups = async (id) =>{
         setIsLoading(true);
 
-        const userGroups = await api.Get(`users/${id}`, ['memberOf', 'creatorOfGroups']);
+        const userGroups = await api.Get(`users/${id}`, ['memberOf']);
 
         const member = userGroups.data.memberOf.filter((e) => e.isPublic === true);
-        const creator = userGroups.data.creatorOfGroups.filter((e) => e.isPublic === true);
-        const publicUserGroups = [...creator, ...member];
 
         setIsLoading(false);
-        return publicUserGroups;
+        return member;
     }
 
     const getFriendStatus = async (strangerId, userId) =>{

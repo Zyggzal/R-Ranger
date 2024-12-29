@@ -5,6 +5,8 @@ import PersonDashIcon from "../Icons/PersonDashIcon/PersonDashIcon";
 import { Modal } from "react-bootstrap";
 import NoContent from "../NoContent/NoContent";
 import Loader from "../Loader/Loader";
+import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
+import { NavLink } from "react-router-dom";
 
 export const ListUserFriends = ({asc}) =>{
 
@@ -45,6 +47,7 @@ export const ListUserFriends = ({asc}) =>{
                             setToDelete(f.Friend);
                             setShowDeleteModal(true);
                         }} className="btn btn-outline-danger"><PersonDashIcon/> </button>
+                        <NavLink to={`/users/${f.login}`} className="btn btn-outline-secondary ps-0 pe-0 pt-2 pb-2 ms-2"><ThreeDotsIcon/></NavLink>
                     </div>
                 </div>
             )) }

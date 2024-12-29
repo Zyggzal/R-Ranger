@@ -19,7 +19,6 @@ export const ListPublicEvents = () =>{
         if(publicEvents && userEvents && userEvents.participatesIn) {
             setEventsToShow(publicEvents.filter(e => {
                 if(e.participantsLimit && e.participants.length >= e.participantsLimit) {
-                    console.log("pipka")
                     return false
                 }
                 if(!userEvents.participatesIn.some((ue) => ue.id === e.id)) {

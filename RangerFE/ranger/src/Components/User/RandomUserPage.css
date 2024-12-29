@@ -1,0 +1,44 @@
+/* .rnd-user-profile-container {
+    width: 100%;
+} */
+
+.rnd-user-info-container {
+    border-right: 2px white solid;
+    width: 30%;
+    margin-right: 15px;
+    text-wrap: wrap;
+}
+.rnd-user-info-container img {
+    width: 100%;
+}
+
+.rnd-user-sroll-list {
+    scrollbar-color: #A4161A rgb(22, 26, 29);
+}
+
+.rnd-user-sroll-list::-webkit-scrollbar {
+    padding: 5px;
+}
+
+.home-search-form {
+    position:sticky;
+}
+
+.search-input {
+    position: relative;
+    top: 0;
+    left: 20px;
+}
+.search-input input {
+    padding: 8px;
+    padding-left: 40px;
+}
+.search-input .bi {
+    position: absolute;
+    width: 20px!important;
+    height: 20px!important;
+}
+
+.search-input svg:has(+ input:not(:focus)) {
+    color: #161A1D;
+}

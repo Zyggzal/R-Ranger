@@ -95,7 +95,7 @@ export const GroupItem = ({id}) => {
 
                             <div>Creator:</div>
                             <div>{`${group.creator.firstName} ${group.creator.lastName} `}</div>
-                            <div className='text-secondary'>{`@${group.creator.login}`}</div>
+                            <NavLink to={`/users/${group.creator.login}`} className='event-group-link'>{`@${group.creator.login}`}</NavLink>
                         </div>
                     )}
 

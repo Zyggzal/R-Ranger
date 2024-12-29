@@ -56,14 +56,19 @@ export const InviteItem = ({invite, onAccept, onDecline}) => {
                 eventType === 'friend' &&
                 <>
                     <p className="time-label text-secondary"><ClockIcon/> {DateToAgo(invite.Friend.createdAt) }</p>
-                    <h1>@{invite.login} sent you a friend request</h1>
+                    <h1>
+                    <NavLink to={`/users/${invite.login}`} className='invite-item-link'>@{invite.login} </NavLink>
+                        sent you a friend request
+                    </h1>
                 </>
             }
             {
                 eventType === 'event' && 
                 <>
                     <p className="time-label text-secondary"><ClockIcon/> {DateToAgo(invite.createdAt) }</p>
-                    <h1>@{invite.sender.login} invited you to 
+                    <h1>
+                        <NavLink to={`/users/${invite.sender.login}`} className='invite-item-link'>@{invite.sender.login} </NavLink>
+                        invited you to 
                         <NavLink to={`/events/${invite.event.id}`} className='invite-item-link'> {invite.event.name}</NavLink>
                     </h1>
                 </>

@@ -3,7 +3,7 @@ import {NavLink} from "react-router-dom";
 
 export const ListParticipants = ({participants}) =>{
     if(!participants || participants.length === 0) return(
-        <div>NoParticipants</div>
+        <div>No Participants</div>
     )
     return (
         <div className="container mt-4">
@@ -13,7 +13,8 @@ export const ListParticipants = ({participants}) =>{
             >
                 <ul className="list-group">
                     {participants.map((user) => (
-                        <li
+                        <NavLink 
+                            to={`/users/${user.login}`}
                             key={user.id}
                             className="list-group-item"
                             style={{
@@ -26,7 +27,7 @@ export const ListParticipants = ({participants}) =>{
                             <div>
                                 {user.firstName} {user.lastName}
                             </div>
-                            <NavLink to={`/users/${user.login}`}>@{user.login}</NavLink>
+                            <div>@{user.login}</div>
                             <div>@{user.email}</div>
                             <div>
                                 {user.EventParticipants.role}
@@ -47,7 +48,7 @@ export const ListParticipants = ({participants}) =>{
                                     </p>
                                 }/>
                             </div>
-                        </li>
+                        </NavLink>
                     ))}
                 </ul>
             </div>

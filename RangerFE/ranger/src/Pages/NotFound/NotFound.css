@@ -1,0 +1,11 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    width: 100%;
+}
+
+.not-found-container img {
+    width: 30%
+}

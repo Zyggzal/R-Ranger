@@ -5,10 +5,10 @@ import {Modal} from "react-bootstrap";
 import PersonDashIcon from "../Icons/PersonDashIcon/PersonDashIcon";
 import {FriendContext} from "../../Context/Friend/FriendContext";
 import {NavLink, useNavigate} from "react-router-dom";
-import {InviteContext} from "../../Context/Invite/InviteContext";
-import {PublicEventListComponent} from "../Event/PublicEventListComponent/PublicEventListComponent";
 import {UserEventListComponent} from "../Event/UserEventListComponent/userEventListComponent";
 import {UserGroupListComponent} from "../Event/UserGroupListComponent/userGroupListComponent";
+import './RandomUserPage.css';
+import PersonPlusIcon from "../Icons/PersonPlusIcon/PersonPlusIcon";
 
 export const RandomUserPage = ({login}) => {
 
@@ -41,101 +41,109 @@ export const RandomUserPage = ({login}) => {
 
         }
 
+        if(user && user.login === login) {
+            navigate('/profile/events', { replace: true })
+            return
+        }
+
         fetchStranger();
 
     }, [user]);
-    console.log(groups)
 
     if(!stranger || !stranger.user) return <Loader/>
     return (
-        <div className="container mt-4 p-4 border rounded shadow event-box mb-3 w-75">
-            <div className='main-text'>
-                <div className="d-flex justify-content-around align-items-center event-name">
-                    <h1>{stranger.user.firstName + ' ' + stranger.user.lastName}</h1>
-
-                    <h2>@{stranger.user.login}</h2>
+        <div className="d-flex text-white p-3 rnd-user-profile-container">
+            <div className="d-flex flex-column rnd-user-info-container p-2">
+                <div>
+                    <img src="/Resources/Images/RangerPFP2.png"/>
+                    <div className="">
+                        <h1>{stranger.user.firstName + ' ' + stranger.user.lastName}</h1>
+                        <h4 className="ms-2 text-secondary">@{stranger.user.login}</h4>
+                    </div>
                 </div>
-            </div>
-            <div>
-                {stranger.isFriend.friendId && (
-                    <div>
-                        <div className="d-flex gap-5 align-items-center m-2">
-                            <div style={{fontSize: '1.3rem'}}>Your Friend!</div>
-                            <div className="d-flex align-items-center h-1">
+                <hr style={{ borderWidth: '3px' }}/>
+                <div className="d-flex justify-content-end">
+                    {stranger.isFriend.friendId && (
+                        <div>
+                            <div className="d-flex column-gap-5 align-items-center m-2 flex-wrap">
+                                <div style={{fontSize: '1.3rem'}}>Your Friend!</div>
+                                <div className="d-flex align-items-center h-1">
+                                    <button onClick={() => {
+                                        setToDelete(stranger.isFriend);
+                                        setShowDeleteModal(true);
+                                    }} className="btn btn-outline-danger"><PersonDashIcon/></button>
+                                </div>
+                            </div>
+
+
+                            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Are you sure?</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <p>This user will be removed from your friend list.</p>
+                                    <div className="d-flex justify-content-end">
+                                        <button className="btn btn-danger me-2" onClick={() => {
+                                            setShowDeleteModal(false);
+                                            declineFriendRequest(toDelete);
+                                            navigate(-1);
+                                        }}>Delete
+                                        </button>
+                                        <button className="btn btn-secondary"
+                                                onClick={() => setShowDeleteModal(false)}>Cancel
+                                        </button>
+                                    </div>
+                                </Modal.Body>
+                            </Modal>
+                        </div>
+                    )}
+                    {stranger.isFriend === "no" && (
+                        <div className="d-flex column-gap-5 align-items-center m-2 flex-wrap">
+                            <div style={{fontSize: '1.3rem'}}>Not friends</div>
+
+                            <div className="d-flex align-items-center flex-row">
                                 <button onClick={() => {
-                                    setToDelete(stranger.isFriend);
-                                    setShowDeleteModal(true);
-                                }} className="btn btn-outline-danger"><PersonDashIcon/></button>
+                                    addFriend(stranger.user.id);
+                                    navigate(-1);
+                                }} className="btn btn-success"><PersonPlusIcon/></button>
                             </div>
                         </div>
 
-
-                        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Are you sure?</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <p>This user will be removed from your friend list.</p>
-                                <div className="d-flex justify-content-end">
-                                    <button className="btn btn-danger me-2" onClick={() => {
-                                        setShowDeleteModal(false);
-                                        declineFriendRequest(toDelete);
-                                        navigate(-1);
-                                    }}>Delete
-                                    </button>
-                                    <button className="btn btn-secondary"
-                                            onClick={() => setShowDeleteModal(false)}>Cancel
-                                    </button>
-                                </div>
-                            </Modal.Body>
-                        </Modal>
-                    </div>
-                )}
-                {stranger.isFriend === "no" && (
-                    <div className="d-flex gap-5 align-items-center m-2">
-                        <div style={{fontSize: '1.3rem'}}>Not friends</div>
-
-                        <div className="d-flex align-items-center h-1 flex-row">
-                            <button onClick={() => {
-                                addFriend(stranger.user.id);
-                                navigate(-1);
-                            }} className="btn btn-success">Add
-                            </button>
+                    )}
+                    {stranger.isFriend === "invited" && <div className='m-2' style={{fontSize: '1.3rem'}}>Invited</div>}
+                    {stranger.isFriend === "invite you" &&
+                        <div className='m-2' style={{fontSize: '1.3rem'}}>This user sent you friend request! 
+                        <NavLink className='invite-item-link ms-2' to="/profile/invites">Invites</NavLink></div>}
+                </div>
+            </div>
+            <div className="w-100 ms-4">
+                <div>
+                    <h3>User's events: </h3>
+                    {(events && events.length > 0) ? (
+                        <div className="user-list-container list-group rnd-user-sroll-list"
+                            style={{maxHeight: "48vh", overflowY: "auto", border: "1px solid #ddd"}}>
+                            {
+                                events.map((event) => {
+                                    return <UserEventListComponent key={event.id} event={event}/>
+                                })
+                            }
                         </div>
+                    ) : <h4 className="text-secondary">Empty</h4>}
+                </div>
+                    <div className='mt-3'>
+                        <h3>User's groups: </h3>
+                        {(groups && groups.length > 0) ? (
+                            <div className="user-list-container list-group rnd-user-sroll-list"
+                                style={{maxHeight: "300px", overflowY: "auto", border: "1px solid #ddd"}}>
+                                {
+                                    groups.map((group) => {
+                                        return <UserGroupListComponent key={`$grouplistitem{group.id}`} group={group}/>
+                                    })
+                                }
+                            </div>
+                        ): <h4 className="text-secondary">Empty</h4>}
                     </div>
-
-                )}
-                {stranger.isFriend === "invited" && <div className='m-2' style={{fontSize: '1.3rem'}}>Invited</div>}
-                {stranger.isFriend === "invite you" &&
-                    <div className='m-2' style={{fontSize: '1.3rem'}}>User send you friend request! <NavLink
-                        to="/profile/invites">Invites</NavLink></div>}
-            </div>
-            <div>
-                <h3>@{stranger.user.login} public events: </h3>
-                {events && events.length > 0 && (
-                    <div className="user-list-container list-group"
-                         style={{maxHeight: "300px", overflowY: "auto", border: "1px solid #ddd"}}>
-                        {
-                            events.map((event) => {
-                                return <UserEventListComponent key={event.id} event={event}/>
-                            })
-                        }
-                    </div>
-                )}
-            </div>
-            <div className='mt-2'>
-                <h3>@{stranger.user.login} public groups: </h3>
-                {groups && groups.length > 0 && (
-                    <div className="user-list-container list-group"
-                         style={{maxHeight: "300px", overflowY: "auto", border: "1px solid #ddd"}}>
-                        {
-                            groups.map((group) => {
-                                return <UserGroupListComponent key={group.id} group={group}/>
-                            })
-                        }
-                    </div>
-                )}
-            </div>
+                </div>
         </div>
     )
 }
