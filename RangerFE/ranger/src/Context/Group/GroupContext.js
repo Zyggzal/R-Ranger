@@ -84,6 +84,20 @@ export const GroupProvider = ({children}) => {
         }
     }
 
+    const getGroupsByName = async (name) => {
+        if(!user) return;
+        try {
+            const response = await api.Get(`groups/search/${name}`);
+            if(response.status !== 200) {
+                throw response.message
+            }
+            return response.data;
+        }catch (error){
+            setAlertText(error)
+            setShowAlert(true)
+        }
+    }
+
     const groupById = useCallback(async (id, include) =>{
         if(!user) return;
         try{
@@ -287,7 +301,7 @@ export const GroupProvider = ({children}) => {
         if(user) fetchUserGroups();
     }, [user])
 
-    return <GroupContext.Provider value={{removeParticipant, userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById, updateGroup, acceptGroupInvite, declineGroupInvite, changeUserRoleInGroup}}>
+    return <GroupContext.Provider value={{getGroupsByName, removeParticipant, userGroups, isLoading, fetchUserGroups, fetchUserGroupsWithIncludes, addGroup, publicGroups, fetchPublicGroups, deleteGroup, deleteGroupMember, addGroupMember, getGroupStatus, groupById, updateGroup, acceptGroupInvite, declineGroupInvite, changeUserRoleInGroup}}>
         {children}
         { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }
     </GroupContext.Provider>;

@@ -59,22 +59,31 @@ module.exports.getEventsByName = async (req, res) => {
     try{
         const { name } = req.params;
         const { type } = req.body;//all/public/private
+
+        let containsName = name.trim().split(/\s+/);
+
+        containsName = containsName.join(' AND ');
+
+        console.log(containsName);
+
         let condition = '';
         switch (type) {
             case 'public': condition = 'AND isPublic = 1'; break;
             case 'private': condition = 'AND isPublic = 0'; break;
             default: condition = 'AND isPublic = 1';
-         }
+        }
+
+         console.log(containsName);
 
         const foundUsers = await sequelize.query(
             `SELECT TOP 20 *
             FROM events as e
             LEFT JOIN users as u on u.id = e.createdBy
-            WHERE CONTAINS(name, :name) ${condition}
+            WHERE CONTAINS(name, :name) ${condition} AND name LIKE :secondName
             ORDER BY LEN(name)`,
             {
                 type: QueryTypes.SELECT,
-                replacements: {name: `"${name}*"`}
+                replacements: {name: `"${containsName}"`, secondName: `%${name}%`},
             }
         )
 

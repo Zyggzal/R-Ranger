@@ -5,6 +5,8 @@ import { PublicEventListComponent } from "./PublicEventListComponent/PublicEvent
 import Loader from "../Loader/Loader";
 import NoContent from "../NoContent/NoContent";
 import {SearchPublicEvents} from "./SearchPublicEvents/searchPublicEvents";
+import {SearchPublicGroups} from "../Group/SearchPublicGroups/searchPublicGroups";
+import {GroupProvider} from "../../Context/Group/GroupContext";
 
 export const ListPublicEvents = () =>{
     const {user}  = useContext(UserContext);
@@ -37,6 +39,10 @@ export const ListPublicEvents = () =>{
     return (
         <div>
             <SearchPublicEvents/>
+            <GroupProvider>
+                <SearchPublicGroups/>
+            </GroupProvider>
+
             {
                 !eventsToShow || eventsToShow.length === 0 ? <NoContent/> :
                     <div className="list-group">

@@ -8,6 +8,7 @@ router.get('/', passport.authenticate('jwt', { session: false }), controller.get
 router.get('/public', passport.authenticate('jwt', { session: false }), controller.getPublic);
 router.get('/:id', passport.authenticate('jwt', { session: false }), controller.getById);
 router.get('/userid/:id', passport.authenticate('jwt', { session: false }), controller.getAllByUserId);
+router.get('/search/:name', passport.authenticate('jwt', { session: false }), controller.getGroupsByName);
 router.post('/', passport.authenticate('jwt', { session: false }), controller.create);
 router.delete('/:id', passport.authenticate('jwt', { session: false }), controller.delete);
 router.patch('/:id', passport.authenticate('jwt', { session: false }), controller.update);

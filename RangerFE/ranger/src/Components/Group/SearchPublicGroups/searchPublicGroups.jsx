@@ -1,12 +1,11 @@
 import {useForm} from "react-hook-form";
 import {useContext, useEffect, useState} from "react";
-import {EventContext} from "../../../Context/Event/EventContext";
-import {PublicEventListComponent} from "../PublicEventListComponent/PublicEventListComponent";
-import Loader from "../../Loader/Loader";
-import {PublicEventSearchComponent} from "../PublicEventListComponent/PublicEventSearchComponent";
 import MaGlassIcon from "../../Icons/MaGlassIcon/MaGlassIcon";
+import {GroupContext} from "../../../Context/Group/GroupContext";
+import {findAllByDisplayValue} from "@testing-library/react";
+import {PublicGroupSearchComponent} from "../PublicGroupListComponent/PulbicGroupSearchComponent";
 
-export const SearchPublicEvents = () => {
+export const SearchPublicGroups = () => {
 
     const {
         register,
@@ -14,21 +13,21 @@ export const SearchPublicEvents = () => {
         setValue
     } = useForm();
 
-    const {getEventsByName} = useContext(EventContext);
+    const {getGroupsByName} = useContext(GroupContext);
 
-    const [events, setEvents] = useState([]);
+    const [groups, setGroups] = useState([]);
 
-    const watchName = watch("eventName");
+    const watchName = watch("groupName");
 
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
-            if (watchName && watchName.length > 3) {
-                const fetchEvents = async () => {
-                    const actualEvents = await getEventsByName(watchName);
-                    setEvents(actualEvents);
+            if (watchName && watchName.length > 2) {
+                const fetchGroups = async () => {
+                    const actualGroups = await getGroupsByName(watchName);
+                    setGroups(actualGroups);
                 };
                 console.log("search...")
-                fetchEvents();
+                fetchGroups();
             }
         }, 1000);
 
@@ -45,17 +44,17 @@ export const SearchPublicEvents = () => {
                         className={`add-page-input form-control`}
                         type="text"
                         placeholder="Search"
-                        {...register("eventName")}
+                        {...register("groupName")}
                     />
                 </div>
             </form>
             <hr className="divider"/>
-            {events.length > 0 && (
-                <div className="list-group">
+            {groups.length > 0 && (
+                <div className="user-list-container list-group">
                     {
-                        events.map((event) => {
-                            return <PublicEventSearchComponent key={event.id + event.name} event={event}/>
-                        })
+                        groups.map((group) => (
+                            <PublicGroupSearchComponent key={group.id + group.name} group={group}/>
+                        ))
                     }
                 </div>
             )}

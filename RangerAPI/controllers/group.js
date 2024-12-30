@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Sequelize, QueryTypes} = require('sequelize');
 const { Group, User, UsersGroups, Event, Invite } = require('../models');
 const errHandler = require('../utils/ErrorHandler');
 const sequelize = require("../config/database");
@@ -42,6 +42,51 @@ module.exports.getById = async (req, res) => {
         }
     }
     catch(err) {
+        errHandler(res, err, 500);
+    }
+}
+
+module.exports.getGroupsByName = async (req, res) => {
+    try{
+        const { name } = req.params;
+        const { type } = req.body;//all/public/private
+
+        let containsName = name.trim().split(/\s+/);
+
+        containsName = containsName.join(' AND ');
+
+        console.log(containsName);
+
+        let condition = '';
+        switch (type) {
+            case 'public': condition = 'AND isPublic = 1'; break;
+            case 'private': condition = 'AND isPublic = 0'; break;
+            default: condition = 'AND isPublic = 1';
+        }
+
+        console.log(containsName);
+
+        const foundUsers = await sequelize.query(
+            `SELECT TOP 20 *
+            FROM groups as g
+            LEFT JOIN users as u on u.id = g.createdBy
+            WHERE CONTAINS(name, :name) ${condition} AND name LIKE :secondName
+            ORDER BY LEN(name)`,
+            {
+                type: QueryTypes.SELECT,
+                replacements: {name: `"${containsName}"`, secondName: `%${name}%`},
+            }
+        )
+
+        // const found = await Event.findAll({
+        //     where: `MATCH (name) AGAINST(${name}) ${condition}`
+        // })
+
+        // console.log(found)
+        res.status(200).json(foundUsers);
+    }
+    catch(err) {
+        console.log(err)
         errHandler(res, err, 500);
     }
 }
