@@ -24,26 +24,31 @@ const Navbar = () => {
                 <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/home' style={linkStyle}>Home</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/events/add' style={linkStyle}><EditIcon/>New Event</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/profile/events' style={linkStyle}><CalendarIcon/>Events</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/profile/invites' state={'invites'} style={linkStyle}><InviteIcon/>Invites</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/profile/friends' state={'friends'} style={linkStyle}><HumanIcon/>Friends</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink className='btn btn-link' to='/profile/groups' state={'groups'} style={linkStyle}><GroupIcon/>Groups</NavLink>
-                    </li>
-                </ul>
+                {
+                    user ?
+                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li className="nav-item">
+                            <NavLink className='btn btn-link' to='/home' style={linkStyle}>Home</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className='btn btn-link' to='/events/add' style={linkStyle}><EditIcon/>New Event</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className='btn btn-link' to='/profile/events' style={linkStyle}><CalendarIcon/>Events</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className='btn btn-link' to='/profile/invites' state={'invites'} style={linkStyle}><InviteIcon/>Invites</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className='btn btn-link' to='/profile/friends' state={'friends'} style={linkStyle}><HumanIcon/>Friends</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className='btn btn-link' to='/profile/groups' state={'groups'} style={linkStyle}><GroupIcon/>Groups</NavLink>
+                        </li>
+                    </ul>
+                    :
+                    <div className="me-auto"></div>
+                }
                 { 
                 user ? 
                     <div className="d-flex align-items-center">

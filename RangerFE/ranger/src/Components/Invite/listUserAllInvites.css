@@ -18,6 +18,7 @@
 
 .invite-item-container h1 {
     padding-inline: 20px;
+    font-size: 250%;
 }
 
 .invite-item-container .arrow{
@@ -62,4 +63,16 @@
 
 .invite-item-link:hover {
     color: #E5383B;
+}
+
+.invite-item-text {
+    container-type: size;
+
+    height: fit-content;
+}
+
+@container (min-height: 300px) {
+    h1 {
+        font-size: 20px;
+    }
 }
