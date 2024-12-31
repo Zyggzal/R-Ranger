@@ -37,3 +37,8 @@
     background-color: #D3D3D3;
 }
 
+@media(max-width:500px) {
+    .invite-to-event-invites-list-item {
+        flex-direction: column;
+    }
+}

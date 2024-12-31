@@ -30,13 +30,9 @@ export const RandomUserPage = ({login}) => {
             const actualUser = await getSomeUserInfo(login, user.id);
             if(actualUser === 'profile') navigate("/profile/events");
             setStranger(actualUser);
-            //events
             const actualPublicEvents = await userPublicEvents(actualUser.user.id);
-            // console.log(actualPublicEvents)//
             setEvents(actualPublicEvents);
-            //groups
             const actualPublicGroups = await userPublicGroups(actualUser.user.id);
-            // console.log(actualPublicEvents)//
             setGroups(actualPublicGroups);
 
         }

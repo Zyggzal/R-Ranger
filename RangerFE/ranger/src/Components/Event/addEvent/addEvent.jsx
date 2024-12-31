@@ -174,7 +174,7 @@ export const AddEvent = ({ onSubmit, oldEvent, groupId }) => {
         </div>
         <div className="card p-5 time-container">
           <h1 className="mb-5">Event timeline</h1>
-          <div className="d-flex justify-content-between">
+          <div className="d-flex justify-content-between time-card-container">
             <div className="time-card">
               <label className="form-label">Sign up end date</label>
               <InfoIcon content={<p>After this date, users will be unable to sign up to the event.</p>}/>

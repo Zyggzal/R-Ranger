@@ -1,5 +1,7 @@
 .user-profile-container {
     color: white;
+    display: flex;
+    justify-content: space-between;
 }
 
 .user-profile-container .nav-link {
@@ -11,6 +13,8 @@
     padding-top: 50px;
     width: calc(20% + 40px);
     box-shadow: 5px 5px 5px #b1a7a624;
+
+    word-wrap: break-word;
 }
 
 .edit-btn {
@@ -48,4 +52,55 @@
 .nav-tabs svg {
     width: 25px;
     height: 25px;
+}
+
+@media (max-width:600px) {
+    .user-profile-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .user-info-container {
+        width: 100%!important;
+        box-shadow: none;
+    }
+    .user-info-container img {
+        width: 30%!important;
+        float: left;
+        margin-right: 10px;
+    }
+}
+
+@media (max-width:410px) {
+    .profile-links{
+        width: 100%;
+    }
+    .profile-links .nav-item{
+        width: 100%;
+    }
+    .profile-user-events-header {
+        flex-direction: column;
+    }
+    .user-profile-event-list-item {
+        flex-direction: column;
+    }
+    .user-profile-filters-container {
+        width: 90%!important;
+        padding-top: 20px;
+    } 
+
+}
+
+.profile-user-events-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.user-profile-event-list-item h2 {
+    word-wrap: break-word;
+}
+
+.user-profile-filters-container {
+    height: 5%;
+    width: 30%;
 }

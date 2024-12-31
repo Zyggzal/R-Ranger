@@ -30,7 +30,7 @@ const ReviewForm = ({ id, onConfirm, review }) => {
 
     return (
         <form className="mb-3 review-form" onSubmit={handleSubmit(handleAddReview)}>
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center review-form-rating-line">
                 <h4 className="me-3">Rating: </h4>
                 <RatingComponent rating={rating} setRating={setRating}/>
             </div>

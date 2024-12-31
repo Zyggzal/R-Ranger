@@ -14,9 +14,9 @@ const UserInvites = () => {
             <FriendProvider>
                 <EventProvider>
                     <GroupProvider>
-                        <div className="d-flex justify-content-between">
+                        <div className="d-flex justify-content-between profile-user-events-header">
                             <h1>Your invites</h1>
-                            <div style={{ height: '5%', width: '30%' }} className="d-flex align-items-center">
+                            <div className="d-flex align-items-center user-profile-filters-container">
                                 <p style={{ marginBottom: '0px', width: '100%' }}>Sort By Date:</p>
                                 <select className="form-select add-page-input" value={type} onChange={(e) => setType(e.target.value)}>
                                     <option value={'all'}>All</option>

@@ -112,7 +112,7 @@ export const EventItem = ({id}) =>{
                         <span><ClockIcon/> {date.start}</span>&nbsp; - <span><ClockIcon/> {date.end}</span>
                     </div>
                     <hr className="divider"/>
-                    <div className="d-flex justify-content-around">
+                    <div className="d-flex justify-content-around single-event-organizers-container">
                         {event.creatorGroup && (
                             <div className="main-organizer">
                                 Organized by
@@ -126,7 +126,7 @@ export const EventItem = ({id}) =>{
                             </div>
                         )}
                     </div>
-                    <div>
+                    <div className="event-items-btns">
                         {
                             userStatus &&
                             <>

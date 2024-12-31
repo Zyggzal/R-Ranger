@@ -11,14 +11,14 @@ const Groups = () => {
 
     return (
         <GroupProvider>
-            <div className="d-flex justify-content-between mb-3">
+            <div className="d-flex justify-content-between mb-3 user-profile-event-list-item">
                 <div className="d-flex align-items-center">
                     <h1>Your groups</h1>
                     <button className="btn btn-crimson ms-3"  onClick={() => setShowGroupModal(true)}>
                         +
                     </button>
                 </div>
-                <div style={{ height: '5%', width: '30%' }} className="d-flex align-items-center">
+                <div className="d-flex align-items-center user-profile-filters-container">
                     <p style={{ marginBottom: '0px', width: '100%' }}>Sort By:</p>
                     <select className="form-select add-page-input me-2 ms-2" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                         <option value='none'>-</option>

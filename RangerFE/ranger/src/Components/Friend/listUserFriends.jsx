@@ -37,7 +37,7 @@ export const ListUserFriends = ({asc}) =>{
         <div className="user-list-container list-group mt-4">
             { 
                 !friendsToShow || friendsToShow.length === 0 ? <NoContent/> : friendsToShow.map((f) => (
-                <div key={`friendlistitem${f.id}`} className="list-group-item list-group-item-action d-flex justify-content-between">
+                <div key={`friendlistitem${f.id}`} className="list-group-item list-group-item-action d-flex justify-content-between word-break">
                     <div>
                         <h5>{f.firstName} {f.lastName}</h5>
                         <p className="text-secondary">@{f.login}</p>

@@ -17,7 +17,7 @@ export const ListGroupEvents = ({events}) => {
         <div className="user-list-container list-group">
             {
                 events.map((event) => (
-                    <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between">
+                    <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between list-group-events-group-item">
                         <div>
                             <h2>{ event.name } { <LockIcon unlocked={event.isPublic} /> }</h2>
                             <div className="text-secondary event-time-status">

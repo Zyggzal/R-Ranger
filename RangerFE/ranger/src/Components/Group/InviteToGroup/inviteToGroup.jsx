@@ -89,7 +89,7 @@ export const InviteToGroup = ({groupId}) => {
                                             group.members.map((u) => {
                                                 return <div key={u.id}
                                                             className="list-group-item list-group-item-action invite-event-item">
-                                                    <div className="d-flex justify-content-between">
+                                                    <div className="d-flex justify-content-between invite-to-event-invites-list-item">
                                                         <div className="d-flex flex-column align-items-start">
                                                             <h3>{u.firstName} {u.lastName}</h3>
                                                             <p className="text-secondary">@{u.login}</p>

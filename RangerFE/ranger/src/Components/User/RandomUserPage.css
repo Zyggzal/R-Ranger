@@ -42,3 +42,21 @@
 .search-input svg:has(+ input:not(:focus)) {
     color: #161A1D;
 }
+
+@media (max-width:600px) {
+    .rnd-user-profile-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .rnd-user-info-container {
+        width: 100%!important;
+        box-shadow: none;
+        margin-bottom: 50px;
+    }
+    .rnd-user-info-container img {
+        width: 30%!important;
+        float: left;
+        margin-right: 10px;
+    }
+}

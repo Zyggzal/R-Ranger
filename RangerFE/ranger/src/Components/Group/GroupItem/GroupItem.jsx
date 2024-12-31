@@ -85,7 +85,7 @@ export const GroupItem = ({id}) => {
                     </h3>
                     {
                         userStatus === 'creator' &&
-                        <div className="mb-3 mt-3 d-flex">
+                        <div className="mb-3 mt-3 d-flex group-item-btns-container">
                             <button className="btn edit-btn" onClick={() => setIsUpdate((prev) => !prev)}><EditIcon/></button>
                             <button className="btn edit-btn" onClick={() => setShowDeleteModal(true)}><TrashIcon/></button>
                         </div>
@@ -112,7 +112,7 @@ export const GroupItem = ({id}) => {
                     <hr className="divider" style={{width:'95%'}}/>
 
                     {group.members && (
-                        <div>
+                        <div className="group-item-members-list-container">
                             <div className='members-count'>Members: {group.members.length}
                                 {userStatus === 'creator' || userStatus === 'admin' ? (
                                         <NavLink className='btn edit-btn' to={`/groups/${id}/invite`} state={{ pass: 'p' }}><EditIcon/></NavLink>

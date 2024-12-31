@@ -36,3 +36,39 @@
 .group-events-list {
     padding: 10px;
 }
+
+@media(max-width:770px) {
+    .group-grid-box {
+        display: flex;
+        flex-direction: column;
+    }
+    .group-info {
+        margin-bottom: 40px;
+    }
+    .group-item-members-list-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .group-events-container {
+        border: none;
+    }
+    .group-item-btns-container {
+        justify-content: center;
+    }
+    .group-name .update-user-form  {
+        align-items: center!important;
+    }
+    .group-name .update-user-form div {
+        justify-content: center;
+    }
+    .invite-to-group-invites-list-item {
+        flex-direction: column;
+    }
+}
+
+@media(max-width:350px) {
+    .list-group-events-group-item {
+        flex-direction: column!important;
+    }
+}

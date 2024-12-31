@@ -1,7 +1,4 @@
-import LockIcon from "../Icons/LockIcon/LockIcon";
-import ClockIcon from "../Icons/ClockIcon/ClockIcon";
 import {NavLink} from "react-router-dom";
-import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
 import InfoIcon from "../Icons/InfoIcon/InfoIcon";
 
 export const ListGroupMembers = ({members}) =>{

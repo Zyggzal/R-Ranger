@@ -57,7 +57,7 @@ export const ListUserEvents = ({sortBy, asc}) =>{
         <div className="user-list-container list-group">
             {
                 eventsToShow.map((event) => (
-                    <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between">
+                    <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between user-profile-event-list-item">
                         <div>
                             <h2>{ event.name } { <LockIcon unlocked={event.isPublic} /> }</h2>
                             <p className="text-secondary">

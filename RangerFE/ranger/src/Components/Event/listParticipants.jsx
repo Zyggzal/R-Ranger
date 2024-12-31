@@ -16,7 +16,7 @@ export const ListParticipants = ({participants}) =>{
                         <NavLink 
                             to={`/users/${user.login}`}
                             key={user.id}
-                            className="list-group-item"
+                            className="list-group-item list-participants-user-item"
                             style={{
                                 display: "grid",
                                 gridTemplateColumns: "1fr 1fr 1fr 1fr",

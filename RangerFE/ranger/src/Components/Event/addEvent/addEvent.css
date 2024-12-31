@@ -50,3 +50,15 @@
     color: white;
     padding: 10px;
 }
+@media (max-width: 900px) {
+    .time-card-container {
+        flex-direction: column;
+        width: 100%;
+    }
+    :has(>.time-card-container) {
+        padding: 10px!important;
+    }
+    .time-card .bi-arrow-down {
+        visibility: collapse;
+    }
+}

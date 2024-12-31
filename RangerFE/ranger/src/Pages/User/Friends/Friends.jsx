@@ -12,11 +12,11 @@ const Friends = () => {
 
     return (
         <FriendProvider>
-            <div className="d-flex justify-content-between mb-3">
+            <div className="d-flex justify-content-between mb-3 user-profile-event-list-item">
                 <button className="btn btn-crimson" onClick={() => setShowFriendModal(true)}>
                     <PersonPlusIcon/> Add friend
                 </button>
-                <div style={{ height: '5%', width: '20%' }} className="d-flex align-items-center">
+                <div className="d-flex align-items-center user-profile-filters-container">
                     <p style={{ marginBottom: '0px', width: '100%' }}>Sort By Name:</p>
                     <select style={{ width: '50%' }} className="form-select add-page-input" value={asc} onChange={(e) => setAsc(e.target.value)}>
                         <option value='1'>Asc</option>

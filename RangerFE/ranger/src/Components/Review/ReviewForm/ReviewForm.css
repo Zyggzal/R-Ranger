@@ -14,3 +14,10 @@
 .review-form textarea::placeholder{
     color: #B1A7A6;
 }
+
+@media(max-width:360px) {
+    .review-form-rating-line {
+        flex-direction: column;
+        align-items: start!important;
+    }
+}
