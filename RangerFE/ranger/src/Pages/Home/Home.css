@@ -60,3 +60,31 @@
     width: 45px!important;
     height: 45px!important;
 }
+
+@media (max-width: 600px) {
+    .home-container-header {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .home-container-header form {
+        width: 100%!important;
+        margin-top: 20px;
+        transform: translateX(-20px);
+    }
+    .pel-desc-container {
+        display: none;
+    }
+    .pel-info-container {
+        width: 100%;
+    }
+    .pel-component-additional-info {
+        display: none;
+    }
+}
+
+@media (max-width: 360px) {
+    .pel-item-creator-user-name {
+        display: none;
+    }
+}

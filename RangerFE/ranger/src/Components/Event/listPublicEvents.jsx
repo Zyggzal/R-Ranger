@@ -39,10 +39,7 @@ export const ListPublicEvents = () =>{
     return (
         <div>
             <SearchPublicEvents/>
-            <GroupProvider>
-                <SearchPublicGroups/>
-            </GroupProvider>
-
+            <hr className="divider"/>
             {
                 !eventsToShow || eventsToShow.length === 0 ? <NoContent/> :
                     <div className="list-group">

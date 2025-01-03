@@ -21,6 +21,8 @@ import { EditEventPage } from './Pages/Events/EditEventPage/EditEventPage';
 import {StrangerPage} from "./Pages/User/StrangerPage/StrangerPage";
 import { ListPublicEvents } from './Components/Event/listPublicEvents';
 import { Welcome } from './Pages/Welcome/Welcome';
+import { ListPublicGroups } from './Components/Group/listPublicGroups';
+import { GroupProvider } from './Context/Group/GroupContext';
 
 function App() {
     const router = createBrowserRouter(createRoutesFromElements(
@@ -29,6 +31,7 @@ function App() {
             <Route index element={<Welcome />} />
             <Route path='home' element={<RequireAuth><Home /></RequireAuth>} >
               <Route index element={ <ListPublicEvents /> } />
+              <Route path='groups' element={ <GroupProvider><ListPublicGroups /></GroupProvider> } />
             </Route>
             <Route path='login' element={ <Login/>} />
             <Route path='profile' element={ <RequireAuth><UserProfile /></RequireAuth> }>

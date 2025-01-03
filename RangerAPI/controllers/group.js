@@ -55,16 +55,12 @@ module.exports.getGroupsByName = async (req, res) => {
 
         containsName = containsName.join(' AND ');
 
-        console.log(containsName);
-
         let condition = '';
         switch (type) {
             case 'public': condition = 'AND isPublic = 1'; break;
             case 'private': condition = 'AND isPublic = 0'; break;
             default: condition = 'AND isPublic = 1';
         }
-
-        console.log(containsName);
 
         const foundUsers = await sequelize.query(
             `SELECT TOP 20 *
@@ -77,16 +73,9 @@ module.exports.getGroupsByName = async (req, res) => {
                 replacements: {name: `"${containsName}"`, secondName: `%${name}%`},
             }
         )
-
-        // const found = await Event.findAll({
-        //     where: `MATCH (name) AGAINST(${name}) ${condition}`
-        // })
-
-        // console.log(found)
         res.status(200).json(foundUsers);
     }
     catch(err) {
-        console.log(err)
         errHandler(res, err, 500);
     }
 }

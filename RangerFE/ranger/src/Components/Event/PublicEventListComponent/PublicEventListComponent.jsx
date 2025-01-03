@@ -24,13 +24,13 @@ const PublicEventListComponent = ({event}) => {
                         <>
                             <img src="/Resources/Images/RangerPFP2.png"/>
                             <div>
-                                <p className="m-1">{ event.creator.firstName } { event.creator.lastName }</p>
+                                <p className="m-1 pel-item-creator-user-name">{ event.creator.firstName } { event.creator.lastName }</p>
                                 <NavLink to={`/users/${event.creator.login}`} className="m-1 event-group-link"><HumanIcon/> @{ event.creator.login }</NavLink>
                             </div>
                         </>
                     }
                 </div>
-                <div>
+                <div className="pel-component-additional-info">
                     <div><ClockIcon/> { DateToAgo(event.createdAt) }</div>
                     <div className="d-flex justify-content-end"><HumanIcon/> { event.participants.length } { event.participantsLimit && `/ ${event.participantsLimit}` }</div>
                 </div>

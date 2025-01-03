@@ -262,7 +262,6 @@ export const GroupProvider = ({children}) => {
             }
         }
         catch (error){
-            console.log(error)
             setAlertText(error)
             setShowAlert(true)
         }

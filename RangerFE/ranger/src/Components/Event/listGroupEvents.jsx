@@ -9,7 +9,6 @@ import NoContent from "../NoContent/NoContent";
 
 export const ListGroupEvents = ({events}) => {
 
-    // console.log(events);
     const {getEventStatus} = useContext(EventContext)
 
     return (

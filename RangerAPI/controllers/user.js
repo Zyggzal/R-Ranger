@@ -43,7 +43,6 @@ const getIncludes = (inc) => {
 
 module.exports.getUsers = async (req, res) => {
     try {
-        console.log(getIncludes(req.query.include));
         const users = await User.findAll({ include: getIncludes(req.query.include) });
         res.status(200).json(users);
     }

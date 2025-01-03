@@ -70,7 +70,6 @@ module.exports.logout = async (req, res) => {
 }
 
 module.exports.status = async (req, res) => {
-    console.log(req.cookies)
     if (jwt.verify(req.cookies?.jwt, keys.jwt).userId === req.body.id) {
         res.send({isAuthenticated: true})
       } else {

@@ -18,16 +18,19 @@ import TrashIcon from "../Icons/TrashIcon/TrashIcon";
 import { Modal } from "react-bootstrap";
 import ExitIcon from "../Icons/ExitIcon/ExitIcon";
 import PersonPlusIcon from "../Icons/PersonPlusIcon/PersonPlusIcon";
+import useAPI from "../../Hooks/useAPI";
 
 export const EventItem = ({id}) =>{
 
     const {eventById, eventParticipants, getEventUserStatus, getEventStatusNum, deleteEvent, removeParticipant, acceptEventInvite} = useContext(EventContext);
     const {user} = useContext(UserContext);
+    const {Get} = useAPI();
 
     const [event, setEvent] = useState({});
     const [participants, setParticipants] = useState(null);
     const [date, setDate] = useState({});
     const [userStatus, setUserStatus] = useState(null);
+    const [userGroupStatus, setUserGroupStatus] = useState(null);
     const [eventStatus, setEventStatus] = useState(null);
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -54,7 +57,13 @@ export const EventItem = ({id}) =>{
 
                 setDate({start: eventStartDate, end: eventEndDate});
 
+                if(thisEvent.createdByGroup) {
+                    const groupStatus = await Get(`groups/${thisEvent.createdByGroup}/memberStatus/${user.id}`);
+                    setUserGroupStatus(groupStatus.data);
+                }
+
                 const status = await getEventUserStatus(user.id, id);
+
                 setUserStatus(status);
                 setEventStatus(getEventStatusNum(thisEvent))
             }
@@ -215,7 +224,7 @@ export const EventItem = ({id}) =>{
             </div>
             <hr className="divider-mini"/>
             {
-                userStatus && userStatus.role !== 'stranger' &&
+                ((userStatus && userStatus.role !== 'stranger') || (userGroupStatus && userGroupStatus.role !== 'stranger')) &&
                 <div className="event-desc">
                     <h1>
                         Private Description

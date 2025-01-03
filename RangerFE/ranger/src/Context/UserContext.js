@@ -123,23 +123,17 @@ export const UserProvider = ({children}) => {
 
     const getSomeUserInfo = async (login, userId) =>{
         setIsLoading(true);
-        //get user
         const actualUser = await api.Get(`users/friends/search/${login}`);
         if(actualUser.data.length === 0) return;
         if(actualUser.data[0].id === userId) return 'profile';
 
-        //get status with me
         const isFriend = await getFriendStatus(actualUser.data[0].id, userId);
-        // console.log(isFriend)
-
-
-        //get general groups & friends & events
 
         setIsLoading(false);
 
         return {isFriend: isFriend, user: actualUser.data[0]};
     }
-    //user public events
+
     const userPublicEvents = async (id) =>{
         setIsLoading(true);
 
@@ -163,7 +157,6 @@ export const UserProvider = ({children}) => {
 
     const getFriendStatus = async (strangerId, userId) =>{
         const userFriends = await api.Get(`users/allfriends/${userId}`, 'friends');
-        // console.log(userFriends.data)
         for(let friend of userFriends.data){
             if(strangerId === friend.UserId && userId === friend.friendId){
                 if(friend.status === "accepted") return friend;

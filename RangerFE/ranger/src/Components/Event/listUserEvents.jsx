@@ -38,7 +38,7 @@ export const ListUserEvents = ({sortBy, asc}) =>{
                         case 'private':
                             diff = b.isPublic - a.isPublic; break;
                     }
-                    if(asc === '1') diff *= -1;
+                    if(asc === '0') diff *= -1;
 
                     return diff;
                 })
@@ -53,7 +53,6 @@ export const ListUserEvents = ({sortBy, asc}) =>{
     if(!eventsToShow || eventsToShow.length === 0){
         return <NoContent/>
     }
-    console.log(eventsToShow);
     return (
         <div className="user-list-container list-group">
             {

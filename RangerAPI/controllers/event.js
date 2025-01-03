@@ -64,8 +64,6 @@ module.exports.getEventsByName = async (req, res) => {
 
         containsName = containsName.join(' AND ');
 
-        console.log(containsName);
-
         let condition = '';
         switch (type) {
             case 'public': condition = 'AND isPublic = 1'; break;
@@ -73,10 +71,8 @@ module.exports.getEventsByName = async (req, res) => {
             default: condition = 'AND isPublic = 1';
         }
 
-         console.log(containsName);
-
         const foundUsers = await sequelize.query(
-            `SELECT TOP 20 *
+            `SELECT TOP 20 *, e.id as id
             FROM events as e
             LEFT JOIN users as u on u.id = e.createdBy
             WHERE CONTAINS(name, :name) ${condition} AND name LIKE :secondName
@@ -91,11 +87,9 @@ module.exports.getEventsByName = async (req, res) => {
         //     where: `MATCH (name) AGAINST(${name}) ${condition}`
         // })
 
-        // console.log(found)
         res.status(200).json(foundUsers);
     }
     catch(err) {
-        console.log(err)
         errHandler(res, err, 500);
     }
 }

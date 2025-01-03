@@ -47,10 +47,6 @@ export const InviteProvider = ({ children }) => {
         setEventInvites(events);
         setGroupInvites(groups);
         setFriendInvites(friends);
-
-        // console.log(eventInvites);
-        // console.log(groupInvites);
-        // console.log(friends);
     }
 
     const fetchUserInvites = useCallback(async () => {
