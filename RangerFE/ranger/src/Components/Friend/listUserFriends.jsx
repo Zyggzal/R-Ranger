@@ -20,7 +20,7 @@ export const ListUserFriends = ({asc}) =>{
         if(userFriends) {
             let list = userFriends.filter((f) => f.Friend.status === 'accepted')
 
-            list = list.sort((a, b) => {
+            list = [...list].sort((a, b) => {
                 let diff = a.login.localeCompare(b.login);
 
                 if(asc === '0') diff *= -1;

@@ -11,7 +11,7 @@ import NoContent from "../NoContent/NoContent";
 export const ListUserEvents = ({sortBy, asc}) =>{
 
     const {userEvents, fetchUserEvents, loading, getEventStatus, getEventStatusNum} = useContext(EventContext);
-    const [eventsToShow, setEventsToShow] = useState(null);
+    const [eventsToShow, setEventsToShow] = useState([]);
 
     useEffect(() => {
         fetchUserEvents();
@@ -22,7 +22,7 @@ export const ListUserEvents = ({sortBy, asc}) =>{
             let list = userEvents.participatesIn;
 
             if(sortBy != 'none') {
-                list = list.sort((a, b) => {
+                list = [...list].sort((a, b) => {
                     let diff = 0;
                     switch(sortBy) {
                         case 'name':
@@ -53,6 +53,7 @@ export const ListUserEvents = ({sortBy, asc}) =>{
     if(!eventsToShow || eventsToShow.length === 0){
         return <NoContent/>
     }
+    console.log(eventsToShow);
     return (
         <div className="user-list-container list-group">
             {

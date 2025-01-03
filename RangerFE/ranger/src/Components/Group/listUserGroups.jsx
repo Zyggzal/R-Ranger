@@ -41,8 +41,8 @@ export const ListUserGroups = ({sortBy, asc}) => {
             }
 
             if(sortBy !== 'none') {
-                if(createdList) createdList = createdList.sort(sortFunc);
-                if(memberList) memberList = memberList.sort(sortFunc);
+                if(createdList) createdList = [...createdList].sort(sortFunc);
+                if(memberList) memberList = [...memberList].sort(sortFunc);
             }
 
             setCreatedGroupsToShow(createdList);

@@ -22,7 +22,7 @@ const ListUserAllInvites = ({type, asc}) => {
                 list = allInvites; break;
         }
 
-        list = list.sort((a, b) => {
+        list = [...list].sort((a, b) => {
             const ad = new Date(a.createdAt).getTime()
             const bd = new Date(b.createdAt).getTime()
 
