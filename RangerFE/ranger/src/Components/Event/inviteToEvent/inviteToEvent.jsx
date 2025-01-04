@@ -104,7 +104,7 @@ export const InviteToEvent = ({ eventId }) => {
                     </h2>
                     <div id="collapseOne" className="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                         <div className="accordion-body">
-                            <div className="list-group">
+                            <div className="list-group rnd-user-sroll-list" style={{ overflowY: 'auto', maxHeight: '55vh' }}>
                                 {
                                 event.participants.map((u)=>{
                                     return <div key={u.id} className="list-group-item list-group-item-action invite-event-item">

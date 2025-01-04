@@ -66,46 +66,49 @@ export const ListUserGroups = ({sortBy, searchName, asc}) => {
                 createdGroupsToShow && createdGroupsToShow.length > 0 &&
                 <>
                     <h3 className="mb-3 mt-2">Created by You</h3>
-
-                    {createdGroupsToShow.map((group) => (
-                        <div key={`grouplistitem${group.id}`}
-                             className="list-group-item list-group-item-action d-flex justify-content-between group-link">
-                            <div>
-                                <h5>{group.name} <LockIcon unlocked={group.isPublic}/></h5>
-                                <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
+                    <div className="rnd-user-sroll-list" style={{ overflowY: 'auto', maxHeight: '40vh' }}>
+                        {createdGroupsToShow.map((group) => (
+                            <div key={`grouplistitem${group.id}`}
+                                className="list-group-item list-group-item-action d-flex justify-content-between group-link">
+                                <div>
+                                    <h5>{group.name} <LockIcon unlocked={group.isPublic}/></h5>
+                                    <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
+                                </div>
+                                <div className="d-flex flex-column align-items-end">
+                                <NavLink className='btn p-1 btn-outline-secondary mb-2'
+                                            to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
+                                    <button onClick={() => {
+                                        setToDelete(group);
+                                        setShowDeleteModal(true);
+                                        }} className="btn p-1 btn-outline-danger" style={{ height: '45%', textAlign: 'center' }}><TrashIcon/>
+                                    </button>
+                                </div>
                             </div>
-                            <div className="d-flex flex-column align-items-end">
-                            <NavLink className='btn p-1 btn-outline-secondary mb-2'
-                                         to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
-                                <button onClick={() => {
-                                    setToDelete(group);
-                                    setShowDeleteModal(true);
-                                    }} className="btn p-1 btn-outline-danger" style={{ height: '45%', textAlign: 'center' }}><TrashIcon/>
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </>
             }
             {
                 memberGroupsToShow && memberGroupsToShow.length > 0 &&
                 <>
                     <h3 className="mb-3 mt-2">You are a member of</h3>
-                    {memberGroupsToShow.map((group) => (
-                        <div key={`grouplistitem${group.id}`}
-                             className="list-group-item list-group-item-action d-flex justify-content-between">
-                            <div>
-                                <h5>{group.name}</h5>
-                                <p className="text-secondary">Created by @{group.creator.login}</p>
-                            <p className="text-secondary">Role: {group.UsersGroups.role}</p>
+                    <div className="rnd-user-sroll-list" style={{ overflowY: 'auto', maxHeight: '40vh' }}>
+                        {memberGroupsToShow.map((group) => (
+                            <div key={`grouplistitem${group.id}`}
+                                className="list-group-item list-group-item-action d-flex justify-content-between">
+                                <div>
+                                    <h5>{group.name}</h5>
+                                    <p className="text-secondary">Created by @{group.creator.login}</p>
+                                <p className="text-secondary">Role: {group.UsersGroups.role}</p>
+                            </div>
+                            <div className="d-flex flex-column align-items-end">
+                                <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
+                                <NavLink className='btn p-1 btn-outline-secondary mb-2'
+                                            to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
+                            </div>
                         </div>
-                        <div className="d-flex flex-column align-items-end">
-                            <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
-                            <NavLink className='btn p-1 btn-outline-secondary mb-2'
-                                         to={`/groups/${group.id}`}><ThreeDotsIcon/></NavLink>
-                        </div>
+                        ))}
                     </div>
-                    ))}
                 </>
             }
             <Modal show={showDeleteModal} onHide={()=>setShowDeleteModal(false)}>

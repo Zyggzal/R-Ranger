@@ -58,7 +58,7 @@ export const ListUserEvents = ({sortBy, searchName, asc}) =>{
         return <NoContent/>
     }
     return (
-        <div className="user-list-container list-group">
+        <div className="user-list-container list-group rnd-user-sroll-list" style={{ overflowY: 'auto', maxHeight: '55vh' }}>
             {
                 eventsToShow.map((event) => (
                     <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between user-profile-event-list-item">

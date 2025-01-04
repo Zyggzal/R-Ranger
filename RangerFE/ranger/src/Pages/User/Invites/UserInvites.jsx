@@ -4,6 +4,7 @@ import { FriendProvider } from "../../../Context/Friend/FriendContext";
 import { useState } from "react";
 import { EventProvider } from "../../../Context/Event/EventContext";
 import { GroupProvider } from "../../../Context/Group/GroupContext";
+import MaGlassIcon from "../../../Components/Icons/MaGlassIcon/MaGlassIcon";
 
 const UserInvites = () => {
     const [type, setType] = useState('all')
@@ -18,8 +19,6 @@ const UserInvites = () => {
                         <div className="d-flex justify-content-between profile-user-events-header">
                             <h1>Your invites</h1>
                             <div className="d-flex align-items-center user-profile-filters-container">
-                                <input type="text" value={searchName} onChange={(e) => setSearchName(e.target.value)}
-                                       className='add-page-input form-control'/>
                                 <p style={{marginBottom: '0px', width: '100%'}}>Sort By Date:</p>
                                 <select className="form-select add-page-input" value={type}
                                         onChange={(e) => setType(e.target.value)}>
@@ -33,6 +32,18 @@ const UserInvites = () => {
                                     <option value='1'>Asc</option>
                                     <option value='0'>Desc</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div className="user-profile-events-search-container">
+                            <div className="search-input mt-3 mb-3">
+                                <MaGlassIcon/>
+                                <input
+                                    className={`add-page-input form-control`}
+                                    type="text"
+                                    placeholder="Search"
+                                    value={searchName} 
+                                    onChange={(e) => setSearchName(e.target.value)}
+                                />
                             </div>
                         </div>
                         <ListUserAllInvites type={type} asc={sortBy} searchName={searchName}/>

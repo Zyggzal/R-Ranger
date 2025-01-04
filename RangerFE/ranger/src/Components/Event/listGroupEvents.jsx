@@ -13,7 +13,7 @@ export const ListGroupEvents = ({events}) => {
 
     return (
         events.length === 0 ? <NoContent/> :
-        <div className="user-list-container list-group">
+        <div className="user-list-container list-group rnd-user-sroll-list" style={{ overflowY: 'auto', maxHeight: '410px' }}>
             {
                 events.map((event) => (
                     <div key={event.id} className="list-group-item list-group-item-action d-flex justify-content-between list-group-events-group-item">

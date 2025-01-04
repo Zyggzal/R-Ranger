@@ -2,6 +2,7 @@ import { EventProvider } from "../../../Context/Event/EventContext";
 import { ListUserEvents } from "../../../Components/Event/listUserEvents";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import MaGlassIcon from "../../../Components/Icons/MaGlassIcon/MaGlassIcon";
 
 const UserEvents = () => {
     const [asc, setAsc] = useState('1')
@@ -16,7 +17,6 @@ const UserEvents = () => {
                     <NavLink className='btn btn-crimson ms-3' to='/events/add'><strong>+</strong></NavLink>
                 </div>
                 <div className="d-flex align-items-center user-profile-filters-container">
-                    <input type="text" value={searchName} onChange={(e) => setSearchName(e.target.value)} className='add-page-input form-control' />
                     <p style={{ marginBottom: '0px', width: '100%' }}>Sort By:</p>
                     <select className="form-select add-page-input me-2 ms-2" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                         <option value='none'>-</option>
@@ -31,6 +31,18 @@ const UserEvents = () => {
                         <option value='1'>Asc</option>
                         <option value='0'>Desc</option>
                     </select>
+                </div>
+            </div>
+            <div className="user-profile-events-search-container">
+                <div className="search-input">
+                    <MaGlassIcon/>
+                    <input
+                        className={`add-page-input form-control`}
+                        type="text"
+                        placeholder="Search"
+                        value={searchName} 
+                        onChange={(e) => setSearchName(e.target.value)}
+                    />
                 </div>
             </div>
             <ListUserEvents sortBy={sortBy} asc={asc} searchName={searchName}/>

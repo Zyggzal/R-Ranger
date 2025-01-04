@@ -4,7 +4,7 @@ import InfoIcon from "../Icons/InfoIcon/InfoIcon";
 export const ListGroupMembers = ({members}) =>{
 
     return (
-        <div className="user-list-container list-group w-75">
+        <div className="user-list-container list-group w-75 rnd-user-sroll-list" style={{ overflowY: 'auto', maxHeight: '25vh' }}>
             {
                 members.map((user) => (
                     <NavLink key={user.id}

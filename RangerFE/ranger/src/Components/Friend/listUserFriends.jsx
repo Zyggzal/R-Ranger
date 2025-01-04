@@ -39,7 +39,7 @@ export const ListUserFriends = ({asc, searchName}) =>{
 
     if(isLoading || !userFriends) return <Loader/>;
     return(
-        <div className="user-list-container list-group mt-4">
+        <div className="user-list-container list-group mt-4 rnd-user-sroll-list" style={{ overflowY: 'auto', maxHeight: '55vh' }}>
             { 
                 !friendsToShow || friendsToShow.length === 0 ? <NoContent/> : friendsToShow.map((f) => (
                 <div key={`friendlistitem${f.id}`} className="list-group-item list-group-item-action d-flex justify-content-between word-break">

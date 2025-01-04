@@ -3,6 +3,7 @@ import {useState} from "react";
 import {ListUserFriends} from "../../../Components/Friend/listUserFriends";
 import {AddFriend} from "../../../Components/Friend/addFriend";
 import PersonPlusIcon from '../../../Components/Icons/PersonPlusIcon/PersonPlusIcon';
+import MaGlassIcon from "../../../Components/Icons/MaGlassIcon/MaGlassIcon";
 
 const Friends = () => {
 
@@ -18,14 +19,24 @@ const Friends = () => {
                     <PersonPlusIcon/> Add friend
                 </button>
                 <div className="d-flex align-items-center user-profile-filters-container">
-                    <input type="text" value={searchName} onChange={(e) => setSearchName(e.target.value)}
-                           className='add-page-input form-control'/>
                     <p style={{marginBottom: '0px', width: '100%'}}>Sort By Name:</p>
                     <select style={{width: '50%'}} className="form-select add-page-input" value={asc}
                             onChange={(e) => setAsc(e.target.value)}>
                         <option value='1'>Asc</option>
                         <option value='0'>Desc</option>
                     </select>
+                </div>
+            </div>
+            <div className="user-profile-events-search-container">
+                <div className="search-input">
+                    <MaGlassIcon/>
+                    <input
+                        className={`add-page-input form-control`}
+                        type="text"
+                        placeholder="Search"
+                        value={searchName} 
+                        onChange={(e) => setSearchName(e.target.value)}
+                    />
                 </div>
             </div>
             <div>

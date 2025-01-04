@@ -104,3 +104,8 @@
     height: 5%;
     width: 30%;
 }
+.user-profile-events-search-container >div {
+    margin-bottom: 20px;
+    width: 250px;
+    margin-left: -20px;
+}
