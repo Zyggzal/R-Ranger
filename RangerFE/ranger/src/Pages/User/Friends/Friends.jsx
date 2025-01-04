@@ -9,6 +9,7 @@ const Friends = () => {
     const [showFriendModal, setShowFriendModal] = useState(false);
 
     const [asc, setAsc] = useState('1')
+    const [searchName, setSearchName] = useState('');
 
     return (
         <FriendProvider>
@@ -17,15 +18,18 @@ const Friends = () => {
                     <PersonPlusIcon/> Add friend
                 </button>
                 <div className="d-flex align-items-center user-profile-filters-container">
-                    <p style={{ marginBottom: '0px', width: '100%' }}>Sort By Name:</p>
-                    <select style={{ width: '50%' }} className="form-select add-page-input" value={asc} onChange={(e) => setAsc(e.target.value)}>
+                    <input type="text" value={searchName} onChange={(e) => setSearchName(e.target.value)}
+                           className='add-page-input form-control'/>
+                    <p style={{marginBottom: '0px', width: '100%'}}>Sort By Name:</p>
+                    <select style={{width: '50%'}} className="form-select add-page-input" value={asc}
+                            onChange={(e) => setAsc(e.target.value)}>
                         <option value='1'>Asc</option>
                         <option value='0'>Desc</option>
                     </select>
                 </div>
             </div>
             <div>
-                <ListUserFriends asc={asc} />
+                <ListUserFriends asc={asc} searchName={searchName}/>
             </div>
             <AddFriend showModal={showFriendModal} onClose={() => setShowFriendModal(false)} />
         </FriendProvider>

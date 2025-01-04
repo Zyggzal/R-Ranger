@@ -5,7 +5,7 @@ import './listUserAllInvites.css'
 import Loader from "../Loader/Loader";
 import NoContent from "../NoContent/NoContent";
 
-const ListUserAllInvites = ({type, asc}) => {
+const ListUserAllInvites = ({type, asc, searchName}) => {
     const {allInvites, isLoading, fetchUserInvites} = useContext(InviteContext);
     const [invitesToShow, setInvitesToShow] = useState(null)
 
@@ -29,8 +29,13 @@ const ListUserAllInvites = ({type, asc}) => {
             return asc === '1' ? ad - bd : bd - ad;
         })
 
+        if(searchName.trim() !== ''){
+            const searchLower = searchName.trim().toLowerCase();
+            list = list.filter(invite => invite.sender.login.toLowerCase().includes(searchLower));
+        }
+
         setInvitesToShow(list)
-    }, [allInvites, type, asc]);
+    }, [allInvites, type, asc, searchName]);
 
 
     if(isLoading || !invitesToShow) return <Loader/>

@@ -11,7 +11,7 @@ import TrashIcon from "../Icons/TrashIcon/TrashIcon";
 import './listUserGroups.css'
 import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
 
-export const ListUserGroups = ({sortBy, asc}) => {
+export const ListUserGroups = ({sortBy, searchName, asc}) => {
 
     const {userGroups, isLoading, deleteGroup} = useContext(GroupContext);
     const [toDelete, setToDelete] = useState(-1);
@@ -44,11 +44,16 @@ export const ListUserGroups = ({sortBy, asc}) => {
                 if(createdList) createdList = [...createdList].sort(sortFunc);
                 if(memberList) memberList = [...memberList].sort(sortFunc);
             }
+            if(searchName.trim() !== ''){
+                const searchLower = searchName.trim().toLowerCase();
+                createdList = createdList.filter(group => group.name.toLowerCase().includes(searchLower));
+                memberList = memberList.filter(group => group.name.toLowerCase().includes(searchLower));
+            }
 
             setCreatedGroupsToShow(createdList);
             setMemberGroupsToShow(memberList);
         }
-    }, [userGroups, asc, sortBy])
+    }, [userGroups, asc, sortBy, searchName])
 
     if(isLoading || userGroups.length === 0) return <Loader/>
     return (

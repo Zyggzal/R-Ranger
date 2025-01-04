@@ -8,6 +8,7 @@ import { GroupProvider } from "../../../Context/Group/GroupContext";
 const UserInvites = () => {
     const [type, setType] = useState('all')
     const [sortBy, setSortBy] = useState('1')
+    const [searchName, setSearchName] = useState('');
 
     return (
         <InviteProvider>
@@ -17,20 +18,24 @@ const UserInvites = () => {
                         <div className="d-flex justify-content-between profile-user-events-header">
                             <h1>Your invites</h1>
                             <div className="d-flex align-items-center user-profile-filters-container">
-                                <p style={{ marginBottom: '0px', width: '100%' }}>Sort By Date:</p>
-                                <select className="form-select add-page-input" value={type} onChange={(e) => setType(e.target.value)}>
+                                <input type="text" value={searchName} onChange={(e) => setSearchName(e.target.value)}
+                                       className='add-page-input form-control'/>
+                                <p style={{marginBottom: '0px', width: '100%'}}>Sort By Date:</p>
+                                <select className="form-select add-page-input" value={type}
+                                        onChange={(e) => setType(e.target.value)}>
                                     <option value={'all'}>All</option>
                                     <option value={'friends'}>Friends</option>
                                     <option value={'events'}>Events</option>
                                     <option value={'groups'}>Groups</option>
                                 </select>
-                                <select className="form-select add-page-input me-2 ms-2" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                                <select className="form-select add-page-input me-2 ms-2" value={sortBy}
+                                        onChange={(e) => setSortBy(e.target.value)}>
                                     <option value='1'>Asc</option>
                                     <option value='0'>Desc</option>
                                 </select>
                             </div>
                         </div>
-                        <ListUserAllInvites type={type} asc={sortBy}/>
+                        <ListUserAllInvites type={type} asc={sortBy} searchName={searchName}/>
                     </GroupProvider>
                 </EventProvider>
             </FriendProvider>

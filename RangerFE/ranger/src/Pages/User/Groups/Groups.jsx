@@ -8,6 +8,7 @@ const Groups = () => {
 
     const [asc, setAsc] = useState('1')
     const [sortBy, setSortBy] = useState('none')
+    const [searchName, setSearchName] = useState('');
 
     return (
         <GroupProvider>
@@ -19,8 +20,11 @@ const Groups = () => {
                     </button>
                 </div>
                 <div className="d-flex align-items-center user-profile-filters-container">
-                    <p style={{ marginBottom: '0px', width: '100%' }}>Sort By:</p>
-                    <select className="form-select add-page-input me-2 ms-2" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                    <input type="text" value={searchName} onChange={(e) => setSearchName(e.target.value)}
+                           className='add-page-input form-control'/>
+                    <p style={{marginBottom: '0px', width: '100%'}}>Sort By:</p>
+                    <select className="form-select add-page-input me-2 ms-2" value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}>
                         <option value='none'>-</option>
                         <option value='name'>Name</option>
                         <option value='created'>Created At</option>
@@ -33,7 +37,7 @@ const Groups = () => {
                 </div>
             </div>
             <div>
-                <ListUserGroups sortBy={sortBy} asc={asc} />
+                <ListUserGroups sortBy={sortBy} asc={asc} searchName={searchName}/>
             </div>
             <AddGroup showModal={showGroupModal} onClose={() => setShowGroupModal(false)} />
         </GroupProvider>

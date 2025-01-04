@@ -8,7 +8,7 @@ import Loader from "../Loader/Loader";
 import ThreeDotsIcon from "../Icons/ThreeDotsIcon/ThreeDotsIcon";
 import { NavLink } from "react-router-dom";
 
-export const ListUserFriends = ({asc}) =>{
+export const ListUserFriends = ({asc, searchName}) =>{
 
     const {userFriends, isLoading, declineFriendRequest} = useContext(FriendContext);
     const [friendsToShow, setFriendsToShow] = useState(null);
@@ -28,9 +28,14 @@ export const ListUserFriends = ({asc}) =>{
                 return diff;
             })
 
+            if(searchName.trim() !== ''){
+                const searchLower = searchName.trim().toLowerCase();
+                list = list.filter(friend => friend.login.toLowerCase().includes(searchLower));
+            }
+
             setFriendsToShow(list);
         }
-    }, [userFriends, asc])
+    }, [userFriends, asc, searchName])
 
     if(isLoading || !userFriends) return <Loader/>;
     return(

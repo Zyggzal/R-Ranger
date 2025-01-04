@@ -8,7 +8,7 @@ import Loader from '../../Components/Loader/Loader'
 import './listUserEvents.css'
 import NoContent from "../NoContent/NoContent";
 
-export const ListUserEvents = ({sortBy, asc}) =>{
+export const ListUserEvents = ({sortBy, searchName, asc}) =>{
 
     const {userEvents, fetchUserEvents, loading, getEventStatus, getEventStatusNum} = useContext(EventContext);
     const [eventsToShow, setEventsToShow] = useState([]);
@@ -43,9 +43,13 @@ export const ListUserEvents = ({sortBy, asc}) =>{
                     return diff;
                 })
             }
+            if(searchName.trim() !== ''){
+                const searchLower = searchName.trim().toLowerCase();
+                list = list.filter(event => event.name.toLowerCase().includes(searchLower));
+            }
             setEventsToShow(list)
         }
-    }, [userEvents, sortBy, asc])
+    }, [userEvents, sortBy, asc, searchName])
 
     if(loading || !userEvents || !userEvents.participatesIn){
         return <Loader/>
