@@ -19,11 +19,6 @@ module.exports.login = async (req, res) => {
                     expiresIn: 60 * 60 * 2
                 })
 
-                // res.status(200).json({
-                //     token: `Bearer ${token}`,
-                //     user
-                // })
-
                 res.status(200)
                     .cookie(
                         'jwt',

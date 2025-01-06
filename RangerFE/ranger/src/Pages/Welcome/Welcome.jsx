@@ -13,7 +13,7 @@ const Welcome = () => {
         <div className='welcome-container'>
             <div className='welcome-background'>
                 <div className='welcome-header'>
-                    <img  src='Resources/Images/RangerIcon.ico'/>
+                    <img alt='rander-icon' src='Resources/Images/RangerIcon.ico'/>
                     <h1 className='welcome-title'>WELCOME TO RANGER!</h1>
                     <h3>A useful tool for planning and arranging events</h3>
                 </div>
@@ -25,7 +25,7 @@ const Welcome = () => {
                             <img className="arrow" alt='arrow' src='/Resources/Images/Arrow.png'/>
                             <img className="bend" alt='bend' src='/Resources/Images/PaperBend.png'/>
                             <div className='d-flex flex-column align-items-center row-gap-4'>
-                                <img className='welcome-creator-image' src='/Resources/Images/SlipokurovPic.png'/>
+                                <img alt='idiot-pic' className='welcome-creator-image' src='/Resources/Images/SlipokurovPic.png'/>
                                 <h2>Slipokurov Valerii</h2>
                             </div>
                         </div>
@@ -33,7 +33,7 @@ const Welcome = () => {
                             <img className="arrow mirror" alt='arrow' src='/Resources/Images/Arrow.png'/>
                             <img className="bend" alt='bend' src='/Resources/Images/PaperBend.png'/>
                             <div className='d-flex flex-column align-items-center row-gap-4'>
-                                <img className='welcome-creator-image' src='/Resources/Images/RangerPFP2.png'/>
+                                <img alt='voloshyn-pic' className='welcome-creator-image' src='/Resources/Images/VoloshynPic.png'/>
                                 <h2>Voloshyn Olexii</h2>
                             </div>
                         </div>

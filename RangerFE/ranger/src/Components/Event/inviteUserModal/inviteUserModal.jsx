@@ -22,7 +22,6 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
 
     const watchLogin = watch('login')
 
-    //
     const byLogin = async (id) => {
         setUserNotFoundError(false);
         await inviteUserToEvent(id, event, eventInvites)

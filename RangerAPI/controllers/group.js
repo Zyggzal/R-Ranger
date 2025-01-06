@@ -49,7 +49,7 @@ module.exports.getById = async (req, res) => {
 module.exports.getGroupsByName = async (req, res) => {
     try{
         const { name } = req.params;
-        const { type } = req.body;//all/public/private
+        const { type } = req.body;
 
         let containsName = name.trim().split(/\s+/);
 
@@ -131,7 +131,6 @@ module.exports.create = async (req, res) => {
         const group = await Group.create({ name, isPublic, createdBy }, { transaction });
 
         if(group) {
-            //adding creator to participants
             const creatorParticipant = await UsersGroups.create({ 
                 GroupId: group.id,
                 UserId: group.createdBy,

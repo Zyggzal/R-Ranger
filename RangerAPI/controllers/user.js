@@ -149,18 +149,6 @@ module.exports.delete = async (req, res) => {
 
 module.exports.getFriends = async (req, res) => {
     try {
-
-        // const friends = await Friend.findAll({ where: Sequelize.or(
-        //     Sequelize.and(
-        //         { friendId: req.params.id },
-        //         { status: 'invited' }
-        //     ),
-        //     Sequelize.and(
-        //         { UserId: req.params.id },
-        //         { status: 'accepted' }
-        //     )
-        // ), include: { model: User, as: 'friend' }})
-
         const user = await User.findByPk(req.params.id, { include: { model: User, as: 'friends' } });
 
         if(user) {
@@ -192,7 +180,6 @@ module.exports.getAllUserFriendsStatus = async (req, res) => {
     }
 }
 
-//accept/decline/delete friends
 module.exports.updateFriend = async (req, res) => {
     const transaction = await sequelize.transaction();
     try {
@@ -209,7 +196,6 @@ module.exports.updateFriend = async (req, res) => {
         );
 
         if(updated) {
-            //mirror updating
             const mirrorUpdated = await Friend.create(
                 {
                     UserId: id,
@@ -249,7 +235,7 @@ module.exports.deleteFriend = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
-//send invite
+
 module.exports.addFriend = async (req, res) => {
     try {
         const { id, status } = req.body;
@@ -261,7 +247,6 @@ module.exports.addFriend = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
-//search by login (Find users)
 
 module.exports.getFriendByLogin = async (req, res) => {
     try{
@@ -273,5 +258,3 @@ module.exports.getFriendByLogin = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
-
-//router.get('/search/:login', passport.authenticate('jwt', {session:false}), controller.getUsersByLogin)

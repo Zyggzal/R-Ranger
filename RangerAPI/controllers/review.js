@@ -3,18 +3,6 @@ const errHandler = require('../utils/ErrorHandler');
 
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'user' }, { model: Event, as: 'event' } ];
-    // if(inc) {
-    //     inc.split(',').forEach(i => {
-    //         switch(i){
-    //             case 'participants':
-    //                 includes.push({ model: User , as: i }); break;
-    //             case 'creatorOfGroups':
-    //                 includes.push({ model: Group, as: i }); break;
-    //             case 'reviews':
-    //                 includes.push({ model: Review, as: i }); break;
-    //         }
-    //     });
-    // }
 
     return includes;
 }

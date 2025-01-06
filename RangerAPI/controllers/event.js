@@ -58,7 +58,7 @@ module.exports.getById = async (req, res) => {
 module.exports.getEventsByName = async (req, res) => {
     try{
         const { name } = req.params;
-        const { type } = req.body;//all/public/private
+        const { type } = req.body;
 
         let containsName = name.trim().split(/\s+/);
 
@@ -83,10 +83,6 @@ module.exports.getEventsByName = async (req, res) => {
             }
         )
 
-        // const found = await Event.findAll({
-        //     where: `MATCH (name) AGAINST(${name}) ${condition}`
-        // })
-
         res.status(200).json(foundUsers);
     }
     catch(err) {
@@ -102,11 +98,8 @@ module.exports.create = async (req, res) => {
             { name, publicDescription, privateDescription, startDate, endDate, signUpEndDate, isPublic, isGroupEvent, participantsLimit, createdBy, createdByGroup },
             {transaction}
             );
-        // res.status(200).json(event);
-        //add creator as creator in event_participants
 
         if(event) {
-            //adding creator to participants
             const creatorParticipant = await EventParticipants.create(
                 {
                     role: 'creator',

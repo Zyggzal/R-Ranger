@@ -6,14 +6,6 @@ const Invite = sequelize.define('Invite', {
         type: DataTypes.STRING,
         defaultValue: false
     },
-    // type: {
-    //     type: DataTypes.STRING,
-    //     allowNull: false
-    // },
-    // role: {
-    //     type: DataTypes.STRING,
-    //     defaultValue: "member"
-    // }
 },
 {
     tableName: 'invites'

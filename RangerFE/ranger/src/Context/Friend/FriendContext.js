@@ -65,8 +65,8 @@ export const FriendProvider = ({ children }) => {
 
             fetchFriends();
         }
-        catch (err){
-            setErrorText(err);
+        catch {
+            setErrorText("Could not accept request");
             setShowError(true);
         }
     }
@@ -81,8 +81,8 @@ export const FriendProvider = ({ children }) => {
 
             fetchFriends();
         }
-        catch (err){
-            setErrorText(err);
+        catch {
+            setErrorText("Could not decline request");
             setShowError(true);
         }
     }

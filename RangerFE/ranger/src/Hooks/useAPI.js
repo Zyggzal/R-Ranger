@@ -11,8 +11,6 @@ const useAPI = () => {
         const interceptor = axios.interceptors.response.use(
             (response) => response,
             async (error) => {
-                //const originalRequest = error.config;
-
                 if(error.response.status === 401 && error.response.data === 'Unauthorized') {
                     if(localStorage.getItem("user")) {
                         Logout()

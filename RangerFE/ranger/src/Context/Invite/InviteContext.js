@@ -24,7 +24,7 @@ export const InviteProvider = ({ children }) => {
         let events = [];
         let groups = [];
         let friends = [];
-        //events & groups
+
         dataEG.forEach((item) => {
             if(item.status === 'sent'){
                 if(item.EventId !== null){
@@ -35,8 +35,6 @@ export const InviteProvider = ({ children }) => {
                 }
             }
         });
-        //friends
-
 
         dataF.forEach((item) => {
             if(item.Friend.status === 'invited'){
@@ -69,7 +67,7 @@ export const InviteProvider = ({ children }) => {
     useEffect(() => {
         if(user) fetchUserInvites();
     }, [user]);
-    //
+
     const eventUpdateStatus = async (id, status, EventId) =>{
         const UserId = user.id;
         const role = 'participant';
@@ -78,7 +76,7 @@ export const InviteProvider = ({ children }) => {
     }
 
     const inviteUserToEvent = async (UserId, Event, invites) => {
-        //UserId, senderId, EventId, GroupId, status
+
         const senderId = user.id
         const status = 'sent'
         try{
@@ -106,7 +104,6 @@ export const InviteProvider = ({ children }) => {
     }
 
     const inviteUserToGroup = async (UserId, Group, invites) => {
-        //UserId, senderId, EventId, GroupId, status
         const senderId = user.id
         const status = 'sent'
         try{

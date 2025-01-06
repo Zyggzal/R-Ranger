@@ -7,16 +7,7 @@ const {addParticipant} = require("./event");
 
 const getIncludes = (inc) => {
     const includes = [ { model: User, as: 'sender' }, { model: User, as: 'user' }, { model: Event, as: 'event' }, { model: Group, as: 'group' } ];
-    // if(inc) {
-    //     inc.split(',').forEach(i => {
-    //         switch(i){
-    //             case 'members':
-    //                 includes.push({ model: User, as: i }); break;
-    //             case 'creatorOf':
-    //                 includes.push({ model: Event, as: i }); break;
-    //         }
-    //     });
-    // }
+
     return includes;
 }
 
@@ -127,7 +118,6 @@ module.exports.update = async (req, res) => {
             { where: where }
         );
         if(updated) {
-            //const updatedInvite = await Invite.findByPk({ EventId, UserId });
             res.status(200).json("Update succeeded");
         }
         else {
@@ -138,7 +128,6 @@ module.exports.update = async (req, res) => {
         errHandler(res, err, 500);
     }
 }
-//accepting and declining invites
 module.exports.updateEvent = async (req, res) => {
     try {
         const { id, status, UserId, EventId, role } = req.body;

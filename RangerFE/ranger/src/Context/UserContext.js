@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import useAPI from '../Hooks/useAPI';
 import DismissableAlert from '../Components/DismissableAlert/DismissableAlert'
-import {useNavigate} from "react-router-dom";
 
 export const UserContext = createContext()
 
@@ -143,7 +142,7 @@ export const UserProvider = ({children}) => {
         setIsLoading(false);
         return publicUserEvents;
     }
-    //user public groups
+
     const userPublicGroups = async (id) =>{
         setIsLoading(true);
 

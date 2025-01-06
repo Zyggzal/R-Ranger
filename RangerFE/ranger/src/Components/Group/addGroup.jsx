@@ -10,13 +10,10 @@ export const AddGroup = ({showModal, onClose}) => {
     const {user} = useContext(UserContext);
     const {addGroup} = useContext(GroupContext);
 
-    //const [group, setGroup] = useState({});
-
     const onSubmit = (values) => {
 
         const newGroup = {...values, createdBy: user.id};
 
-        //setGroup(newGroup);
         addGroup(newGroup);
         onClose();
     };
