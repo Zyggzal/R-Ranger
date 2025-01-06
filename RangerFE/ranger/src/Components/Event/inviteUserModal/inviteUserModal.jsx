@@ -1,5 +1,5 @@
 import {useForm} from "react-hook-form";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../../Context/UserContext";
 import {Modal} from "react-bootstrap";
 import { InviteContext } from "../../../Context/Invite/InviteContext";
@@ -11,25 +11,22 @@ import './inviteUserModal.css'
 import Loader from "../../Loader/Loader";
 
 export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const {register, handleSubmit, watch, formState: {errors}} = useForm();
 
-    const {user, idByLogin} = useContext(UserContext);
+    const {user, getUsersByLogin} = useContext(UserContext);
     const {inviteUserToEvent} = useContext(InviteContext);
 
     const [userNotFoundError, setUserNotFoundError] = useState(false);
+    const [usersToInvite, setUsersToInvite] = useState([]);
     const [tab, setTab] = useState('login')
 
-    const byLogin = async (values) => {
-        const userId = await idByLogin(values.login);
+    const watchLogin = watch('login')
 
-        if(userId === -1){
-            setUserNotFoundError(true);
-        }
-        else{
-            setUserNotFoundError(false);
-            await inviteUserToEvent(userId, event, eventInvites)
-            onClose(true);
-        }
+    //
+    const byLogin = async (id) => {
+        setUserNotFoundError(false);
+        await inviteUserToEvent(id, event, eventInvites)
+        onClose(true);
     }
 
     const inviteArray = (array) => {
@@ -49,6 +46,26 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
             })).then(()=>onClose(true))
         }
     }
+
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            if (watchLogin && watchLogin.trim().length > 0) {
+                const fetchUsers = async () => {
+                    try {
+                        const actualUsers = await getUsersByLogin(watchLogin.trim());
+                        setUsersToInvite(actualUsers);
+                    } catch (error) {
+                        console.error("Error fetching users:", error);
+                    }
+                };
+                fetchUsers();
+            } else {
+                setUsersToInvite([]);
+            }
+        }, 500);
+
+        return () => clearTimeout(delayDebounce);
+    }, [watchLogin, getUsersByLogin]);
 
     if(!user) return <Loader/>
     return (
@@ -74,7 +91,7 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                     <div className="p-3">
                         {
                         tab === 'login' &&
-                        <form onSubmit={handleSubmit(byLogin)}>
+                        <form onSubmit={e => e.preventDefault()}>
                             <div className="mb-3">
                                 <label htmlFor="login" className="form-label">
                                     User Login
@@ -85,15 +102,23 @@ export const InviteUserModal = ({showModal, onClose, event, eventInvites}) => {
                                     id="login"
                                     placeholder="User Login"
                                     {...register("login", { required: true })}
-                                onChange={e => setUserNotFoundError(false)}
                                 />
                                 {errors.login && <div className="text-danger">Login is required</div>}
                                 {userNotFoundError ? <div className="text-danger">The Login is doesn't exist</div>: null}
                             </div>
-                            <div className="d-flex justify-content-end">
-                                <button type="submit" className="btn btn-crimson">
-                                    Send Invite
-                                </button>
+                            <div className="user-list-container list-group rnd-user-sroll-list">
+                                {
+                                    usersToInvite.length > 0 &&
+                                    usersToInvite.map((user) => (
+                                        <div key={user.id} className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                            <div>
+                                                {user.firstName} {user.lastName}
+                                            </div>
+                                            <div>@{user.login}</div>
+                                            <button className="btn btn-crimson" onClick={e => byLogin(user.id)}>Invite</button>
+                                        </div>
+                                    ))
+                                }
                             </div>
                         </form>
                         }

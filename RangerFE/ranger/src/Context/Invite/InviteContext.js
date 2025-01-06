@@ -86,7 +86,7 @@ export const InviteProvider = ({ children }) => {
                 throw "Can not invite yourself"
             }
             if(Event.participants && Event.participants.some((e)=>e.id === UserId)) {
-                throw "You are already friends with this user"
+                throw "User already participate this event"
             }
             if(invites && invites.some((e)=>e.UserId === UserId)) {
                 throw "This user is already invited"

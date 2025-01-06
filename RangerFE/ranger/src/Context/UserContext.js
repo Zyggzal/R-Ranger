@@ -155,6 +155,22 @@ export const UserProvider = ({children}) => {
         return member;
     }
 
+    const getUsersByLogin = async (name) => {
+        if (!user) return;
+        try{
+            const response = await api.Get(`users/search/${name}`);
+            if(response.status !== 200){
+                throw response.message
+            }
+            return response.data
+
+        }catch (error){
+            setAlertText(error);
+            setShowAlert(true);
+        }
+    }
+
+
     const getFriendStatus = async (strangerId, userId) =>{
         const userFriends = await api.Get(`users/allfriends/${userId}`, 'friends');
         for(let friend of userFriends.data){
@@ -170,7 +186,7 @@ export const UserProvider = ({children}) => {
     }
 
     return (
-        <UserContext.Provider value={{userPublicGroups, userPublicEvents, getSomeUserInfo, isLoading, user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
+        <UserContext.Provider value={{getUsersByLogin, userPublicGroups, userPublicEvents, getSomeUserInfo, isLoading, user, Login, Logout, Register, isValid, idByLogin, updateUser, editUser }}>
             <div style={{ position: 'relative' }}>
                 {children}
                 { showAlert && <DismissableAlert text={alertText} onClosed={()=>setShowAlert(false)}/> }

@@ -1,5 +1,5 @@
 import {useForm} from "react-hook-form";
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {UserContext} from "../../../Context/UserContext";
 import {InviteContext} from "../../../Context/Invite/InviteContext";
 import Loader from "../../Loader/Loader";
@@ -10,24 +10,20 @@ import {FriendProvider} from "../../../Context/Friend/FriendContext";
 import {InviteUsersFromFriends} from "../InviteUsersFromFriends/inviteUsersFromFriends";
 
 export const InviteUserToGroupModal = ({showModal, onClose, group, groupInvites}) => {
-    const {register, handleSubmit, formState: {errors}} = useForm();
-    const {user, idByLogin} = useContext(UserContext);
+    const {register, handleSubmit, formState: {errors}, watch} = useForm();
+    const {user, getUsersByLogin} = useContext(UserContext);
     const {inviteUserToGroup} = useContext(InviteContext);
 
     const [userNotFoundError, setUserNotFoundError] = useState(false);
+    const [usersToInvite, setUsersToInvite] = useState([]);
     const [tab, setTab] = useState('login')
 
-    const byLogin = async (values) => {
-        const userId = await idByLogin(values.login);
+    const watchLogin = watch('login')
 
-        if(userId === -1){
-            setUserNotFoundError(true);
-        }
-        else{
-            setUserNotFoundError(false);
-            await inviteUserToGroup(userId, group, groupInvites)
-            onClose(true);
-        }
+    const byLogin = async (id) => {
+        setUserNotFoundError(false);
+        await inviteUserToGroup(id, group, groupInvites)
+        onClose(true);
     }
 
     const inviteArray = (array) => {
@@ -46,6 +42,26 @@ export const InviteUserToGroupModal = ({showModal, onClose, group, groupInvites}
             })).then(()=>onClose(true))
         }
     }
+
+    useEffect(() => {
+        const delayDebounce = setTimeout(() => {
+            if (watchLogin && watchLogin.trim().length > 0) {
+                const fetchUsers = async () => {
+                    try {
+                        const actualUsers = await getUsersByLogin(watchLogin.trim());
+                        setUsersToInvite(actualUsers);
+                    } catch (error) {
+                        console.error("Error fetching users:", error);
+                    }
+                };
+                fetchUsers();
+            } else {
+                setUsersToInvite([]);
+            }
+        }, 500);
+
+        return () => clearTimeout(delayDebounce);
+    }, [watchLogin, getUsersByLogin]);
 
     if(!user) return <Loader/>
     return (
@@ -73,7 +89,7 @@ export const InviteUserToGroupModal = ({showModal, onClose, group, groupInvites}
                 <div className="p-3">
                     {
                         tab === 'login' &&
-                        <form onSubmit={handleSubmit(byLogin)}>
+                        <form onSubmit={e => e.preventDefault()}>
                             <div className="mb-3">
                                 <label htmlFor="login" className="form-label">
                                     User Login
@@ -84,29 +100,39 @@ export const InviteUserToGroupModal = ({showModal, onClose, group, groupInvites}
                                     id="login"
                                     placeholder="User Login"
                                     {...register("login", {required: true})}
-                                    onChange={e => setUserNotFoundError(false)}
                                 />
                                 {errors.login && <div className="text-danger">Login is required</div>}
-                                {userNotFoundError ?
-                                    <div className="text-danger">The Login is doesn't exist</div> : null}
                             </div>
-                            <div className="d-flex justify-content-end">
-                                <button type="submit" className="btn btn-crimson">
-                                    Send Invite
-                                </button>
+                            <div className="user-list-container list-group rnd-user-sroll-list">
+                                {
+                                    usersToInvite.length > 0 &&
+                                    usersToInvite.map((user) => (
+                                        <div key={user.id}
+                                             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                            <div>
+                                                {user.firstName} {user.lastName}
+                                            </div>
+                                            <div>@{user.login}</div>
+                                            <button className="btn btn-crimson" onClick={e => byLogin(user.id)}>Invite
+                                            </button>
+                                        </div>
+                                    ))
+                                }
                             </div>
                         </form>
                     }
                     {
                         tab === 'groups' &&
                         <GroupProvider>
-                            <InviteUsersFromGroups participants={group.members} invites={groupInvites} actualGroup={group}  onSubmit={inviteArray}/>
+                            <InviteUsersFromGroups participants={group.members} invites={groupInvites}
+                                                   actualGroup={group} onSubmit={inviteArray}/>
                         </GroupProvider>
                     }
                     {
                         tab === 'friends' &&
                         <FriendProvider>
-                            <InviteUsersFromFriends participants={group.members} invites={groupInvites} onSubmit={inviteArray}/>
+                            <InviteUsersFromFriends participants={group.members} invites={groupInvites}
+                                                    onSubmit={inviteArray}/>
                         </FriendProvider>
                     }
                 </div>
