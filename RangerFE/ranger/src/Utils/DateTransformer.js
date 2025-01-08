@@ -61,5 +61,9 @@ module.exports = {
         }
         
         return Math.floor((n.getTime() - d.getTime())/(3600*1000))
+    },
+
+    DateFromUTC: (date) => {
+        return new Date(date.getTime() - date.getTimezoneOffset()*60*1000);   
     }
 } 

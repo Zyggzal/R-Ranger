@@ -68,9 +68,9 @@ export const AddEvent = ({ onSubmit, oldEvent, groupId }) => {
         createdBy: user.id,
         createdByGroup: groupId ? groupId : null,
         isGroupEvent: groupId ? "1" : "0",
-        startDate: new Date(values.startDate).toISOString(),
-        endDate: new Date(values.endDate).toISOString(),
-        signUpEndDate: new Date(values.signUpEndDate).toISOString(),
+        startDate: new Date(values.startDate),
+        endDate: new Date(values.endDate),
+        signUpEndDate: new Date(values.signUpEndDate),
       }
       onSubmit(processedValues);
     }
@@ -85,7 +85,8 @@ export const AddEvent = ({ onSubmit, oldEvent, groupId }) => {
 
         const convertDate = (value) => {
           let date = new Date(value);
-          return date.toISOString().substring(0,16)
+
+          return `${date.toISOString().substring(0, 10)}T${date.toLocaleTimeString().substring(0, 5)}`
         }
         setValue('signUpEndDate', convertDate(oldEvent.signUpEndDate))
         setValue('startDate', convertDate(oldEvent.startDate))

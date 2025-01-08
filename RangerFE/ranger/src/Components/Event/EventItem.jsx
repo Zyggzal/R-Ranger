@@ -11,7 +11,7 @@ import EditIcon from "../Icons/EditIcon/EditIcon";
 import {EventReviewsList} from "./EventReview/EventRewiewsList";
 import {ReviewsProvider} from "../../Context/Reviews/ReviewsContext";
 import CountdownComponent from "../CountdownComponent/CountdownComponent";
-import { DateToAgo } from "../../Utils/DateTransformer";
+import { DateFromUTC, DateToAgo } from "../../Utils/DateTransformer";
 import GroupIcon from '../../Components/Icons/GroupIcon/GroupIcon';
 import HumanIcon from "../Icons/HumanIcon/HumanIcon";
 import TrashIcon from "../Icons/TrashIcon/TrashIcon";
@@ -50,7 +50,6 @@ export const EventItem = ({id}) =>{
                     hour: "2-digit",
                     minute: "2-digit",
                     hour12: false,
-                    timeZone: "UTC"
                 }
                 const eventStartDate = new Date(thisEvent.startDate).toLocaleString([], timeStyle);
                 const eventEndDate = new Date(thisEvent.endDate).toLocaleString([], timeStyle);
