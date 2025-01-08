@@ -81,7 +81,6 @@ export const EventItem = ({id}) =>{
 
     useEffect(() => {
         if(!userStatus) return;
-        
         const fetchParticipants = async () => {
             const thisParticipants = await eventParticipants(id);
 

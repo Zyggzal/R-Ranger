@@ -66,7 +66,7 @@ export const InviteToGroup = ({groupId}) => {
                         <div>
                             <h1 style={{display: 'inline-block'}}>Invite Others to {group.name}</h1>
                             <NavLink style={{marginLeft: '15px', marginBottom: '15px'}} className='btn btn-crimson'
-                                     to={`/groups/${group.id}`}><strong>X</strong></NavLink>
+                                     to={`/groups/${group.id}`} replace><strong>X</strong></NavLink>
                             <div>
                                 <button className="btn btn-outline-success ms-3" onClick={() => setModal(true)}>
                                     <strong>+</strong></button>
@@ -92,7 +92,7 @@ export const InviteToGroup = ({groupId}) => {
                                                     <div className="d-flex justify-content-between invite-to-event-invites-list-item">
                                                         <div className="d-flex flex-column align-items-start">
                                                             <h3>{u.firstName} {u.lastName}</h3>
-                                                            <p className="text-secondary">@{u.login}</p>
+                                                            <NavLink to={`/users/${u.login}`} className="m-1 event-group-link">@{ u.login }</NavLink>
                                                         </div>
                                                         <div className="d-flex flex-column align-items-end">
                                                             <p className="text-secondary">Signed
@@ -148,8 +148,11 @@ export const InviteToGroup = ({groupId}) => {
                                                     <div className="d-flex justify-content-between">
                                                         <div className="d-flex flex-column align-items-start">
                                                             <h3>{i.user.firstName} {i.user.lastName}</h3>
-                                                            <p className="text-secondary">@{i.user.login}</p>
-                                                            <h6>Invited by @{i.sender.login}</h6>
+                                                            <NavLink to={`/users/${i.user.login}`} className="m-1 event-group-link">@{ i.user.login }</NavLink>
+                                                            <h6 className="text-secondary pt-2">
+                                                                Invited by
+                                                                <NavLink to={`/users/${i.sender.login}`} className="m-1 event-group-link">@{ i.sender.login }</NavLink>
+                                                            </h6>
                                                         </div>
                                                         <div className="d-flex flex-column align-items-end">
                                                             <p className="text-secondary">Invited: {DateToAgo(i.createdAt)}</p>

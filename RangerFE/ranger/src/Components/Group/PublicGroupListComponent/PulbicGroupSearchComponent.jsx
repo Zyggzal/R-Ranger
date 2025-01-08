@@ -10,7 +10,11 @@ export const PublicGroupSearchComponent = ({group}) => {
              className="list-group-item list-group-item-action d-flex justify-content-between">
             <div>
                 <h5>{group.name}</h5>
-                <p className="text-secondary">Created by @{group.creator ? group.creator.login : group.login}</p>
+                <p className="text-secondary">Created by
+                    <NavLink to={`/users/${group.creator.login}`} className="m-1 event-group-link">
+                        @{group.creator ? group.creator.login : group.login}
+                    </NavLink>
+                </p>
             </div>
             <div className="d-flex flex-column align-items-end">
                 <p className="text-secondary"><ClockIcon/>Created {DateToAgo(group.createdAt)}</p>
