@@ -138,7 +138,7 @@ export const EventItem = ({id}) =>{
                             userStatus &&
                             <>
                                 {
-                                    (userStatus.role === 'creator' || userStatus.role === 'admin') &&
+                                    (userStatus.role === 'creator') &&
                                     <>
                                         {
                                             eventStatus <= 1 &&
